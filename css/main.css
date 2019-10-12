@@ -1,17 +1,11 @@
-/* Error: Nothing may be indented beneath a @import rule.
- *   ,
- * 4 |   '0-plugins/plugins-dir'
- *   |   ^
- *   '
- *   sass/main.sass 4:3  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Nothing may be indented beneath a @import rule.\a   \2577 \a 4 \2502    '0-plugins/plugins-dir'\a   \2502    ^\a   \2575 \a   sass/main.sass 4:3  root stylesheet";
+@import url("https://rsms.me/inter/inter.css");
+.cs-heading-1-black-center {
+  font-size: 3.25em;
+  line-height: 1.25;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  text-align: left;
+  text-align: center;
 }
+
+/*# sourceMappingURL=main.css.map */
