@@ -1,0 +1,184 @@
+// Imports
+
+@import '0-plugins/plugins-dir'
+@import '1-foundations/foundations-dir'
+@import '2-base/base-dir'
+@import '3-layouts/layouts-dir'
+@import '4-components/components-dir'
+
+// Stuff
+
+*
+    margin: 0
+    padding: 0
+    +dsi-body-m($text-color-primary)
+
+
+
+
+header
+    +dsi-layer-1
+    +clearfix
+    position: absolute
+    width: 100%
+    background-color: $background-color-primary
+
+.header-wrapper
+    +clearfix
+    max-width: 1040px
+    margin-left: auto
+    margin-right: auto
+    padding: $dsi-space-l
+    background-color: $background-color-primary
+        
+.logo
+    float: left
+    +dsi-heading-2()
+
+.main-nav
+    +clearfix
+    +dsi-interactive-m()
+    // list-style-type: none
+    display: flex
+    justify-content: flex-end
+    li
+        display: flex
+        flex-direction: column
+        justify-content: center
+        margin-left: $dsi-space-s
+        margin-right: $dsi-space-s
+        a
+            padding: $dsi-space-xs
+
+
+
+        
+section
+
+#hero
+    display: block
+    padding-top: $dsi-layout-zetta
+    padding-bottom: $dsi-layout-zetta
+    background-color: $background-color-primary
+        
+.hero-title
+   +dsi-heading-1($text-color-secondary,center)
+    
+.hero-title-alt
+   +dsi-heading-1($text-color-primary,center)
+    
+.hero-buttons
+    margin-top: $dsi-layout-peta
+    text-align: center
+    list-style-type: none
+    li
+        display: inline-block
+
+.section-wrapper
+    max-width: 1040px
+    margin-left: auto
+    margin-right: auto
+    padding-left: $dsi-layout-kilo
+    padding-right: $dsi-layout-kilo
+    padding-top: $dsi-layout-tera
+    padding-bottom: $dsi-layout-tera
+    
+.section-title
+    +dsi-heading-1($text-color-primary,center)
+    margin-bottom: $dsi-layout-mega
+
+.section-title-inverse
+    +dsi-heading-1($text-color-primary-inverse,center)
+    margin-bottom: $dsi-layout-mega
+    
+.section-paragraph
+    +dsi-paragraph-l($text-color-primary,center)
+    
+.section-paragraph-inverse
+    +dsi-paragraph-l($text-color-primary-inverse,center)
+
+#vision, #strategy
+    background-color: $background-color-primary-inverse
+    
+#pains, #benefits
+    background-color: $background-color-primary
+    
+#cta
+    background-color: $background-color-secondary
+    
+.cta-buttons
+    margin-top: $dsi-layout-mega
+    text-align: center
+    list-style-type: none
+    li
+        display: inline-block
+
+        
+footer
+    background-color: $background-color-primary-inverse
+
+    
+    
+    
+article
+    padding-top: $dsi-layout-mega
+    padding-bottom: $dsi-layout-mega 
+    
+.article-img
+    padding-top: $dsi-layout-tera
+    background-size: $dsi-layout-tera
+    margin-bottom: $dsi-layout-kilo
+
+.article-img-1
+    background: url(../img/1.svg) no-repeat center
+    
+.article-img-2
+    background: url(../img/2.svg) no-repeat center
+
+.article-img-3
+    background: url(../img/3.svg) no-repeat center
+    
+.article-img-4
+    background: url(../img/4.svg) no-repeat center
+
+.article-img-5
+    background: url(../img/5.svg) no-repeat center
+    
+.article-img-6
+    background: url(../img/6.svg) no-repeat center
+    
+.article-img-7
+    background: url(../img/7.svg) no-repeat center
+
+.article-eyebrow
+    +dsi-heading-5($text-color-tertiary,center)
+    margin-bottom: $dsi-space-xs
+    
+.article-title
+    +dsi-heading-2($text-color-primary,center)
+    margin-bottom: $dsi-space-xs
+    
+.article-paragraph
+    +dsi-paragraph-l($text-color-secondary,center)
+
+    
+    
+        
+.footer-wrapper
+    padding-left: $dsi-layout-kilo
+    padding-right: $dsi-layout-kilo
+    padding-top: $dsi-layout-mega
+    padding-bottom: $dsi-layout-mega
+    text-align: center
+
+.footer-paragraph
+    +dsi-paragraph-s($text-color-tertiary-inverse,center)
+
+.love
+    color: $dsi-color-blue-500
+        
+    
+    
+    
+.hidden
+    display: none
