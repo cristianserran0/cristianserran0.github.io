@@ -1,0 +1,30 @@
+// MOTION
+
+
+// Durations
+
+$dsi-motion-speed-instant: 0
+$dsi-motion-speed-fastest: 100ms
+$dsi-motion-speed-faster: 200ms
+$dsi-motion-speed-fast: 300ms
+$dsi-motion-speed-base: 400ms
+$dsi-motion-speed-slow: 500ms
+$dsi-motion-speed-slower: 600ms
+$dsi-motion-speed-slowest: 700ms
+
+
+// Easings
+
+$dsi-motion-type-in-out: cubic-bezier(0.64, 0, 0.35, 1)
+$dsi-motion-type-in: cubic-bezier(0.36, 0, 1, 1)
+$dsi-motion-type-out: cubic-bezier(0, 0, 0.42, 1)
+$dsi-motion-type-excite: cubic-bezier(0.18, 0.67, 0.6,1.22)
+$dsi-motion-type-overshoot: cubic-bezier(0.07, 0.28, 0.32, 1.22)
+$dsi-motion-type-anticipate: cubic-bezier(0.38, -0.4, 0.88, 0.65)
+
+
+
+// Motion Mixins
+
+@mixin dsi-motion-transition($property:color, $speed:$dsi-motion-speed-base, $type:$dsi-motion-type-in-out)
+    transition: $property $speed $type
