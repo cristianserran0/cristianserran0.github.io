@@ -30,7 +30,10 @@ header
     margin-right: auto
     padding: $dsi-space-l
     background-color: $background-color-primary
-        
+    
+.header-filler
+    height: $dsi-layout-peta
+    
 .logo
     float: left
     +dsi-heading-2()
@@ -52,9 +55,7 @@ header
 
 
 
-        
-section
-
+            
 #hero
     display: block
     padding-top: $dsi-layout-zetta
@@ -78,8 +79,8 @@ section
     max-width: 1040px
     margin-left: auto
     margin-right: auto
-    padding-left: $dsi-layout-kilo
-    padding-right: $dsi-layout-kilo
+    padding-left: $dsi-layout-mega
+    padding-right: $dsi-layout-mega
     padding-top: $dsi-layout-tera
     padding-bottom: $dsi-layout-tera
     
@@ -97,13 +98,19 @@ section
 .section-paragraph-inverse
     +dsi-paragraph-l($text-color-primary-inverse,center)
 
-#vision, #strategy
+        
+        
+        
+#hero
+    background-color: $background-color-primary
+        
+#vision, #design-systems
     background-color: $background-color-primary-inverse
     
 #pains, #benefits
     background-color: $background-color-primary
     
-#cta
+#strategy, #cta
     background-color: $background-color-secondary
     
 .cta-buttons

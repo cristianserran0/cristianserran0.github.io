@@ -1,10 +1,14 @@
+.button-group
+    display: inline-block
+
 .button
     display: inline-block
     cursor: pointer
-    margin: $dsi-space-xs
+    background-color: $dsi-color-gray-50
     border-radius: $dsi-space-xxs
-    border-style: none
-    background-color: transparent
+    border-width: 1px 
+    border-style: solid
+    margin: $dsi-space-xs
     -webkit-appearance: none
     -moz-appearance: none
     appearance: none
@@ -43,11 +47,13 @@
         
 .button-primary
     background-color: $dsi-color-black
+    border-color: $dsi-color-black
     color: $dsi-color-white
     
     &:hover,
     &:focus
         background-color: $dsi-color-gray-800
+        border-color: $dsi-color-gray-800
         -webkit-transform: translateY(-1px)
         -moz-transform: translateY(-1px)
         transform: translateY(-1px)
@@ -55,6 +61,7 @@
     
     &:active
         background-color: $dsi-color-gray-900
+        border-color: $dsi-color-gray-900
         -webkit-transform: translateY(1px)
         -moz-transform: translateY(1px)
         transform: translateY(1px)
@@ -62,22 +69,21 @@
     
     
 .button-secondary
-    background-color: $dsi-color-blue-50
-    color: $dsi-color-blue-600
-    border-color: $dsi-color-blue-600
+    background-color: $dsi-color-gray-800
+    border-color: $dsi-color-gray-800
+    color: $dsi-color-white
 
     &:hover,
     &:focus
-        background-color: $dsi-color-blue-600
-        color: $dsi-color-white
+        background-color: $dsi-color-gray-700
+        border-color: $dsi-color-gray-700
         -webkit-transform: translateY(-1px)
         -moz-transform: translateY(-1px)
         transform: translateY(-1px)
         +dsi-layer-8
     
     &:active
-        background-color: $dsi-color-blue-700
-        color: $dsi-color-white
+        background-color: $dsi-color-gray-800
         -webkit-transform: translateY(1px)
         -moz-transform: translateY(1px)
         transform: translateY(1px)
@@ -85,12 +91,14 @@
      
      
 .button-tertiary
+    background-color: transparent
+    border-color: $dsi-color-black
     color: $dsi-color-black
-    box-shadow: inset 0 0 0 2px $dsi-color-gray-800
-    
+
     &:hover,
     &:focus
         background-color: $dsi-color-gray-800
+        border-color: $dsi-color-gray-800
         color: $dsi-color-white
         -webkit-transform: translateY(-1px)
         -moz-transform: translateY(-1px)
@@ -99,6 +107,7 @@
     
     &:active
         background-color: $dsi-color-gray-900
+        border-color: $dsi-color-gray-900
         color: $dsi-color-white
         -webkit-transform: translateY(1px)
         -moz-transform: translateY(1px)
@@ -107,17 +116,16 @@
     
     
 .button-text
-    color: $dsi-color-blue-600
-    border-width: 0px
-    border-color: $dsi-color-blue-600
+    background-color: transparent
+    border-color: transparent
+    color: $dsi-color-black
     
     &:hover,
     &:focus
         background-color: $dsi-color-gray-50
-        -webkit-transform: translateY(-1px)
-        -moz-transform: translateY(-1px)
-        transform: translateY(-1px)
+        border-color: $dsi-color-gray-50
     
     &:active
         background-color: $dsi-color-gray-100
+        border-color: $dsi-color-gray-100
 

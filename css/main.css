@@ -7,13 +7,18 @@ html {
   box-sizing: inherit;
 }
 
+.button-group {
+  display: inline-block;
+}
+
 .button {
   display: inline-block;
   cursor: pointer;
-  margin: 0.5rem;
+  background-color: #f2f2f2;
   border-radius: 0.25rem;
-  border-style: none;
-  background-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  margin: 0.5rem;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -65,10 +70,12 @@ html {
 
 .button-primary {
   background-color: #000000;
+  border-color: #000000;
   color: #ffffff;
 }
 .button-primary:hover, .button-primary:focus {
   background-color: #343434;
+  border-color: #343434;
   -webkit-transform: translateY(-1px);
   -moz-transform: translateY(-1px);
   transform: translateY(-1px);
@@ -76,6 +83,7 @@ html {
 }
 .button-primary:active {
   background-color: #252525;
+  border-color: #252525;
   -webkit-transform: translateY(1px);
   -moz-transform: translateY(1px);
   transform: translateY(1px);
@@ -83,21 +91,20 @@ html {
 }
 
 .button-secondary {
-  background-color: #f0f5fc;
-  color: #1758c2;
-  border-color: #1758c2;
+  background-color: #343434;
+  border-color: #343434;
+  color: #ffffff;
 }
 .button-secondary:hover, .button-secondary:focus {
-  background-color: #1758c2;
-  color: #ffffff;
+  background-color: #454545;
+  border-color: #454545;
   -webkit-transform: translateY(-1px);
   -moz-transform: translateY(-1px);
   transform: translateY(-1px);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 }
 .button-secondary:active {
-  background-color: #0a439b;
-  color: #ffffff;
+  background-color: #343434;
   -webkit-transform: translateY(1px);
   -moz-transform: translateY(1px);
   transform: translateY(1px);
@@ -105,11 +112,13 @@ html {
 }
 
 .button-tertiary {
+  background-color: transparent;
+  border-color: #000000;
   color: #000000;
-  box-shadow: inset 0 0 0 2px #343434;
 }
 .button-tertiary:hover, .button-tertiary:focus {
   background-color: #343434;
+  border-color: #343434;
   color: #ffffff;
   -webkit-transform: translateY(-1px);
   -moz-transform: translateY(-1px);
@@ -118,6 +127,7 @@ html {
 }
 .button-tertiary:active {
   background-color: #252525;
+  border-color: #252525;
   color: #ffffff;
   -webkit-transform: translateY(1px);
   -moz-transform: translateY(1px);
@@ -126,18 +136,17 @@ html {
 }
 
 .button-text {
-  color: #1758c2;
-  border-width: 0px;
-  border-color: #1758c2;
+  background-color: transparent;
+  border-color: transparent;
+  color: #000000;
 }
 .button-text:hover, .button-text:focus {
   background-color: #f2f2f2;
-  -webkit-transform: translateY(-1px);
-  -moz-transform: translateY(-1px);
-  transform: translateY(-1px);
+  border-color: #f2f2f2;
 }
 .button-text:active {
   background-color: #e2e2e2;
+  border-color: #e2e2e2;
 }
 
 * {
@@ -175,6 +184,10 @@ header:after {
   content: "";
   display: table;
   clear: both;
+}
+
+.header-filler {
+  height: 6rem;
 }
 
 .logo {
@@ -256,8 +269,8 @@ header:after {
   max-width: 1040px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
@@ -304,7 +317,11 @@ header:after {
   text-align: center;
 }
 
-#vision, #strategy {
+#hero {
+  background-color: #ffffff;
+}
+
+#vision, #design-systems {
   background-color: #161616;
 }
 
@@ -312,7 +329,7 @@ header:after {
   background-color: #ffffff;
 }
 
-#cta {
+#strategy, #cta {
   background-color: #f2f2f2;
 }
 
