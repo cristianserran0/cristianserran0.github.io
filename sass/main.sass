@@ -11,78 +11,54 @@
 *
     margin: 0
     padding: 0
-    +dsi-body-m($text-color-primary)
-
 
 
 
 header
-    +dsi-layer-1
-    +clearfix
-    position: absolute
     width: 100%
+    padding-top: $dsi-layout-giga
     background-color: $background-color-primary
 
 .header-wrapper
     +clearfix
-    max-width: 1040px
+    max-width: 736px
     margin-left: auto
     margin-right: auto
-    padding: $dsi-space-l
-    background-color: $background-color-primary
-    
-.header-filler
-    height: $dsi-layout-peta
-    
-.logo
-    float: left
-    +dsi-heading-2()
-
-.main-nav
-    +clearfix
-    +dsi-interactive-m()
-    // list-style-type: none
-    display: flex
-    justify-content: flex-end
-    li
-        display: flex
-        flex-direction: column
-        justify-content: center
-        margin-left: $dsi-space-s
-        margin-right: $dsi-space-s
-        a
-            padding: $dsi-space-xs
-
-
-
-            
-#hero
-    display: block
-    padding-top: $dsi-layout-zetta
-    padding-bottom: $dsi-layout-zetta
     background-color: $background-color-primary
         
 .hero-title
-   +dsi-heading-1($text-color-secondary,center)
+    +dsi-display-3($text-color-primary,null)
+    margin-bottom: $dsi-layout-kilo    
     
-.hero-title-alt
-   +dsi-heading-1($text-color-primary,center)
+.hero-caption
+    +dsi-body-s($text-color-tertiary,null)
+    margin-bottom: $dsi-layout-giga
     
-.hero-buttons
+.hero-p
+    +dsi-paragraph-l($text-color-secondary,left)
+    
+.button-group
     margin-top: $dsi-layout-peta
     text-align: center
     list-style-type: none
     li
         display: inline-block
-
+        
+.cta-buttons
+  margin-top: 2rem
+  text-align: left
+  list-style-type: none
+        
+        
+        
 .section-wrapper
-    max-width: 1040px
+    max-width: 736px
     margin-left: auto
     margin-right: auto
     padding-left: $dsi-layout-mega
     padding-right: $dsi-layout-mega
-    padding-top: $dsi-layout-tera
-    padding-bottom: $dsi-layout-tera
+    padding-top: $dsi-layout-mega
+    padding-bottom: $dsi-layout-mega
     
 .section-title
     +dsi-heading-1($text-color-primary,center)
@@ -99,37 +75,18 @@ header
     +dsi-paragraph-l($text-color-primary-inverse,center)
 
         
-        
-        
-#hero
-    background-color: $background-color-primary
-        
-#vision, #design-systems
-    background-color: $background-color-primary-inverse
-    
-#pains, #benefits
-    background-color: $background-color-primary
-    
-#strategy, #cta
-    background-color: $background-color-secondary
-    
-.cta-buttons
-    margin-top: $dsi-layout-mega
-    text-align: center
-    list-style-type: none
-    li
-        display: inline-block
+a
+    color: $text-color-primary
+    text-decoration: underline
+    text-decoration-color: $dsi-color-blue-500
 
+a:hover
+    color: $dsi-color-blue-500
         
-footer
-    background-color: $background-color-primary-inverse
-
+        
+#about-me, footer
+    background-color: $background-color-primary
     
-    
-    
-article
-    padding-top: $dsi-layout-mega
-    padding-bottom: $dsi-layout-mega 
     
 .article-img
     padding-top: $dsi-layout-tera
@@ -163,14 +120,70 @@ article
     
 .article-title
     +dsi-heading-2($text-color-primary,center)
-    margin-bottom: $dsi-space-xs
+    margin-bottom: $dsi-space-s
     
 .article-paragraph
     +dsi-paragraph-l($text-color-secondary,center)
-
-    
-    
         
+        
+        
+        
+.blog-text-1
+    +dsi-display-2($text-color-primary)
+    margin-bottom: 3rem
+    
+.blog-text-2
+    +dsi-heading-2($text-color-primary,left)
+    margin-top: 2em
+    margin-bottom: $dsi-space-m
+
+.blog-text-3
+    +dsi-heading-3($text-color-primary,left)
+    margin-top: 1em
+    margin-bottom: $dsi-space-xs
+    padding-top: 0.5em
+
+.blog-time-1
+    +dsi-body-l($text-color-tertiary)
+    margin-top: 2em
+    margin-bottom: 2em
+    
+.blog-lead-paragraph
+    +dsi-paragraph-xl($text-color-secondary,left)
+
+.blog-paragraph
+    margin-top: $dsi-space-xs
+    +dsi-paragraph-l($text-color-secondary,left)
+        
+.blog-bullet
+    padding-left: 2rem
+        
+.blog-highlight
+    +dsi-paragraph-xl($text-color-tertiary,center)
+    margin-top: 1rem
+    margin-bottom: 1rem
+    padding: 1.5rem
+    
+.blog-quote
+    +dsi-paragraph-l($text-color-secondary,left)
+    margin-top: $dsi-space-m
+    margin-bottom: $dsi-space-m
+    padding-left: $dsi-space-l
+    border-left: solid
+    border-color: $text-color-tertiary
+    
+.blog-divider
+    border: 1px solid $background-color-tertiary
+    margin-top: $dsi-layout-tera
+    margin-bottom: $dsi-layout-giga
+
+.blog-eyebrow
+    +dsi-heading-5($text-color-tertiary,left)
+    margin-bottom: $dsi-space-xs
+
+.emoji
+    margin-right: $dsi-space-xs
+
 .footer-wrapper
     padding-left: $dsi-layout-kilo
     padding-right: $dsi-layout-kilo
@@ -179,7 +192,7 @@ article
     text-align: center
 
 .footer-paragraph
-    +dsi-paragraph-s($text-color-tertiary-inverse,center)
+    +dsi-body-s($text-color-primary,center)
 
 .love
     color: $dsi-color-blue-500
