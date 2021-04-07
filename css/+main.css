@@ -1,12 +1,10 @@
 @import url("https://rsms.me/inter/inter.css");
 html {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *, *:before, *:after {
-  -webkit-box-sizing: inherit;
-          box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 p {
@@ -44,9 +42,7 @@ ul {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
-  -webkit-transition: all 0.2s;
+  box-sizing: content-box;
   transition: all 0.2s;
 }
 
@@ -97,23 +93,21 @@ ul {
   border-color: #000000;
   color: #ffffff;
 }
-
 .button-primary:hover, .button-primary:focus {
   background-color: #343434;
   border-color: #343434;
   -webkit-transform: translateY(-1px);
+  -moz-transform: translateY(-1px);
   transform: translateY(-1px);
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 }
-
 .button-primary:active {
   background-color: #252525;
   border-color: #252525;
   -webkit-transform: translateY(1px);
+  -moz-transform: translateY(1px);
   transform: translateY(1px);
-  -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .button-secondary {
@@ -121,22 +115,20 @@ ul {
   border-color: #343434;
   color: #ffffff;
 }
-
 .button-secondary:hover, .button-secondary:focus {
   background-color: #454545;
   border-color: #454545;
   -webkit-transform: translateY(-1px);
+  -moz-transform: translateY(-1px);
   transform: translateY(-1px);
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 }
-
 .button-secondary:active {
   background-color: #343434;
   -webkit-transform: translateY(1px);
+  -moz-transform: translateY(1px);
   transform: translateY(1px);
-  -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .button-tertiary {
@@ -144,25 +136,23 @@ ul {
   border-color: #000000;
   color: #000000;
 }
-
 .button-tertiary:hover, .button-tertiary:focus {
   background-color: #343434;
   border-color: #343434;
   color: #ffffff;
   -webkit-transform: translateY(-1px);
+  -moz-transform: translateY(-1px);
   transform: translateY(-1px);
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 }
-
 .button-tertiary:active {
   background-color: #252525;
   border-color: #252525;
   color: #ffffff;
   -webkit-transform: translateY(1px);
+  -moz-transform: translateY(1px);
   transform: translateY(1px);
-  -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.05), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .button-text {
@@ -170,12 +160,10 @@ ul {
   border-color: transparent;
   color: #000000;
 }
-
 .button-text:hover, .button-text:focus {
   background-color: #f2f2f2;
   border-color: #f2f2f2;
 }
-
 .button-text:active {
   background-color: #e2e2e2;
   border-color: #e2e2e2;
@@ -198,7 +186,6 @@ header {
   margin-right: auto;
   background-color: #ffffff;
 }
-
 .header-wrapper:after {
   content: "";
   display: table;
@@ -240,7 +227,6 @@ header {
   text-align: center;
   list-style-type: none;
 }
-
 .button-group li {
   display: inline-block;
 }
@@ -269,8 +255,7 @@ header {
   font-weight: 700;
   color: #000000;
   text-align: center;
-  -webkit-font-variant-ligatures: common-ligatures;
-          font-variant-ligatures: common-ligatures;
+  font-variant-ligatures: common-ligatures;
   margin-bottom: 2rem;
 }
 
@@ -282,8 +267,7 @@ header {
   font-weight: 700;
   color: #ffffff;
   text-align: center;
-  -webkit-font-variant-ligatures: common-ligatures;
-          font-variant-ligatures: common-ligatures;
+  font-variant-ligatures: common-ligatures;
   margin-bottom: 2rem;
 }
 
@@ -310,8 +294,7 @@ header {
 a {
   color: #000000;
   text-decoration: underline;
-  -webkit-text-decoration-color: #1133ff;
-          text-decoration-color: #1133ff;
+  text-decoration-color: #1133ff;
 }
 
 a:hover {
@@ -537,4 +520,5 @@ a:hover {
 .hidden {
   display: none;
 }
+
 /*# sourceMappingURL=main.css.map */
