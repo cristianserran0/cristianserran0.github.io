@@ -184,45 +184,7 @@ ul {
   padding: 0;
 }
 
-.page-wrapper {
-  width: 100%;
-  overflow: hidden;
-}
-
-header {
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  z-index: 100;
-  -webkit-transition: all .6s ease;
-  transition: all .6s ease;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.nav-up {
-  top: -85px;
-}
-
-#top-navbar-container {
-  height: 5rem;
-}
-
-#top-navbar {
-  max-width: 736px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 #top-navbar li {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
   line-height: 1.4;
@@ -231,12 +193,12 @@ header {
   color: #001A61;
   text-align: left;
   text-decoration: none;
-  text-decoration: none;
   list-style-type: none;
+  float: left;
 }
 
 #top-navbar li:not(:last-child) {
-  margin-right: 1.5rem;
+  margin-right: 2rem;
 }
 
 .nav-selected > a {
@@ -247,16 +209,6 @@ header {
 
 .standalone-link:not(:last-child) {
   margin-right: 1rem;
-}
-
-.main-wrapper {
-  max-width: 736px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
 }
 
 #hero {
@@ -309,6 +261,21 @@ header {
   margin-top: 2rem;
   text-align: left;
   list-style-type: none;
+}
+
+.main-wrapper {
+  max-width: 736px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.page-wrapper {
+  width: 100%;
+  overflow: hidden;
 }
 
 .section-title {
@@ -828,13 +795,10 @@ b {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+@mdia (prefers-color-scheme: dark) {
   body, header, section, article, footer {
     background: #000000;
     color: #ffffff;
-  }
-  header {
-    background: rgba(0, 0, 0, 0.9);
   }
   .hero-title, .hero-subtitle, .blog-text-2, .blog-text-3, .blog-text-4, .footer-paragraph {
     color: #ffffff;

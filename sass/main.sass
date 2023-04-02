@@ -12,45 +12,13 @@
     margin: 0
     padding: 0
 
-.page-wrapper
-    width: 100%
-    overflow: hidden
-
-header
-    position: fixed
-    top: 0px
-    width: 100%
-    z-index: 100
-    transition: all .6s ease
-    background: rgba(255, 255, 255, 0.9)
-    //&.hide 
-    //    top: -85px
-
-.nav-up
-    top: -85px
-
-#top-navbar-container
-    height: 5rem
-
-#top-navbar
-    max-width: 736px
-    margin-left: auto
-    margin-right: auto
-    margin-top: 0px
-    margin-bottom: 0px
-    padding-left: 2rem
-    padding-right: 2rem
-    padding-top: 2rem
-    padding-bottom: 2rem
-
 
 #top-navbar li
-    display: inline-flex
     +dsi-interactive-m
-    text-decoration: none
     list-style-type: none
+    float: left
     &:not(:last-child)
-        margin-right: $dsi-space-l
+        margin-right: $dsi-space-xl
 
 .nav-selected > a
     color: $dsi-color-blue-500
@@ -61,14 +29,6 @@ header
     &:not(:last-child)
         margin-right: $dsi-space-m
         
-.main-wrapper
-    max-width: 736px
-    margin-left: auto
-    margin-right: auto
-    padding-left: $dsi-layout-mega
-    padding-right: $dsi-layout-mega
-    padding-top: $dsi-layout-mega
-    padding-bottom: $dsi-layout-mega
 
 #hero
     width: 100%
@@ -99,7 +59,20 @@ header
   list-style-type: none
         
         
+        
+.main-wrapper
+    max-width: 736px
+    margin-left: auto
+    margin-right: auto
+    padding-left: $dsi-layout-mega
+    padding-right: $dsi-layout-mega
+    padding-top: $dsi-layout-mega
+    padding-bottom: $dsi-layout-mega
 
+.page-wrapper
+    width: 100%
+    overflow: hidden
+    
 .section-title
     +dsi-heading-1($text-color-primary,null)
     margin-bottom: $dsi-layout-mega
@@ -246,8 +219,8 @@ b
     height: 0
     padding-bottom: 100%
     border-radius: $dsi-space-m
-    background-size: cover
-    background-position: center
+    background-size: cover;
+    background-position: center;
     overflow: hidden
     transition: transform .35s ease-in-out, box-shadow .35s ease-in-out
     background-color: $background-color-tertiary
@@ -270,7 +243,7 @@ b
     width: 100%
     height: 100%
     color: white
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%,rgba(0,0,0,0.5) 90%)
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%,rgba(0,0,0,0.5) 90%);
 
 .work-tile-title
     +dsi-heading-3($text-color-primary-inverse,left)
@@ -395,14 +368,11 @@ b
     
 
 
-@media (prefers-color-scheme: dark) 
+@mdia (prefers-color-scheme: dark) 
 
     body, header, section, article, footer
         background: $background-color-primary-inverse
         color: $text-color-primary-inverse
-    
-    header
-        background: rgba(0, 0, 0, 0.9)
 
     .hero-title, .hero-subtitle, .blog-text-2, .blog-text-3, .blog-text-4, .footer-paragraph
         color: $text-color-primary-inverse
