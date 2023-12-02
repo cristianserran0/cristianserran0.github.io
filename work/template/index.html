@@ -5,39 +5,40 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Work Cristian Serrano - Digital Product Designer</title>
-        <link rel="stylesheet" href="../../css/main.css">
+        <link rel="stylesheet" href="/css/main.css">
         <link rel="icon" type="image/png" href="https://cristianserran0.github.io/favicon.png" sizes="16x16 32x32">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="/js/header-behaviour.js"></script>
     </head>
     
     <body>
 
         <div class="page-wrapper">
 
+            <header class="nav-down">
+                <nav id="top-navbar-container">
+                    <ul id="top-navbar">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/cv">CV</a></li>
+                        <li><a href="/work">Work</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </header>
+
             <div class="main-wrapper">
 
-                <header>
-                    <nav>
-                        <ul id="top-navbar">
-                            <li><a href="../../">Home</a></li>
-                            <li><a href="../../cv">CV</a></li>
-                            <li><a href="../">Work</a></li>
-                            <li><a href="../../contact">Contact</a></li>
-                        </ul>
-                    </nav>
-                </header>
-
                 <section id="hero">
-                    <h1 class="hero-title">Project title</h1>
-                    <h2 class="hero-subtitle">CLIENT · YEAR</h2>
+                    <h1 class="hero-title">{Project title}</h1>
+                    <h2 class="hero-subtitle">{COMPANY/CLIENT} · {year}</br><span class="blog-paragraph">{time} mins. read</span></h2>
                     <figure class="work-hero-figure">
-                        <img class="work-image-large" src="https://source.unsplash.com/1280x720/?app,digital,web" alt="">
+                        <img class="work-image-large" src="https://source.unsplash.com/1280x724/?app,digital,web" alt="">
                     </figure>
                 </section>
                 
                 <section class="intro">
                     <article class="overview">
-                        <p class="blog-lead-paragraph">I worked on the Small Business Advisors product/service as the only designer assigned 100%. What started as a UX/UI designer role, quickly became a full Product design role, since I had to work with high-level definitions of the service and grow from there, impacting not only on the experience and the visuals of the service, but on the value proposition for the business side. I also worked on the initial content drafts for the landing page and the different tools (merchant facing and internal use), and produced some animations as well.</p>
-                        <p class="blog-lead-paragraph">I had the chance to study Google Standards and developed a great dynamic within the team and with the client, making the process of discovery, ideation, and validation super straightforward.</p>
+                        <p class="blog-lead-paragraph">{Summary}</p>
                     </article>
                 </section>
 
@@ -45,19 +46,19 @@
                     <div class="section-table">
                         <div class="section-table-cell">
                             <h4 class="blog-text-3">Category</h4>
-                            <p class="blog-paragraph">Customer service, Internal tools</p>
+                            <p class="blog-paragraph">{categories}</p>
                         </div>
                         <div class="section-table-cell">
                             <h4 class="blog-text-3">Platforms</h4>
-                            <p class="blog-paragraph">Desktop, Mobile</p>
+                            <p class="blog-paragraph">{platforms}</p>
                         </div>
                         <div class="section-table-cell">
                             <h4 class="blog-text-3">Role</h4>
-                            <p class="blog-paragraph">Product Designer</p>
+                            <p class="blog-paragraph">{roles}</p>
                         </div>
                         <div class="section-table-cell">
                             <h4 class="blog-text-3">Time</h4>
-                            <p class="blog-paragraph">8 months</p>
+                            <p class="blog-paragraph">{time}</p>
                         </div>
                     </div>
                 </section>
