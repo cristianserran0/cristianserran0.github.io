@@ -9,6 +9,7 @@
         <link rel="icon" type="image/png" href="https://cristianserran0.github.io/favicon.png" sizes="16x16 32x32">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="/js/header-behaviour.js"></script>
+        <script src="/js/reading-time-estimation.js"></script>
     </head>
     
     <body>
@@ -26,11 +27,11 @@
                 </nav>
             </header>
 
-            <div class="main-wrapper">
+            <div class="main-wrapper" id="content">
 
                 <section id="hero">
                     <h1 class="hero-title">Small Business Advisors</h1>
-                    <h2 class="hero-subtitle">GLOBANT + GOOGLE · 2020</br><span class="blog-paragraph">13 min read.</span></h2>
+                    <h2 class="hero-subtitle">GLOBANT + GOOGLE · 2020</br><span class="blog-paragraph"><span id="reading-time"></span> min read.</span></h2>
 
                     <figure class="work-hero-figure">
                         <img class="work-image-large" src="hero.jpg" alt="">
@@ -91,7 +92,7 @@
                         <h2 class=blog-text-3>Problem definition</h2>
                         <p class="blog-paragraph">There were two main problems to tackle:</p>
                             <ul class="blog-ul">
-                                <li class="blog-paragraph">Merchants were often forced to visit different help desks when looking for help for different services from Google. This translated into a disjointed experience and long waiting times (these help desks are online services with cues).</li>
+                                <li class="blog-paragraph">Merchants were often forced to visit different help desks when looking for help for different services from Google. This translated into a disjointed experience and long waiting times (these help desks are online services with queues).</li>
                                 <li class="blog-paragraph">Small and medium businesses owners had the preconception that Google services were meant only for large businesses and renowned brands, making it difficult for Google to reach them. </li>
                             </ul>
 
