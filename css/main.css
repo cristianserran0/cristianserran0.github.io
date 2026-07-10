@@ -231,7 +231,6 @@ header {
   color: #001A61;
   text-align: left;
   text-decoration: none;
-  text-decoration: none;
   list-style-type: none;
 }
 
@@ -279,9 +278,8 @@ header {
   font-size: 1.1875rem;
   line-height: 1.4;
   letter-spacing: -0.022rem;
-  font-weight: 500;
-  color: #001A61;
   font-weight: 700;
+  color: #001A61;
   margin-bottom: 3rem;
 }
 
@@ -753,7 +751,6 @@ b {
 }
 
 .footer-wrapper {
-  float: bottom;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2rem;

@@ -1,14 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the current date
-    const currentDate = new Date();
+    var currentDate = new Date();
+    var startDate = new Date('2009-06-01');
 
-    // Set the date I started my design career
-    const startDate = new Date('2009-06-01');
-
-    // Calculate the difference in years
-    let yearsDifference = currentDate.getFullYear() - startDate.getFullYear();
-
-    // Adjust the years if the start date is later in the current year
+    var yearsDifference = currentDate.getFullYear() - startDate.getFullYear();
     if (
         currentDate.getMonth() < startDate.getMonth() ||
         (currentDate.getMonth() === startDate.getMonth() && currentDate.getDate() < startDate.getDate())
@@ -16,7 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
         yearsDifference--;
     }
 
-    // Update the HTML element with the calculated number of years
-    const experienceElement = document.getElementById('experienceYears');
-    experienceElement.textContent = yearsDifference + '+ years';
+    var experienceElement = document.getElementById('experienceYears');
+    if (experienceElement) {
+        experienceElement.textContent = yearsDifference + '+ years';
+    }
+
+    var year = currentDate.getFullYear();
+    document.querySelectorAll('.current-year').forEach(function(el) {
+        el.textContent = year;
+    });
 });
