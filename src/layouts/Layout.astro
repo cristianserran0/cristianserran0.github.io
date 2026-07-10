@@ -1,0 +1,70 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  readingTime?: boolean;
+}
+
+const { title, description, readingTime = false } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const isHome    = pathname === '/';
+const isCV      = pathname.startsWith('/cv');
+const isWork    = pathname.startsWith('/work');
+const isContact = pathname.startsWith('/contact');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-02JHYJG539" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-02JHYJG539');
+    </script>
+    <!-- etracker -->
+    <script id="_etLoader" type="text/javascript" charset="UTF-8" data-block-cookies="true" data-secure-code="L9bc0V" src="//code.etracker.com/code/e.js" async is:inline></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
+    <script is:inline src="/js/header-behaviour.js"></script>
+    <script is:inline src="/js/seniority.js"></script>
+    {readingTime && <script is:inline src="/js/reading-time-estimation.js"></script>}
+    <script is:inline src="/js/current-year.js"></script>
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+
+      <header class="nav-visible">
+        <nav id="top-navbar-container">
+          <ul id="top-navbar">
+            <li class={isHome    ? 'nav-selected' : ''}><a href="/">Home</a></li>
+            <li class={isCV      ? 'nav-selected' : ''}><a href="/cv">CV</a></li>
+            <li class={isWork    ? 'nav-selected' : ''}><a href="/work">Work</a></li>
+            <li class={isContact ? 'nav-selected' : ''}><a href="/contact">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <div class="main-wrapper" id={readingTime ? 'content' : undefined}>
+        <slot />
+
+        <footer>
+          <div class="footer-wrapper">
+            <p class="footer-paragraph">Handcrafted with <span class="love">♥</span> en La Plata <span class="emoji" role="img" aria-label="argentina">🇦🇷</span> und München <span class="emoji" role="img" aria-label="deutschland">🇩🇪</span>.</p>
+            <p class="footer-paragraph">&copy;<span class="current-year"></span> Cristian Serrano</p>
+          </div>
+        </footer>
+      </div>
+
+    </div>
+  </body>
+</html>
