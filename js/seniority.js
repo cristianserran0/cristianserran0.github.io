@@ -15,8 +15,4 @@ document.addEventListener('DOMContentLoaded', function() {
         experienceElement.textContent = yearsDifference + '+ years';
     }
 
-    var year = currentDate.getFullYear();
-    document.querySelectorAll('.current-year').forEach(function(el) {
-        el.textContent = year;
-    });
 });
