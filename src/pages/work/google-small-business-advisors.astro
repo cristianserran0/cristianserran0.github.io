@@ -1,5 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+const gImgs = import.meta.glob('/src/assets/work/google-small-business-advisors/*.{png,jpg,jpeg}', { eager: true });
+const gImg = (n) => (gImgs[`/src/assets/work/google-small-business-advisors/${n}`] as any)?.default;
 ---
 
 <Layout
@@ -53,7 +56,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">Small Business Advisors (SBA) is a Google My Business initiative that aims to connect small and medium business owners (merchants) with experts trained across Google products, so they can find all the help they need in just one place.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/gmb.png" alt="">
+        <Image src={gImg("gmb.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
 
@@ -80,7 +83,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">The team was fairly minimal since we wouldn't have to build a lot of functionalities. Small teams have the advantage that communication is more streamlined and is easier to get a sense of design limitations and opportunities based on technical and business constrains and other roles' inputs.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/locations.png" alt="">
+        <Image src={gImg("locations.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Our team spread through 4 timezones.</figcaption>
       </figure>
 
@@ -108,7 +111,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">Since time was pretty limited, I couldn't get into too much detail for User and Journeys, so I had to find a way to keep these simple but still actionable.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/users.png" alt="">
+        <Image src={gImg("users.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -118,16 +121,16 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph"></p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/journey3.png" alt="">
+        <Image src={gImg("journey3.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/journey1.png" alt="">
+        <Image src={gImg("journey1.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/journey2.png" alt="">
+        <Image src={gImg("journey2.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/journey4.png" alt="">
+        <Image src={gImg("journey4.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
     </article>
 
@@ -136,7 +139,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">With users and journeys defined, I ran a Service blueprint workshop (~90mins) with the entire team so we could get on the same page early on the design process and get a lot of assumptions cleared. This proved to be an excellent way to get a common understanding of what we needed to build and how every piece of the product should work in context, and to set clear expectations for the client.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/blueprint.png" alt="">
+        <Image src={gImg("blueprint.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Service blueprint.</figcaption>
       </figure>
     </article>
@@ -146,7 +149,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">After setting expectations and clearing assumptions, I laid out a very basic roadmap with a prioritization of features by User.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/roadmap.png" alt="">
+        <Image src={gImg("roadmap.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">The first draft of our roadmap.</figcaption>
       </figure>
 
@@ -176,7 +179,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">I wouldn't say user flows are part of a Discovery but, since they are focused on user objectives and the rest of the case study is organized by areas of focus, I don't really have a better place for them. =P</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/user-flows.png" alt="">
+        <Image src={gImg("user-flows.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">This is an updated version, so there might be inconsistencies with the rest of the case study.</figcaption>
       </figure>
     </article>
@@ -191,7 +194,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">Google already had a proof of concept (PoC) of the landing page, but it was a very first draft and while it had good bones, it didn't look anything like a product from Google. I'm not a big fan of reinventing the wheel, so I took the PoC (for which we already had feedback from merchants) as a starting point and benchmarked other GMB landing pages to better align our own.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/making-it-googley.png" alt="">
+        <Image src={gImg("making-it-googley.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"><b>Left:</b> Identified common patterns on Google landing pages. <b>Right:</b> Evolution of our landing page.</figcaption>
       </figure>
     </article>
@@ -205,7 +208,7 @@ import Layout from '../../layouts/Layout.astro';
       </ol>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/making-it-interesting.png" alt="">
+        <Image src={gImg("making-it-interesting.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"><b>Left:</b> Both options. <b>Right:</b> The inevitable third one. =P</figcaption>
       </figure>
 
@@ -218,7 +221,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">We wanted to have a specific page with possible scenarios, so merchants could have an idea of what to expect from the service. We also needed a Frequently Asked Questions (FAQ) page as per Google standards.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/supporting-pages.png" alt="">
+        <Image src={gImg("supporting-pages.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Updated Landing (with mobile proposal), Expertise, and FAQ pages.</figcaption>
       </figure>
 
@@ -236,7 +239,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">My first intention was putting as much value as possible before asking the merchant to log/sign in (the last step was all about personal and business data that we could extract from their Google account).</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/lo-fi-booking-prototype.png" alt="">
+        <Image src={gImg("lo-fi-booking-prototype.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">The very first draft for the Booking tool.</figcaption>
       </figure>
     </article>
@@ -247,12 +250,12 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">We also needed to put the login component as early as possible on the flow to cover some security concerns. With the date/time selector having the most value, we could afford leaving it public and putting the rest of the steps behind auth.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/mid-fi-booking-prototype.png" alt="">
+        <Image src={gImg("mid-fi-booking-prototype.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">With navigation out of the way, I could start working on the specific steps.</figcaption>
       </figure>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/select-date-time-exploration.png" alt="">
+        <Image src={gImg("select-date-time-exploration.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"><b>Top:</b> Time/date selector exploration. <b>Bottom:</b> Time/date selector final design (desktop and mobile).</figcaption>
       </figure>
 
@@ -274,12 +277,12 @@ import Layout from '../../layouts/Layout.astro';
       </ul>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/merchant-panel-v0.png" alt="">
+        <Image src={gImg("merchant-panel-v0.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">v0 Merchant panel.</figcaption>
       </figure>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/merchant-panel-v1.png" alt="">
+        <Image src={gImg("merchant-panel-v1.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">v1 Merchant panel.</figcaption>
       </figure>
     </article>
@@ -298,12 +301,12 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">The first iteration was around the Team leader (TL), since it was needed to provide operational support to Agents. Being an internal tool I focused on providing information in a clear and concise way so they could take action when needed.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/team-leader-1.png" alt="">
+        <Image src={gImg("team-leader-1.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">The first set of features for TLs with well-known Google patterns, inspired by Calendar and GSuite.</figcaption>
       </figure>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/team-leader-2.png" alt="">
+        <Image src={gImg("team-leader-2.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Managing Agent's time-offs.</figcaption>
       </figure>
 
@@ -321,7 +324,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">The Admin features could wait until later, when the service was already running, so they were tackled on the second iteration of the tool.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/google-small-business-advisors/admin-1.png" alt="">
+        <Image src={gImg("admin-1.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"><b>Left:</b> Admin dashboard. <b>Right:</b> Adding a TL.</figcaption>
       </figure>
 
@@ -334,7 +337,7 @@ import Layout from '../../layouts/Layout.astro';
       </ul>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/google-small-business-advisors/admin-2.png" alt="">
+        <Image src={gImg("admin-2.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"><b>Top:</b> The view of a specific TL from the Admin's perspective. <b>Bottom:</b> Style exploration.</figcaption>
       </figure>
 

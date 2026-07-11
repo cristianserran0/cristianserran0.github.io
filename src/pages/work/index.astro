@@ -1,5 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import coverKaia from '../../assets/work/work3-cover.png';
+import coverGoogle from '../../assets/work/work1-cover.png';
+import coverOpenbank from '../../assets/work/work2-cover.png';
 ---
 
 <Layout
@@ -19,21 +23,21 @@ import Layout from '../../layouts/Layout.astro';
       </div>
     </a>
     <a href="/work/kaia-health-kinetic-design-system/" class="work-tile">
-      <img loading="lazy" decoding="async" src="/work/work3-cover.png" alt="Kinetic Design System">
+      <Image src={coverKaia} alt="Kinetic Design System" loading="lazy" decoding="async" />
       <div class="work-tile-caption">
         <h2 class="work-tile-title">Kinetic Design System</h2>
         <p class="work-tile-detail">Kaia Health</p>
       </div>
     </a>
     <a href="/work/google-small-business-advisors/" class="work-tile">
-      <img loading="lazy" decoding="async" src="/work/work1-cover.png" alt="Small Business Advisors">
+      <Image src={coverGoogle} alt="Small Business Advisors" loading="lazy" decoding="async" />
       <div class="work-tile-caption">
         <h2 class="work-tile-title">Small Business Advisors</h2>
         <p class="work-tile-detail">Globant + Google</p>
       </div>
     </a>
     <a href="/work/openbank-design-system/" class="work-tile">
-      <img loading="lazy" decoding="async" src="/work/work2-cover.png" alt="Openbank Design System">
+      <Image src={coverOpenbank} alt="Openbank Design System" loading="lazy" decoding="async" />
       <div class="work-tile-caption">
         <h2 class="work-tile-title">Openbank Design System</h2>
         <p class="work-tile-detail">Globant + Openbank</p>

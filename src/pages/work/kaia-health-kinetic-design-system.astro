@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import heroImg from '../../assets/work/kaia-health-kinetic-design-system/hero-img.png';
 ---
 
 <Layout
@@ -11,7 +13,7 @@ import Layout from '../../layouts/Layout.astro';
     <h1 class="hero-title">Kinetic Design System</h1>
     <h2 class="hero-subtitle">Kaia Health · 2021 - 2023<br><span class="blog-paragraph"><span id="reading-time"></span> min read.</span></h2>
     <figure class="work-hero-figure">
-      <img class="work-image-large" src="/work/kaia-health-kinetic-design-system/hero-img.png" alt="">
+      <Image src={heroImg} alt="" class="work-image-large" loading="eager" fetchpriority="high" />
     </figure>
   </section>
 

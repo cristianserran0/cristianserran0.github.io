@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import heroImg from '../../assets/work/openbank-insurances/hero.png';
 ---
 
 <Layout
@@ -10,7 +12,7 @@ import Layout from '../../layouts/Layout.astro';
     <h1 class="hero-title">Insurances</h1>
     <h2 class="hero-subtitle">GLOBANT + OPENBANK · 2018<br><span class="blog-paragraph"></span></h2>
     <figure class="work-hero-figure">
-      <img class="work-image-large" src="/work/openbank-insurances/hero.png" alt="">
+      <Image src={heroImg} alt="" class="work-image-large" loading="eager" fetchpriority="high" />
     </figure>
   </section>
 

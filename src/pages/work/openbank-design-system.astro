@@ -1,5 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+const oImgs = import.meta.glob('/src/assets/work/openbank-design-system/*.{png,jpg,jpeg}', { eager: true });
+const oImg = (n) => (oImgs[`/src/assets/work/openbank-design-system/${n}`] as any)?.default;
 ---
 
 <Layout
@@ -54,7 +57,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">Openbank is the digital bank of the Santander Group. It started as a branch of the Santander bank as a telephone bank in 1995. They had a few milestones like being the first real-time online broker in 1999 and being the first bank with native iOS and Android app 2011, but it wasn't until their rebrand with Safron and partnership with Globant that things started to pick up steam.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/ok-logo.png" alt="">
+        <Image src={oImg("ok-logo.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Openbank's new branding</figcaption>
       </figure>
 
@@ -78,7 +81,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">I hypothesized that a properly built Design system for Openbank could potentially solve all the previously stated problems and would even set us up for more sustainable growth in the future.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/hypothesis.png" alt="">
+        <Image src={oImg("hypothesis.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
 
@@ -96,7 +99,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">I paired up with a visual designer working on the consistency problem and decided that in order to gain buy-in we needed to make an impact with the POC; so we started with <b>Buttons</b>, a "fairly simple" element that's basically in every page.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/prioritizing.png" alt="">
+        <Image src={oImg("prioritizing.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">From <a href="https://uxdesign.cc/workshop-how-to-prioritize-your-design-system-components-744aa99f07d7">Workshop: how to prioritize your design system components?</a> by Audrey Hacq.</figcaption>
       </figure>
     </article>
@@ -106,7 +109,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">To highlight the magnitude of the problem, I went through the site taking screenshots of different buttons that already were on production. It wasn't long until I had enough to make my case. =P</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/buttons-audit.png" alt="">
+        <Image src={oImg("buttons-audit.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Visual audit of Buttons.</figcaption>
       </figure>
     </article>
@@ -118,13 +121,13 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">We named the documentation <b>Openbank Design Guidelines</b> (<i>The guideline</i>, for short) and it was purposefully written in English so it could be consumed by our teams in India as well.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/buttons-poc.png" alt="">
+        <Image src={oImg("buttons-poc.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/buttons-light.png" alt="">
+        <Image src={oImg("buttons-light.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/buttons-dark.png" alt="">
+        <Image src={oImg("buttons-dark.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
       </figure>
 
       <p class="blog-paragraph">We came back with this solution to the engineers and designers that were previously interviewed and they loved the concept.</p>
@@ -152,7 +155,7 @@ import Layout from '../../layouts/Layout.astro';
       </ul>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/locations.png" alt="">
+        <Image src={oImg("locations.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Overlap with India was tricky, but doable.</figcaption>
       </figure>
 
@@ -183,7 +186,7 @@ import Layout from '../../layouts/Layout.astro';
       <p class="blog-paragraph">I knew that being owner of the entire process of a project this big wasn't feasible, so after a couple of weeks, when I had a fairly polished process, I was able to take some designers to help me with not-so-crucial steps: audits, adding the element to the library, documenting on the Guideline, and communicating status.</p>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/tracking-status.png" alt="">
+        <Image src={oImg("tracking-status.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">Spreadsheets are great friends of designers.</figcaption>
       </figure>
 
@@ -199,7 +202,7 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Audit</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/process-audit.png" alt="">
+        <Image src={oImg("process-audit.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -208,7 +211,7 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Ideation</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/process-exploration.png" alt="">
+        <Image src={oImg("process-exploration.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -217,7 +220,7 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Validation</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/process-validation.png" alt="">
+        <Image src={oImg("process-validation.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -226,7 +229,7 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Execution</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/process-execution.png" alt="">
+        <Image src={oImg("process-execution.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -235,7 +238,7 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Documentation</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/documenting-snacks.png" alt="">
+        <Image src={oImg("documenting-snacks.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -244,11 +247,11 @@ import Layout from '../../layouts/Layout.astro';
       <h3 class="blog-text-3">Publishing</h3>
       <p class="blog-paragraph"></p>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/publishing-mail.png" alt="">
+        <Image src={oImg("publishing-mail.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-large" src="/work/openbank-design-system/publishing-doc.png" alt="">
+        <Image src={oImg("publishing-doc.png")} alt="" class="work-image-large" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption"></figcaption>
       </figure>
     </article>
@@ -270,7 +273,7 @@ import Layout from '../../layouts/Layout.astro';
       </ul>
 
       <figure class="work-body-figure">
-        <img loading="lazy" decoding="async" class="work-image-medium" src="/work/openbank-design-system/dsi-proposal.png" alt="">
+        <Image src={oImg("dsi-proposal.png")} alt="" class="work-image-medium" loading="lazy" decoding="async" />
         <figcaption class="work-image-caption">First draft of the DSI proposal</figcaption>
       </figure>
     </article>

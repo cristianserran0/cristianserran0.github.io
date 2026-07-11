@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import heroImg from '../../assets/work/focusfreak-virtstart/hero.png';
 ---
 
 <Layout
@@ -11,7 +13,7 @@ import Layout from '../../layouts/Layout.astro';
     <h1 class="hero-title">Virtstart</h1>
     <h2 class="hero-subtitle">FOCUSFREAK · 2013 - 2014<br><span class="blog-paragraph"><span id="reading-time"></span> min read.</span></h2>
     <figure class="work-hero-figure">
-      <img class="work-image-large" src="/work/focusfreak-virtstart/hero.png" alt="">
+      <Image src={heroImg} alt="" class="work-image-large" loading="eager" fetchpriority="high" />
     </figure>
   </section>
 
