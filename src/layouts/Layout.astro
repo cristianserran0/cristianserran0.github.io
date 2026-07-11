@@ -12,6 +12,30 @@ const isHome    = pathname === '/';
 const isCV      = pathname.startsWith('/cv');
 const isWork    = pathname.startsWith('/work');
 const isContact = pathname.startsWith('/contact');
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Cristian Serrano",
+  "jobTitle": "Head of Design",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "JustRelate",
+    "url": "https://www.justrelate.com"
+  },
+  "url": "https://www.cristianserrano.ar",
+  "sameAs": ["https://www.linkedin.com/in/cristianserrano"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Munich",
+    "addressCountry": "DE"
+  },
+  "knowsAbout": [
+    "Product Design", "Design Systems", "Design Operations",
+    "Design Leadership", "UX Design", "AI Product Design", "SaaS"
+  ],
+  "description": "Cristian Serrano is a Senior Product Designer and Design Systems specialist with 17+ years of experience, based in Munich, Germany. Currently Head of Design at JustRelate."
+};
 ---
 
 <!DOCTYPE html>
@@ -43,6 +67,10 @@ const isContact = pathname.startsWith('/contact');
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
     <meta name="twitter:image" content="https://www.cristianserrano.ar/og-image.png">
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script is:inline src="/js/header-behaviour.js"></script>

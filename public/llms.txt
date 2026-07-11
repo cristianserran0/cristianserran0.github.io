@@ -1,0 +1,26 @@
+# Cristian Serrano — Digital Product Designer
+
+> Head of Design at JustRelate. Senior Product Designer and Design Systems specialist with 17+ years of experience, based in Munich, Germany.
+
+Cristian Serrano is a digital product designer who focuses on making the complex simple. He is currently Head of Design at JustRelate (Munich, Germany), where he leads product vision, design team unification, and DesignOps from scratch. He also conceptualised JR Coworker — an AI layer tying together the JustRelate Home platform, the Builders, and the full product suite.
+
+## About
+
+- **Current role**: Head of Design at JustRelate (December 2024 – present)
+- **Location**: Munich, Germany
+- **Experience**: 17+ years in product design, design systems, and design operations
+- **Specialities**: Product Design, Design Systems, Design Operations, Design Leadership, AI Product Design, SaaS
+- **LinkedIn**: https://www.linkedin.com/in/cristianserrano
+- **Website**: https://www.cristianserrano.ar
+
+## Selected work
+
+- [JustRelate Home](/work/justrelate-head-of-design/): Platform vision for JustRelate's unified Marketing, Sales & Service platform, trusted by 4,000+ companies. Led design team unification and built DesignOps from scratch. Conceptualised JR Coworker, the AI layer for the platform. Role: Head of Design (Dec 2024 – present).
+- [Kinetic Design System — Kaia Health](/work/kaia-health-kinetic-design-system/): Cross-platform design system (Web, iOS, Android) for a digital health startup. Role: Product Designer, Design System Manager, Design Operations Lead (2021–2023).
+- [Small Business Advisors — Globant + Google](/work/google-small-business-advisors/): Product design for Google My Business's advisory service connecting small and medium business owners with Google product experts. Role: Product Designer (2020).
+- [Openbank Design System — Globant + Openbank](/work/openbank-design-system/): Led the design and development of Openbank Guidelines, a cross-platform design system for the Santander Group's fully digital bank. Role: Product Designer (2018–2019).
+
+## Contact
+
+- LinkedIn: https://www.linkedin.com/in/cristianserrano
+- Email: cristianserrano@outlook.com
