@@ -619,6 +619,7 @@ b {
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -665,7 +666,6 @@ b {
 
 .work-image-large {
   display: block;
-  width: 100%;
   height: auto;
   background-color: #f0f5fc;
   text-align: center;
