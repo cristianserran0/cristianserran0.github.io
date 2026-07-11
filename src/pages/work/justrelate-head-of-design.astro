@@ -101,8 +101,9 @@ import Layout from '../../layouts/Layout.astro';
 
     <article>
       <h3 class="blog-text-3">JR Coworker as the AI layer</h3>
-      <p class="blog-paragraph">JR Coworker is the AI layer that makes that vision real. It sits across the full platform — aware of what lives in Home, and capable of instructing the Builders to act on it. A user can express a marketing goal; Coworker reads the relevant CRM data, pulls the right brand assets, drafts the campaign in Email Builder, sets up the automations in Workflow Builder, and publishes — without the user having to orchestrate each step manually.</p>
-      <p class="blog-paragraph">Designing Coworker required treating it not as a chatbot bolted onto existing products, but as a first-class platform primitive — one that only works well once the underlying architecture is coherent. Getting that foundation right first was the prerequisite.</p>
+      <p class="blog-paragraph">The technical approach behind Coworker is a skill-based architecture: each product surface — whether a Home management tool or a Builder — exposes a set of skills describing what can be done there. Coworker has a corresponding tool for each of those skills. When a user expresses a goal, Coworker reasons over the available tools and calls the right skills in the right sequence, across whichever surfaces it needs.</p>
+      <p class="blog-paragraph">This makes Coworker inherently extensible: new product surfaces just expose new skills, and Coworker gains new capabilities automatically. It also means the AI is grounded in real platform actions — not generating text about what could happen, but actually doing it: pulling CRM data, drafting in Email Builder, publishing through Workflow Builder, updating a Campaign — all in one go.</p>
+      <p class="blog-paragraph">Designing this required treating Coworker not as a chatbot bolted onto existing products, but as a first-class platform primitive with its own architecture. The unified platform vision was the prerequisite — you can't build a coherent skill registry if the underlying products don't share a coherent model.</p>
     </article>
 
   </section>
