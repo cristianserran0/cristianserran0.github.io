@@ -14,7 +14,7 @@ const gImg = (n) => (gImgs[`/src/assets/work/google-small-business-advisors/${n}
     <h1 class="hero-title">Small Business Advisors</h1>
     <h2 class="hero-subtitle">GLOBANT + GOOGLE · 2020<br><span class="blog-paragraph"><span id="reading-time"></span> min read.</span></h2>
     <figure class="work-hero-figure">
-      <img class="work-image-large" src="/work/google-small-business-advisors/hero.jpg" alt="">
+      <Image src={gImg("hero.jpg")} alt="" class="work-image-large" loading="eager" fetchpriority="high" />
     </figure>
   </section>
 
