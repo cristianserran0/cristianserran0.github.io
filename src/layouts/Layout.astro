@@ -32,6 +32,17 @@ const isContact = pathname.startsWith('/contact');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     <meta name="description" content={description}>
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={`https://www.cristianserrano.ar${pathname}`}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content="https://www.cristianserrano.ar/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content="https://www.cristianserrano.ar/og-image.png">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script is:inline src="/js/header-behaviour.js"></script>
