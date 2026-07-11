@@ -41,6 +41,11 @@ const jsonLd = {
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Preconnect hints -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://code.etracker.com">
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-02JHYJG539" is:inline></script>
     <script is:inline>
@@ -56,6 +61,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     <meta name="description" content={description}>
+    <link rel="canonical" href={`https://www.cristianserrano.ar${pathname}`}>
 
     <!-- Open Graph / social sharing -->
     <meta property="og:type" content="website">
@@ -73,10 +79,10 @@ const jsonLd = {
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
-    <script is:inline src="/js/header-behaviour.js"></script>
-    <script is:inline src="/js/seniority.js"></script>
-    {readingTime && <script is:inline src="/js/reading-time-estimation.js"></script>}
-    <script is:inline src="/js/current-year.js"></script>
+    <script defer is:inline src="/js/header-behaviour.js"></script>
+    <script defer is:inline src="/js/seniority.js"></script>
+    {readingTime && <script defer is:inline src="/js/reading-time-estimation.js"></script>}
+    <script defer is:inline src="/js/current-year.js"></script>
   </head>
 
   <body>
