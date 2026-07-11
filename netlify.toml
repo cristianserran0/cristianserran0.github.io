@@ -27,3 +27,14 @@
   for = "/favicon.png"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Security headers on every page
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://code.etracker.com; style-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.etracker.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
