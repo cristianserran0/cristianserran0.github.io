@@ -1,0 +1,174 @@
+/* ============================================================
+   DESIGN TOKENS
+
+   Three collections compose into one appearance:
+
+     <html scheme="dark" temperature="cold" accent="purple">
+
+   scheme may be omitted entirely, in which case the OS decides.
+
+   Each collection owns a disjoint slice of tokens, so every
+   combination falls out without being written down:
+     temperature -> owns the neutral ramp, names no role
+     accent      -> owns the accent ramp,  names no role
+     scheme      -> owns the role mapping, names no hue
+
+   Custom properties resolve lazily at point of use, so any
+   collection can also be set on a subtree, not just on <html>:
+     <section accent="emerald">  re-derives that section only.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   PRIMITIVES — modeless
+   ------------------------------------------------------------ */
+:root {
+  --white: #fff;
+  --black: #000;
+}
+
+
+/* ------------------------------------------------------------
+   COLLECTION: temperature   modes: cold | neutral | warm
+   A tint on a shared lightness ladder. Chroma stays low so all
+   three read as neutrals and every step is well inside sRGB.
+   ------------------------------------------------------------ */
+[temperature="cold"] {
+  --neutral-50: #ebf2ff;   --neutral-100: #dae3f2;  --neutral-200: #bbc3d3;  --neutral-300: #a8b0c1;
+  --neutral-400: #838c9d;  --neutral-500: #656e80;  --neutral-600: #495161;  --neutral-700: #3d4554;
+  --neutral-800: #2d3442;  --neutral-900: #1e2532;  --neutral-950: #101621;
+}
+[temperature="neutral"] {
+  --neutral-50: #f2f2f2;   --neutral-100: #e2e2e2;  --neutral-200: #c3c3c3;  --neutral-300: #b0b0b0;
+  --neutral-400: #8c8c8c;  --neutral-500: #6e6e6e;  --neutral-600: #515151;  --neutral-700: #454545;
+  --neutral-800: #343434;  --neutral-900: #252525;  --neutral-950: #161616;
+}
+[temperature="warm"] {
+  --neutral-50: #fbf0e5;   --neutral-100: #ebe0d5;  --neutral-200: #ccc1b5;  --neutral-300: #baaea2;
+  --neutral-400: #968a7d;  --neutral-500: #786c5f;  --neutral-600: #5a4f43;  --neutral-700: #4e4337;
+  --neutral-800: #3c3227;  --neutral-900: #2c2319;  --neutral-950: #1c140b;
+}
+
+
+/* ------------------------------------------------------------
+   COLLECTION: accent   modes: one per hue
+   Owns the accent ramp. Names no role.
+
+   Every mode sits at the same fraction of the sRGB gamut
+   ceiling for its hue -- 100:.87  300:.92  400:1.0  500:1.0
+   600:.99  800:.93 -- so no accent reads as duller than any
+   other. That rule was extracted from the palette itself:
+   blue, emerald, green, orange and sky were already maxed at
+   steps 400/500; purple, violet, indigo and slate were not.
+
+   Rungs are the shared lightness ladder, so a colour keeps its
+   name across every hue. This renumbered blue: #1133ff measures
+   L 48.7%% = rung 600 (it was named 500), and #4466ff = rung 500
+   (named 400). Old blue-600 #1758c2 collided on rung 600 and
+   rung 400 was empty -- 11 names for 10 rungs. Rebuilt at the
+   brand hue 265 deg, rung 600 is #1035fd: the brand blue intact,
+   correctly numbered. Roles below follow the new numbering.
+
+   Hues are spaced so none collapse into a neighbour at full
+   chroma. indigo, violet and slate were dropped for exactly
+   that reason (slate vs sky was ΔE 1.4 once punched).
+   ------------------------------------------------------------ */
+[accent="blue"] {
+  --accent-50: #f0f3f9;   --accent-100: #d2dffb;  --accent-200: #b2c9fa;  --accent-300: #8daff9;
+  --accent-400: #5a8aff;  --accent-500: #3065ff;  --accent-600: #1035fd;  --accent-700: #0911d7;
+  --accent-800: #0511a3;  --accent-900: #030f75;  --accent-950: #010a49;
+}
+[accent="purple"] {
+  --accent-50: #f4f1f9;   --accent-100: #e7d7fb;  --accent-200: #d7bafa;  --accent-300: #c698f9;
+  --accent-400: #b360ff;  --accent-500: #a200fe;  --accent-600: #8204cd;  --accent-700: #650b9f;
+  --accent-800: #4c0a78;  --accent-900: #350956;  --accent-950: #200636;
+}
+[accent="magenta"] {
+  --accent-50: #faf0f3;   --accent-100: #fbd2e1;  --accent-200: #fab0cc;  --accent-300: #fa84b5;
+  --accent-400: #ff179a;  --accent-500: #d5007e;  --accent-600: #ac0365;  --accent-700: #85084e;
+  --accent-800: #65083a;  --accent-900: #480729;  --accent-950: #2d0518;
+}
+[accent="red"] {
+  --accent-50: #faf0ef;   --accent-100: #fbd5d0;  --accent-200: #fab5ae;  --accent-300: #fa8d85;
+  --accent-400: #ff3d42;  --accent-500: #e00024;  --accent-600: #b5031c;  --accent-700: #8c0916;
+  --accent-800: #6a0910;  --accent-900: #4c080b;  --accent-950: #2f0506;
+}
+[accent="orange"] {
+  --accent-50: #faf1e9;   --accent-100: #fbd8b3;  --accent-200: #fabb73;  --accent-300: #ee9c2b;
+  --accent-400: #c97e00;  --accent-500: #a66700;  --accent-600: #855301;  --accent-700: #674005;
+  --accent-800: #4e2f05;  --accent-900: #372104;  --accent-950: #221303;
+}
+[accent="green"] {
+  --accent-50: #e3fae8;   --accent-100: #8cfbad;  --accent-200: #42ec85;  --accent-300: #32d073;
+  --accent-400: #00ae59;  --accent-500: #008f48;  --accent-600: #027339;  --accent-700: #07592c;
+  --accent-800: #074320;  --accent-900: #062f16;  --accent-950: #041c0c;
+}
+[accent="emerald"] {
+  --accent-50: #defaf7;   --accent-100: #57fbf3;  --accent-200: #42e4dc;  --accent-300: #32c9c1;
+  --accent-400: #00a7a1;  --accent-500: #008a84;  --accent-600: #026e6a;  --accent-700: #075552;
+  --accent-800: #07403d;  --accent-900: #062d2b;  --accent-950: #041b1a;
+}
+[accent="sky"] {
+  --accent-50: #ecf4f9;   --accent-100: #c3e4fb;  --accent-200: #93d2fa;  --accent-300: #50bcf9;
+  --accent-400: #009dde;  --accent-500: #0081b7;  --accent-600: #026793;  --accent-700: #064f72;
+  --accent-800: #063b56;  --accent-900: #052a3d;  --accent-950: #041926;
+}
+
+
+/* ------------------------------------------------------------
+   COLLECTION: scheme   modes: light | dark
+
+   The mode is carried by the native `color-scheme` property, so
+   `light-dark()` below resolves against it. That means the role
+   mapping is written ONCE with both modes side by side, and the
+   default -- no attribute at all -- follows the OS. A visitor
+   with JavaScript disabled still gets a correctly themed page.
+   ------------------------------------------------------------ */
+:root        { color-scheme: light dark; }   /* default: follow the OS */
+[scheme="light"] { color-scheme: light; }
+[scheme="dark"]  { color-scheme: dark;  }
+
+
+/* ------------------------------------------------------------
+   ROLES
+   The only place a token is tied to a job. Every value points at
+   a ramp step, never a literal -- which is what keeps roles
+   orthogonal to temperature and accent.
+                          light                     dark
+   ------------------------------------------------------------ */
+:root {
+  --text-primary:   light-dark( var(--neutral-900), var(--white)      );
+  --text-secondary: light-dark( var(--neutral-800), var(--neutral-100));
+  --text-tertiary:  light-dark( var(--neutral-700), var(--neutral-200));
+  --bg-primary:     light-dark( var(--white),       var(--black)      );
+  --bg-secondary:   light-dark( var(--neutral-50),  var(--neutral-950));
+  --bg-tertiary:    light-dark( var(--neutral-200), var(--neutral-900));
+  --border-subtle:  light-dark( var(--neutral-200), var(--neutral-800));
+  --link:           light-dark( var(--accent-600),  var(--accent-400) );
+  --link-hover:     light-dark( var(--accent-700),  var(--accent-300) );
+  --selection-bg:   light-dark( var(--accent-100),  var(--accent-800) );
+  --selection-text: light-dark( var(--neutral-900), var(--white)      );
+}
+
+
+/* ------------------------------------------------------------
+   NOTES
+
+   Why the ramps are pinned, not derived from OKLCH hue angles:
+   the derivation was tested and abandoned. Max in-gamut chroma
+   at hue 263 by step -- 50:0.018  100:0.047  300:0.124
+   500:0.236  900:0.137 -- means a shared chroma curve either
+   clips blue at the light end or leaves orange undersaturated.
+   The existing palette already solved this per hue by hand; the
+   measured values are kept and the composition happens above
+   them instead.
+
+   Rung 400/500 are the punchiest a hue can be in sRGB, so dark
+   links sit at 400 and light links at 600: at 500 the cool hues
+   miss WCAG AA on black (purple 3.97:1, magenta 4.13, red 4.19).
+   All 48 appearances x 5 text roles are checked at 4.5:1.
+
+   Adding an accent: one block, generated at the hue's own gamut
+                     ceiling so it matches the others in presence.
+   Adding an axis:   a new attribute owning its own token slice.
+   ------------------------------------------------------------ */

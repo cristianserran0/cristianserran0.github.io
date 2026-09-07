@@ -8,6 +8,9 @@ interface Props {
 const { title, description, readingTime = false } = Astro.props;
 const pathname = Astro.url.pathname;
 
+// accent modes offered to visitors; must match [accent="..."] in tokens.css
+const accents = ['blue', 'purple', 'magenta', 'red', 'orange', 'green', 'emerald', 'sky'];
+
 const isHome    = pathname === '/';
 const isCV      = pathname.startsWith('/cv');
 const isWork    = pathname.startsWith('/work');
@@ -39,7 +42,7 @@ const jsonLd = {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" temperature="cold" accent="blue">
   <head>
     <!-- Preconnect hints -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -72,12 +75,29 @@ const jsonLd = {
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
+    <!-- Resolve the stored appearance before first paint, so there is no flash.
+         "system" stores nothing and sets no attribute: :root carries
+         color-scheme: light dark, so the OS is followed natively and live. -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        try {
+          var s = localStorage.getItem('scheme');
+          if (s === 'light' || s === 'dark') d.setAttribute('scheme', s);
+          var a = localStorage.getItem('accent');
+          if (a) d.setAttribute('accent', a);
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/css/tokens.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
     {readingTime && <script defer is:inline src="/js/reading-time-estimation.js"></script>}
     <script defer is:inline src="/js/current-year.js"></script>
+    <script defer is:inline src="/js/appearance.js"></script>
   </head>
 
   <body>
@@ -91,6 +111,25 @@ const jsonLd = {
             <li class={isWork    ? 'nav-selected' : ''}><a href="/work">Work</a></li>
             <li class={isContact ? 'nav-selected' : ''}><a href="/contact">Contact</a></li>
           </ul>
+
+          <div class="appearance" role="group" aria-label="Appearance">
+            <button type="button" class="scheme-toggle" data-scheme-toggle aria-live="polite">
+              <span data-scheme-label>System</span>
+            </button>
+            <div class="accents" role="group" aria-label="Accent colour">
+              {accents.map((name) => (
+                <button
+                  type="button"
+                  class="accent-swatch"
+                  data-accent={name}
+                  style={`--swatch: var(--accent-500)`}
+                  accent={name}
+                  aria-label={name}
+                  title={name}
+                />
+              ))}
+            </div>
+          </div>
         </nav>
       </header>
 
@@ -108,3 +147,53 @@ const jsonLd = {
     </div>
   </body>
 </html>
+
+<style>
+  .appearance {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .scheme-toggle {
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    background: none;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .scheme-toggle:hover { color: var(--link); border-color: var(--link); }
+
+  .accents { display: flex; gap: 0.3rem; }
+
+  .accent-swatch {
+    width: 0.85rem;
+    height: 0.85rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--swatch);
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .accent-swatch:hover { opacity: 0.8; transform: scale(1.15); }
+  .accent-swatch[aria-pressed="true"] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px var(--swatch);
+  }
+
+  .scheme-toggle:focus-visible,
+  .accent-swatch:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scheme-toggle, .accent-swatch { transition: none; }
+  }
+</style>
