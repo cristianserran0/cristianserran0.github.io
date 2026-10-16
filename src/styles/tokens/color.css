@@ -196,6 +196,12 @@
   --selection-text: light-dark( var(--neutral-900), var(--white)      );
   --bg-header:      light-dark( rgb(255 255 255 / 0.9), rgb(0 0 0 / 0.9) );
 
+  /* Surfaces of the app shell: the canvas sits behind the panels, a
+     panel is where content lives, raised is anything floating above. */
+  --bg-canvas:      light-dark( var(--neutral-50),  var(--neutral-950));
+  --bg-surface:     var(--bg-primary);
+  --bg-raised:      light-dark( var(--white),       var(--neutral-950));
+
   /* On imagery: text sits on a darkening scrim, in either scheme. */
   --text-on-media:  var(--white);
   --scrim:          rgb(0 0 0 / 0.5);

@@ -30,7 +30,7 @@ const SCHEMES = ['light', 'dark'];
 const TEMPS = modes('temperature');
 const ACCENTS = modes('accent');
 const FG = ['--text-primary', '--text-secondary', '--text-tertiary', '--link', '--link-hover'];
-const BG = ['--bg-primary', '--bg-secondary'];
+const BG = ['--bg-primary', '--bg-secondary', '--bg-raised'];
 
 const page = `<!DOCTYPE html><html><head><style>${css}</style></head><body><pre id="o"></pre>
 <script>

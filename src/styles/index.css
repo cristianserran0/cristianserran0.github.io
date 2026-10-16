@@ -32,7 +32,9 @@
 @import "./base.css";
 @import "./prose.css";
 @import "./layout.css";
+@import "./shell.css";
 @import "./components/work-tile.css";
 @import "./components/end-mark.css";
 @import "./components/appearance.css";
+@import "./components/assistant.css";
 @import "./components/styleguide.css";

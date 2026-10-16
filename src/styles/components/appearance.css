@@ -14,7 +14,9 @@
     gap: var(--space-4);
   }
 
-  .scheme-toggle {
+  /* The scheme toggle and the assistant toggle read as text links. */
+  .scheme-toggle,
+  .assistant-toggle {
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
     color: var(--text-primary);
@@ -27,7 +29,9 @@
     text-decoration-thickness: var(--border-accent);
     text-underline-offset: var(--underline-offset);
   }
-  .scheme-toggle:hover { color: var(--link); }
+  .scheme-toggle:hover,
+  .assistant-toggle:hover { color: var(--link); }
+  [assistant="open"] .assistant-toggle { color: var(--link); }
 
   .accents { display: flex; gap: var(--swatch-gap); }
 
@@ -46,14 +50,16 @@
   .accent-swatch[aria-pressed="true"] { opacity: 1; }
 
   .scheme-toggle:focus-visible,
+  .assistant-toggle:focus-visible,
   .accent-swatch:focus-visible {
     outline: var(--border-accent) solid var(--link);
     outline-offset: var(--focus-offset);
   }
 
-  @media (max-width: 736px) {
+  @container header (max-width: 736px) {
     .appearance { gap: var(--swatch-gap-group); }
-    .scheme-toggle {
+    .scheme-toggle,
+    .assistant-toggle {
       font: var(--type-label-small);
       letter-spacing: var(--type-label-small-tracking);
     }

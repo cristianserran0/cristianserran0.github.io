@@ -16,6 +16,13 @@
      narrow   max-width: 500px     phones
      content  736px                the content column (--content-max)
      wide     1200px               full-bleed images stop bleeding
+     shell    760px                below it the assistant covers the page
+
+   Inside the page, layout responds to the PANEL's width, not the
+   window's, because opening the assistant narrows the panel while
+   the window stays the same. So content uses container queries on
+   the `page` container (and the header on `header`); only the shell
+   itself uses @media.
    ============================================================ */
 
 @layer tokens {
@@ -37,6 +44,14 @@
   --content-max:    736px;             /* content column, gutters included */
   --content-inner:  calc(var(--content-max) - 2 * var(--gutter));
   --header-height:  5rem;
+
+  /* ---- app shell ---- */
+  --frame-gap:       var(--space-2);   /* canvas showing around the panels */
+  --assistant-width: 22rem;
+  --panel-width:     calc(100% - var(--assistant-width) - 3 * var(--frame-gap));
+  --frame-spread:    100vmax;          /* the canvas ring reaches every edge */
+  --icon-size:       1rem;
+  --icon-button:     2rem;
   --text-gap:       0.5em;             /* beside inline text; scales with it */
   --paragraph-gap:  1em;               /* between paragraphs; scales with them */
 

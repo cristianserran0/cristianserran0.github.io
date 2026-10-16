@@ -15,11 +15,14 @@
   --shadow-sm: 0 3px 9px  rgb(from var(--shadow-tint) r g b / 0.10);
   --shadow-md: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.15);
   --shadow-lg: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.25);
+  --shadow-raised: 0 1px 3px rgb(from var(--shadow-tint) r g b / 0.10),
+                   0 8px 24px rgb(from var(--shadow-tint) r g b / 0.15);
 
   /* Darkens the lower part of an image so text on it stays legible. */
   --scrim-bottom: linear-gradient(to bottom, transparent 50%, var(--scrim) 90%);
 
   /* ---- motion ---- */
+  --duration-instant:  0ms;
   --duration-fast:     200ms;
   --duration-moderate: 350ms;
   --duration-slow:     600ms;
@@ -27,7 +30,9 @@
   --ease-in-out:   ease-in-out;
 
   /* ---- stacking ---- */
-  --z-header: 100;
+  --z-header:    100;
+  --z-frame:     150;   /* the canvas ring, above the page header */
+  --z-assistant: 200;
 }
 
 @media (prefers-reduced-motion: reduce) {

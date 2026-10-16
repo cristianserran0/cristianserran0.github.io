@@ -142,16 +142,16 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
   }
-  /* Below "wide": bleed edge to edge instead. */
-  @media (max-width: 1200px) {
+  /* Below "wide": bleed edge to edge of the panel instead. */
+  @container page (max-width: 1200px) {
     .prose figure.wide img {
-      max-width: 100vw;
-      margin-left: calc((var(--content-inner) - 100vw) / 2);
+      max-width: 100cqi;
+      margin-left: calc((var(--content-inner) - 100cqi) / 2);
       border-radius: 0;
     }
   }
-  /* Below "content": the column is the viewport minus its gutters. */
-  @media (max-width: 736px) {
+  /* Below "content": the column is the panel minus its gutters. */
+  @container page (max-width: 736px) {
     .prose figure.wide img { margin-left: calc(-1 * var(--gutter)); }
   }
 
@@ -168,7 +168,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-8);
   }
-  @media (max-width: 500px) {
+  @container page (max-width: 500px) {
     .prose .facts { grid-template-columns: repeat(2, 1fr); }
   }
 }

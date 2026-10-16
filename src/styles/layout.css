@@ -8,6 +8,7 @@
 
   /* ---- site header ---- */
   .site-header {
+    container: header / inline-size;
     position: fixed;
     top: 0;
     width: 100%;
@@ -40,6 +41,12 @@
     text-decoration: none;
   }
 
+  /* The page's scrolling content. Layout inside it responds to this
+     container's width (see tokens/space.css). The header stays outside:
+     a container contains fixed-position descendants, and the header
+     must stay fixed to the window. */
+  .page-body { container: page / inline-size; }
+
   /* ---- main ---- */
   main {
     max-width: var(--content-max);
@@ -68,7 +75,7 @@
     gap: var(--space-6);
     margin-block: var(--space-16) var(--space-8);
   }
-  @media (max-width: 500px) {
+  @container page (max-width: 500px) {
     .projects {
       grid-template-columns: 1fr;
       gap: var(--space-8);

@@ -1,0 +1,45 @@
+/* App shell: the page and the assistant as two floating panels.
+
+   <html assistant="open"> turns it on; without the attribute the page is
+   exactly the plain site. Like scheme and accent, it is an unprefixed
+   attribute on <html>, restored before first paint.
+
+   The page keeps scrolling the WINDOW, not an inner box, so scroll
+   position, the hide-on-scroll header and anchor links all keep working.
+   The rounded panel look comes from .frame: a fixed, click-through ring
+   whose huge spread shadow paints the canvas everywhere outside a rounded
+   hole over the page. Content scrolls "inside" the hole. */
+
+@layer layout {
+  .frame { display: none; }
+
+  [assistant="open"] body { background: var(--bg-canvas); }
+
+  @media (min-width: 761px) {
+    [assistant="open"] .page {
+      width: var(--panel-width);
+      margin: var(--frame-gap) 0 var(--frame-gap) var(--frame-gap);
+      background: var(--bg-surface);
+    }
+
+    [assistant="open"] .site-header {
+      top: var(--frame-gap);
+      left: var(--frame-gap);
+      width: var(--panel-width);
+    }
+    [assistant="open"] .site-header.nav-hidden { top: var(--nav-hidden-offset); }
+
+    [assistant="open"] .frame {
+      display: block;
+      position: fixed;
+      top: var(--frame-gap);
+      bottom: var(--frame-gap);
+      left: var(--frame-gap);
+      width: var(--panel-width);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 0 var(--frame-spread) var(--bg-canvas);
+      pointer-events: none;
+      z-index: var(--z-frame);
+    }
+  }
+}

@@ -29,6 +29,7 @@
    label         navigation, controls                  16 / 1.4 / 500
    label-small   controls on narrow screens            14 / 1.4 / 500
    ornament      the end-of-article mark               22 / 1.4 / 300
+   chat          assistant messages                    14 / 1.6 / 400
 
    Sizes are named by their pixel value at the default 16px root,
    so a new size slots in between without renaming the others.
@@ -66,6 +67,7 @@
   --leading-relaxed: 1.6;
 
   --weight-light:    300;
+  --weight-regular:  400;
   --weight-medium:   500;
   --weight-semibold: 600;
   --weight-bold:     700;
@@ -99,6 +101,8 @@
   --type-label-small-tracking: -0.011rem;
   --type-ornament:             var(--weight-light) var(--font-size-22)/var(--leading-normal) var(--font-sans);
   --type-ornament-tracking:    -0.018rem;
+  --type-chat:                 var(--weight-regular) var(--font-size-14)/var(--leading-relaxed) var(--font-sans);
+  --type-chat-tracking:        -0.011rem;
 
   /* Inline emphasis inside any text style. */
   --weight-strong: var(--weight-semibold);

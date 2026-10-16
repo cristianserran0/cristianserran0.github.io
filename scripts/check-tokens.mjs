@@ -25,7 +25,7 @@ const COLOUR_FN = /\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/i;
 const HEX = /#[0-9a-f]{3,8}\b/i;
 const NAMED = /(?<![\w-])(?:white|black|red|green|blue|gray|grey|silver|navy|orange|purple|yellow)(?![\w-])/i;
 const DIMENSION = /(?<![\w.-])-?\d*\.?\d+(?:px|rem|em|ms|s|deg|turn|vh|vw|svh|dvh|ch|ex)\b/;
-const ALLOWED_DIMENSION = /^(?:100vw|100vh)$/;
+const ALLOWED_DIMENSION = /^(?:100vw|100vh|100cqi)$/;
 const TYPE_PROPS = /^(?:font|font-size|font-family|font-weight|line-height|letter-spacing)$/;
 const TYPE_VALUE = /^var\(--(?:type|weight)-[\w-]+\)$/;
 

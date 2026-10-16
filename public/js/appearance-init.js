@@ -8,5 +8,6 @@
     if (s === 'light' || s === 'dark') d.setAttribute('scheme', s);
     var a = localStorage.getItem('accent');
     if (a) d.setAttribute('accent', a);
+    if (localStorage.getItem('assistant') === 'open') d.setAttribute('assistant', 'open');
   } catch (e) {}
 })();
