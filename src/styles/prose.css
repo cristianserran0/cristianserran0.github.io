@@ -1,0 +1,174 @@
+/* Long-form content. Elements are styled by what they are and where
+   they sit -- no classes needed in the markup:
+
+     <header>  h1, then an <hgroup> subtitle or lead paragraphs
+     h2        section title          h3  heading      h4  subheading
+     small     an aside inside a heading or subtitle (dates, places)
+     p         body; inside the page header or .overview it is a lead
+     figure    an image; .wide lets it bleed past the column
+     dl.facts  the key facts of a project, as a grid
+
+   Text styles are listed in tokens/type.css. */
+
+@layer prose {
+  /* ---- page header ---- */
+  .prose > header { padding-top: var(--space-24); }
+
+  .prose h1 {
+    font: var(--type-display);
+    letter-spacing: var(--type-display-tracking);
+    color: var(--text-primary);
+    margin-bottom: var(--space-16);
+  }
+
+  .prose hgroup p {
+    font: var(--type-subtitle);
+    letter-spacing: var(--type-subtitle-tracking);
+    color: var(--text-primary);
+    margin-block: 0 var(--space-12);
+  }
+  .prose hgroup small {
+    font: var(--type-body);
+    letter-spacing: var(--type-body-tracking);
+    color: var(--text-secondary);
+  }
+
+  /* ---- headings ---- */
+  .prose h2 {
+    font: var(--type-title);
+    letter-spacing: var(--type-title-tracking);
+    color: var(--text-primary);
+    margin-block: var(--space-16) var(--space-4);
+  }
+
+  .prose h3,
+  .prose dt {
+    font: var(--type-heading);
+    letter-spacing: var(--type-heading-tracking);
+    color: var(--text-primary);
+    margin-block: var(--space-8) var(--space-2);
+    padding-top: var(--text-gap);
+  }
+
+  .prose h4 {
+    font: var(--type-subheading);
+    letter-spacing: var(--type-subheading-tracking);
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
+    margin-right: var(--text-gap);
+  }
+
+  .prose h3 small {
+    font: var(--type-meta);
+    letter-spacing: var(--type-meta-tracking);
+    color: var(--text-secondary);
+    padding-left: var(--text-gap);
+  }
+  .prose h4 small {
+    font: var(--type-meta-small);
+    letter-spacing: var(--type-meta-small-tracking);
+    color: var(--text-secondary);
+    padding-left: var(--text-gap);
+  }
+
+  /* ---- text ---- */
+  .prose p,
+  .prose li,
+  .prose dd {
+    font: var(--type-body);
+    letter-spacing: var(--type-body-tracking);
+    color: var(--text-secondary);
+  }
+  .prose p,
+  .prose dd { margin-top: var(--space-2); }
+  .prose dd { margin-bottom: var(--paragraph-gap); }
+
+  .prose > header > p,
+  .prose .overview p {
+    font: var(--type-lead);
+    letter-spacing: var(--type-lead-tracking);
+    margin-top: var(--paragraph-gap);
+  }
+
+  .prose .note {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-tertiary);
+    margin-top: var(--space-3);
+  }
+
+  /* ---- lists ---- */
+  .prose ul,
+  .prose ol { margin-left: var(--space-6); }
+  .prose li { margin-bottom: var(--space-2); }
+
+  /* Items marked by a leading emoji instead of a bullet. */
+  .prose .emoji-list {
+    margin-left: var(--space-2);
+    list-style-type: none;
+  }
+
+  /* ---- quote ---- */
+  .prose blockquote {
+    margin-block: var(--space-6) var(--space-4);
+    padding-left: var(--space-6);
+    border-left: var(--border-rule) solid var(--text-tertiary);
+  }
+  .prose blockquote p { font-style: italic; }
+
+  /* ---- divider ---- */
+  .prose hr {
+    border: var(--border-rule) solid var(--link);
+    width: var(--divider-width);
+    margin-block: var(--space-16);
+  }
+
+  /* ---- figures ---- */
+  .prose figure { margin-block: var(--space-8); }
+  .prose > header figure { margin-block: var(--space-24); }
+
+  .prose figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prose figure.wide img {
+    max-width: var(--bleed-width);
+    margin-left: var(--bleed-offset);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+  /* Below "wide": bleed edge to edge instead. */
+  @media (max-width: 1200px) {
+    .prose figure.wide img {
+      max-width: 100vw;
+      margin-left: calc((var(--content-inner) - 100vw) / 2);
+      border-radius: 0;
+    }
+  }
+  /* Below "content": the column is the viewport minus its gutters. */
+  @media (max-width: 736px) {
+    .prose figure.wide img { margin-left: calc(-1 * var(--gutter)); }
+  }
+
+  .prose figcaption {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-tertiary);
+    margin-top: var(--space-3);
+  }
+
+  /* ---- key facts ---- */
+  .prose .facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+  }
+  @media (max-width: 500px) {
+    .prose .facts { grid-template-columns: repeat(2, 1fr); }
+  }
+}

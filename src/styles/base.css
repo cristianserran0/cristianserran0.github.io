@@ -1,0 +1,37 @@
+/* Reset and bare elements: what any element looks like anywhere on
+   the site, before a context (prose, a component) says otherwise. */
+
+@layer reset {
+  html { box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: inherit; }
+  * { margin: 0; padding: 0; }
+}
+
+@layer base {
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font: var(--type-body);
+    letter-spacing: var(--type-body-tracking);
+  }
+
+  ::selection { background: var(--selection-bg); }
+
+  a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--link);
+    text-decoration-thickness: var(--border-accent);
+    text-underline-offset: var(--underline-offset);
+    cursor: pointer;
+  }
+  a:hover { color: var(--link); }
+
+  b { font-weight: var(--weight-strong); }
+
+  p, ul, ol { margin-block: var(--paragraph-gap); }
+
+  /* An emoji leading or trailing a line of text. */
+  .emoji-start { margin-right: var(--space-2); }
+  .emoji-end   { margin-left:  var(--space-2); }
+}

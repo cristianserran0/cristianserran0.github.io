@@ -1,5 +1,5 @@
 /* ============================================================
-   DESIGN TOKENS
+   COLOUR TOKENS
 
    Three collections compose into one appearance:
 
@@ -17,6 +17,9 @@
    collection can also be set on a subtree, not just on <html>:
      <section accent="emerald">  re-derives that section only.
    ============================================================ */
+
+@layer tokens {
+
 
 
 /* ------------------------------------------------------------
@@ -192,6 +195,14 @@
   --selection-bg:   light-dark( var(--accent-100),  var(--accent-800) );
   --selection-text: light-dark( var(--neutral-900), var(--white)      );
   --bg-header:      light-dark( rgb(255 255 255 / 0.9), rgb(0 0 0 / 0.9) );
+
+  /* On imagery: text sits on a darkening scrim, in either scheme. */
+  --text-on-media:  var(--white);
+  --scrim:          rgb(0 0 0 / 0.5);
+
+  /* Shadow tint. The original site's navy, kept literal for now; folding it
+     into the accent hue is a deliberate visual change, not a refactor. */
+  --shadow-tint:    rgb(0 25 100);
 }
 
 
@@ -216,3 +227,5 @@
                      ceiling so it matches the others in presence.
    Adding an axis:   a new attribute owning its own token slice.
    ------------------------------------------------------------ */
+
+} /* @layer tokens */

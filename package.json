@@ -4,9 +4,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:contrast && astro build",
+    "build": "npm run check:tokens && npm run check:contrast && astro build",
     "preview": "astro preview",
-    "check:contrast": "node scripts/check-contrast.mjs"
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "snapshot:save": "node scripts/snapshot.mjs save .snapshot.json",
+    "snapshot:compare": "node scripts/snapshot.mjs compare .snapshot.json"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

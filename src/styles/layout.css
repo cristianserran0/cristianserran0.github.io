@@ -1,0 +1,77 @@
+/* Page regions. Every page is: site header, main, site footer. */
+
+@layer layout {
+  .page {
+    width: 100%;
+    overflow: hidden;   /* wide figures bleed; the page must not scroll sideways */
+  }
+
+  /* ---- site header ---- */
+  .site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: var(--z-header);
+    background: var(--bg-header);
+    transition: all var(--duration-slow) var(--ease-standard);
+  }
+  .site-header.nav-hidden { top: var(--nav-hidden-offset); }
+
+  .site-nav {
+    position: relative;
+    height: var(--header-height);
+  }
+  .site-nav > ul {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--gutter);
+    font: var(--type-label);
+    letter-spacing: var(--type-label-tracking);
+    color: var(--text-primary);
+  }
+  .site-nav li {
+    display: inline-flex;
+    list-style-type: none;
+  }
+  .site-nav li:not(:last-child) { margin-right: var(--space-6); }
+  .site-nav [aria-current="page"] {
+    color: var(--link);
+    cursor: default;
+    text-decoration: none;
+  }
+
+  /* ---- main ---- */
+  main {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: var(--gutter) var(--gutter) 0;
+  }
+
+  /* ---- site footer ---- */
+  .site-footer {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-8) calc(var(--gutter) + var(--space-4)) calc(var(--space-8) + var(--gutter));
+    text-align: center;
+  }
+  .site-footer p {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-primary);
+  }
+  .site-footer .love { color: var(--link); }
+
+  /* ---- grid of projects ---- */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-block: var(--space-16) var(--space-8);
+  }
+  @media (max-width: 500px) {
+    .projects {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+}

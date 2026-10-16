@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Rendered with the site's real CSS: every specimen below is plain markup in
+// the same context it has on a content page. Use the header controls to see
+// each scheme and accent; the ramps and roles re-derive live.
+
+const roles = [
+  ['text-primary', 'Headings, nav, footer'],
+  ['text-secondary', 'Body and lead text'],
+  ['text-tertiary', 'Captions, eyebrows, quote bar'],
+  ['link', 'Links, dividers, end mark'],
+  ['link-hover', 'Link hover'],
+  ['bg-primary', 'Page'],
+  ['bg-secondary', 'Image placeholder'],
+  ['bg-tertiary', 'Tile placeholder'],
+  ['border-subtle', 'Hairlines'],
+  ['selection-bg', 'Text selection'],
+];
+const rungs = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+const space = ['1', '2', '3', '4', '6', '8', '12', '16', '24'];
+---
+
+<Layout
+  title="Styleguide - Cristian Serrano"
+  description="Every token and text style of cristianserrano.ar, rendered with the site's own CSS."
+  noindex={true}
+>
+  <header>
+    <hgroup>
+      <h1>Styleguide</h1>
+      <p>Display · Subtitle<br><small>Every token and text style, rendered with the site's own CSS.</small></p>
+    </hgroup>
+    <p>This paragraph is a lead: any paragraph directly in the page header, or in an overview, reads this way. Switch the scheme and accent in the header to see every value below re-derive.</p>
+  </header>
+
+  <section>
+    <h2>Text styles</h2>
+    <p>Each specimen is the real element in its real context. The caption names the text style, the markup that gets it, and its size / leading / weight in px.</p>
+
+    <figure class="sg-specimen">
+      <h2>Title for a section</h2>
+      <figcaption>title — h2 · 32 / 1.4 / 600</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <h3>Heading for a sub-section <small>Dec 2024 – Present</small></h3>
+      <figcaption>heading — h3, dt · 22 / 1.4 / 500 &nbsp;+&nbsp; meta — h3 small · 19 / 1.4 / 300</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <h4>Subheading <small>Munich, Germany</small></h4>
+      <figcaption>subheading — h4 · 19 / 1.4 / 500 &nbsp;+&nbsp; meta-small — h4 small · 16 / 1.4 / 300</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <div class="overview"><p>A lead paragraph opens a story. It is larger and lighter than body text, so it reads as an introduction.</p></div>
+      <figcaption>lead — header &gt; p, .overview p · 19 / 1.6 / 300</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <p>Body text carries the story. It has <b>bold emphasis</b>, <i>italics</i> and <a href="/styleguide/">links</a>, and is set for long reading.</p>
+      <figcaption>body — p, li, dd · 16 / 1.6 / 300</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <ul>
+        <li>A bulleted list item</li>
+        <li>Another list item</li>
+      </ul>
+      <ol>
+        <li>A numbered list item</li>
+        <li>Another numbered item</li>
+      </ol>
+      <ul class="emoji-list">
+        <li><span class="emoji-start" role="img" aria-label="compass">🧭</span><b>Emoji list:</b> items marked by a leading emoji</li>
+      </ul>
+      <figcaption>lists — ul, ol, ul.emoji-list · body</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <blockquote>
+        <p>A quotation, set apart by a bar in the tertiary text colour.</p>
+      </blockquote>
+      <figcaption>quote — blockquote · body, italic</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <p class="note"><i>A note: small print that qualifies the paragraph above it.</i></p>
+      <figcaption>caption — figcaption, p.note, footer p · 13 / 1.4 / 300</figcaption>
+    </figure>
+    <figure class="sg-specimen">
+      <dl class="facts">
+        <div><dt>Category</dt><dd>Design systems</dd></div>
+        <div><dt>Platforms</dt><dd>Web, iOS, Android</dd></div>
+        <div><dt>Role</dt><dd>Product Designer</dd></div>
+        <div><dt>Time</dt><dd>1 year, 7 months</dd></div>
+      </dl>
+      <figcaption>key facts — dl.facts · heading + body</figcaption>
+    </figure>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Colour roles</h2>
+    <p>What each colour is for. These are the only colours a rule may use.</p>
+    <ul class="sg-swatches">
+      {roles.map(([token, use]) => (
+        <li><span class="sg-swatch" data-token={token}></span><b>{token}</b><br>{use}</li>
+      ))}
+    </ul>
+
+    <h3>Accent ramp</h3>
+    <p>Owned by the accent collection. Pick another accent in the header and it re-derives.</p>
+    <ul class="sg-ramp">
+      {rungs.map((r) => <li><span class="sg-swatch" data-token={`accent-${r}`}></span>{r}</li>)}
+    </ul>
+
+    <h3>Neutral ramp</h3>
+    <p>Grey, tinted toward the accent's hue by the temperature collection.</p>
+    <ul class="sg-ramp">
+      {rungs.map((r) => <li><span class="sg-swatch" data-token={`neutral-${r}`}></span>{r}</li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Space</h2>
+    <p>One scale, named in multiples of 4px. Named values: <b>gutter</b> (space-8), <b>text-gap</b> (0.5em), <b>paragraph-gap</b> (1em).</p>
+    <ul class="sg-space">
+      {space.map((s) => <li><span class="sg-bar" data-step={s}></span>space-{s}</li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Shape and elevation</h2>
+    <ul class="sg-shapes">
+      <li><span class="sg-shape" data-shape="radius-md"></span>radius-md</li>
+      <li><span class="sg-shape" data-shape="radius-lg"></span>radius-lg</li>
+      <li><span class="sg-shape" data-shape="shadow-sm"></span>shadow-sm</li>
+      <li><span class="sg-shape" data-shape="shadow-md"></span>shadow-md</li>
+      <li><span class="sg-shape" data-shape="shadow-lg"></span>shadow-lg</li>
+    </ul>
+  </section>
+
+  <p class="end-mark" aria-hidden="true">◼︎</p>
+</Layout>

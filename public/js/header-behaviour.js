@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var didScroll = false;
     var lastScrollTop = 0;
     var delta = 50;
-    var header = document.querySelector('header');
+    var header = document.querySelector('.site-header');
     var navBarHeight = header.offsetHeight;
 
     window.addEventListener('scroll', function() {

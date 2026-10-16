@@ -1,20 +1,25 @@
 ---
+import '../styles/index.css';
+
 interface Props {
   title: string;
   description: string;
   readingTime?: boolean;
+  noindex?: boolean;
 }
 
-const { title, description, readingTime = false } = Astro.props;
+const { title, description, readingTime = false, noindex = false } = Astro.props;
 const pathname = Astro.url.pathname;
 
-// accent modes offered to visitors; must match [accent="..."] in tokens.css
+// accent modes offered to visitors; must match [accent="..."] in styles/tokens/color.css
 const accents = ['blue', 'purple', 'magenta', 'red', 'orange', 'green', 'emerald', 'sky'];
 
-const isHome    = pathname === '/';
-const isCV      = pathname.startsWith('/cv');
-const isWork    = pathname.startsWith('/work');
-const isContact = pathname.startsWith('/contact');
+const nav = [
+  { href: '/',        label: 'Home',    current: pathname === '/' },
+  { href: '/cv',      label: 'CV',      current: pathname.startsWith('/cv') },
+  { href: '/work',    label: 'Work',    current: pathname.startsWith('/work') },
+  { href: '/contact', label: 'Contact', current: pathname.startsWith('/contact') },
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -59,6 +64,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     <meta name="description" content={description}>
+    {noindex && <meta name="robots" content="noindex">}
     <link rel="canonical" href={`https://www.cristianserrano.ar${pathname}`}>
 
     <!-- Open Graph / social sharing -->
@@ -78,20 +84,8 @@ const jsonLd = {
     <!-- Resolve the stored appearance before first paint, so there is no flash.
          "system" stores nothing and sets no attribute: :root carries
          color-scheme: light dark, so the OS is followed natively and live. -->
-    <script is:inline>
-      (function () {
-        var d = document.documentElement;
-        try {
-          var s = localStorage.getItem('scheme');
-          if (s === 'light' || s === 'dark') d.setAttribute('scheme', s);
-          var a = localStorage.getItem('accent');
-          if (a) d.setAttribute('accent', a);
-        } catch (e) {}
-      })();
-    </script>
+    <script is:inline src="/js/appearance-init.js"></script>
 
-    <link rel="stylesheet" href="/css/tokens.css">
-    <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
@@ -101,15 +95,14 @@ const jsonLd = {
   </head>
 
   <body>
-    <div class="page-wrapper">
+    <div class="page">
 
-      <header class="nav-visible">
-        <nav id="top-navbar-container">
-          <ul id="top-navbar">
-            <li class={isHome    ? 'nav-selected' : ''}><a href="/">Home</a></li>
-            <li class={isCV      ? 'nav-selected' : ''}><a href="/cv">CV</a></li>
-            <li class={isWork    ? 'nav-selected' : ''}><a href="/work">Work</a></li>
-            <li class={isContact ? 'nav-selected' : ''}><a href="/contact">Contact</a></li>
+      <header class="site-header nav-visible">
+        <nav class="site-nav">
+          <ul>
+            {nav.map((item) => (
+              <li><a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a></li>
+            ))}
           </ul>
 
           <div class="appearance" role="group" aria-label="Appearance">
@@ -122,7 +115,6 @@ const jsonLd = {
                   type="button"
                   class="accent-swatch"
                   data-accent={name}
-                  style={`--swatch: var(--accent-500)`}
                   accent={name}
                   aria-label={name}
                   title={name}
@@ -133,85 +125,15 @@ const jsonLd = {
         </nav>
       </header>
 
-      <div class="main-wrapper" id={readingTime ? 'content' : undefined}>
+      <main class="prose" id={readingTime ? 'content' : undefined}>
         <slot />
+      </main>
 
-        <footer>
-          <div class="footer-wrapper">
-            <p class="footer-paragraph">Handcrafted with <span class="love">♥</span> en La Plata <span class="emoji" role="img" aria-label="argentina">🇦🇷</span> und München <span class="emoji" role="img" aria-label="deutschland">🇩🇪</span>.</p>
-            <p class="footer-paragraph">&copy;<span class="current-year"></span> Cristian Serrano</p>
-          </div>
-        </footer>
-      </div>
+      <footer class="site-footer">
+        <p>Handcrafted with <span class="love">♥</span> en La Plata <span class="emoji" role="img" aria-label="argentina">🇦🇷</span> und München <span class="emoji" role="img" aria-label="deutschland">🇩🇪</span>.</p>
+        <p>&copy;<span class="current-year"></span> Cristian Serrano</p>
+      </footer>
 
     </div>
   </body>
 </html>
-
-<style>
-  /* Matches #top-navbar li / a exactly: Inter 500, 2px accent underline.
-     No borders, pills or rings -- the site has none. */
-  nav#top-navbar-container { position: relative; }
-
-  .appearance {
-    position: absolute;
-    top: 50%;
-    right: max(2rem, calc(50% - 368px + 2rem));
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .scheme-toggle {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-                 "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue",
-                 Arial, sans-serif;
-    font-size: 1rem;
-    line-height: 1.4;
-    letter-spacing: -0.011rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: var(--link);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.1em;
-  }
-  .scheme-toggle:hover { color: var(--link); }
-
-  .accents { display: flex; gap: 0.4rem; }
-
-  .accent-swatch {
-    width: 0.7rem;
-    height: 0.7rem;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: var(--swatch);
-    cursor: pointer;
-    opacity: 0.35;
-    transition: opacity 0.2s;
-  }
-  .accent-swatch:hover { opacity: 0.7; }
-  .accent-swatch[aria-pressed="true"] { opacity: 1; }
-
-  .scheme-toggle:focus-visible,
-  .accent-swatch:focus-visible {
-    outline: 2px solid var(--link);
-    outline-offset: 3px;
-  }
-
-  @media (max-width: 46rem) {
-    .appearance { gap: 0.7rem; }
-    .scheme-toggle { font-size: 0.875rem; }
-    .accent-swatch { width: 0.6rem; height: 0.6rem; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .accent-swatch { transition: none; }
-  }
-</style>

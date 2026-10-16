@@ -1,0 +1,65 @@
+/* Appearance control in the site header: scheme toggle + accent swatches.
+   Reads like the nav links beside it: label type, accent underline,
+   no borders, pills or rings. Each swatch carries its own accent="..."
+   attribute, so var(--accent-500) on it resolves to that hue. */
+
+@layer components {
+  .appearance {
+    position: absolute;
+    top: 50%;
+    right: max(var(--gutter), calc(50% - var(--content-max) / 2 + var(--gutter)));
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .scheme-toggle {
+    font: var(--type-label);
+    letter-spacing: var(--type-label-tracking);
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--link);
+    text-decoration-thickness: var(--border-accent);
+    text-underline-offset: var(--underline-offset);
+  }
+  .scheme-toggle:hover { color: var(--link); }
+
+  .accents { display: flex; gap: var(--swatch-gap); }
+
+  .accent-swatch {
+    width: var(--swatch-size);
+    height: var(--swatch-size);
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--accent-500);
+    cursor: pointer;
+    opacity: var(--swatch-idle);
+    transition: opacity var(--duration-fast);
+  }
+  .accent-swatch:hover { opacity: var(--swatch-hover); }
+  .accent-swatch[aria-pressed="true"] { opacity: 1; }
+
+  .scheme-toggle:focus-visible,
+  .accent-swatch:focus-visible {
+    outline: var(--border-accent) solid var(--link);
+    outline-offset: var(--focus-offset);
+  }
+
+  @media (max-width: 736px) {
+    .appearance { gap: var(--swatch-gap-group); }
+    .scheme-toggle {
+      font: var(--type-label-small);
+      letter-spacing: var(--type-label-small-tracking);
+    }
+    .accent-swatch {
+      width: var(--swatch-size-small);
+      height: var(--swatch-size-small);
+    }
+  }
+}

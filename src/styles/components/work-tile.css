@@ -1,0 +1,57 @@
+/* A project card: cover image, title and client over a scrim.
+   <a class="work-tile"> <img> <div> <h2>Title</h2> <p>Client</p> </div> </a> */
+
+@layer components {
+  .work-tile {
+    display: grid;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;   /* square */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--bg-tertiary);
+    transition: transform var(--duration-moderate) var(--ease-in-out),
+                box-shadow var(--duration-moderate) var(--ease-in-out);
+  }
+  .work-tile:hover {
+    transform: scale(var(--tile-hover-scale));
+    box-shadow: var(--shadow-lg);
+  }
+
+  .work-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .work-tile > div {
+    position: absolute;
+    inset: 0;
+    color: var(--text-on-media);
+    background-image: var(--scrim-bottom);
+  }
+
+  .work-tile h2,
+  .work-tile p {
+    position: absolute;
+    left: var(--space-6);
+    color: var(--text-on-media);
+    text-align: left;
+  }
+  .work-tile h2 {
+    font: var(--type-heading);
+    letter-spacing: var(--type-heading-tracking);
+    bottom: var(--space-12);
+    margin: 0 var(--space-6) 0 0;
+  }
+  .work-tile p {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    bottom: var(--space-3);
+    margin: var(--paragraph-gap) var(--space-6) var(--paragraph-gap) 0;
+  }
+}

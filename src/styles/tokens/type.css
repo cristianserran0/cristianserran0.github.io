@@ -1,0 +1,107 @@
+/* ============================================================
+   TYPE TOKENS
+
+   Two tiers, like colour:
+     primitives   -> family, size, leading, weight. Name no role.
+     text styles  -> one per role, built only from primitives.
+
+   Rules use text styles, never primitives:
+     font: var(--type-body);
+     letter-spacing: var(--type-body-tracking);
+
+   A text style is a `font` shorthand plus its tracking, because
+   letter-spacing is not part of `font`. Note the shorthand also
+   resets font-style, so italics are set after it.
+
+   Text style    Used for                              Size/leading/weight
+   ───────────   ───────────────────────────────────   ───────────────────
+   display       page title (h1)                       66 / 1.2 / 600
+   subtitle      line under the page title             19 / 1.4 / 700
+   lead          opening paragraphs, quotes            19 / 1.6 / 300
+   title         section heading (h2)                  32 / 1.4 / 600
+   heading       sub-section heading (h3), tile title  22 / 1.4 / 500
+   subheading    h4                                    19 / 1.4 / 500
+   body          paragraphs, list items                16 / 1.6 / 300
+   meta          aside inside a heading (dates)        19 / 1.4 / 300
+   meta-small    aside inside a subheading (places)    16 / 1.4 / 300
+   caption       figure captions, notes, footer        13 / 1.4 / 300
+   overline      small uppercase label on imagery      13 / 1.4 / 700
+   label         navigation, controls                  16 / 1.4 / 500
+   label-small   controls on narrow screens            14 / 1.4 / 500
+   ornament      the end-of-article mark               22 / 1.4 / 300
+
+   Sizes are named by their pixel value at the default 16px root,
+   so a new size slots in between without renaming the others.
+   ============================================================ */
+
+/* Inter 4.1, self-hosted (SIL OFL, see /fonts/inter/LICENSE.txt).
+   Only the faces the site renders; a browser downloads a face only
+   when a page uses it. */
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font-display: swap; src: url("/fonts/inter/Inter-Light.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: italic; font-weight: 300; font-display: swap; src: url("/fonts/inter/Inter-LightItalic.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/inter/Inter-Regular.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: italic; font-weight: 400; font-display: swap; src: url("/fonts/inter/Inter-Italic.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/inter/Inter-Medium.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/inter/Inter-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/inter/Inter-Bold.woff2") format("woff2"); }
+
+@layer tokens {
+
+:root {
+  /* ---- primitives ---- */
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+               "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue",
+               Arial, sans-serif;
+
+  --font-size-13: 0.8125rem;
+  --font-size-14: 0.875rem;
+  --font-size-16: 1rem;
+  --font-size-19: 1.1875rem;
+  --font-size-22: 1.375rem;
+  --font-size-32: 2rem;
+  --font-size-66: 4.125rem;
+
+  --leading-tight:   1.2;
+  --leading-normal:  1.4;
+  --leading-relaxed: 1.6;
+
+  --weight-light:    300;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ---- text styles ---- */
+  --type-display:              var(--weight-semibold) var(--font-size-66)/var(--leading-tight) var(--font-sans);
+  --type-display-tracking:     -0.16rem;
+  --type-subtitle:             var(--weight-bold) var(--font-size-19)/var(--leading-normal) var(--font-sans);
+  --type-subtitle-tracking:    -0.022rem;
+  --type-lead:                 var(--weight-light) var(--font-size-19)/var(--leading-relaxed) var(--font-sans);
+  --type-lead-tracking:        -0.015rem;
+  --type-title:                var(--weight-semibold) var(--font-size-32)/var(--leading-normal) var(--font-sans);
+  --type-title-tracking:       -0.022rem;
+  --type-heading:              var(--weight-medium) var(--font-size-22)/var(--leading-normal) var(--font-sans);
+  --type-heading-tracking:     -0.022rem;
+  --type-subheading:           var(--weight-medium) var(--font-size-19)/var(--leading-normal) var(--font-sans);
+  --type-subheading-tracking:  -0.022rem;
+  --type-body:                 var(--weight-light) var(--font-size-16)/var(--leading-relaxed) var(--font-sans);
+  --type-body-tracking:        -0.011rem;
+  --type-meta:                 var(--weight-light) var(--font-size-19)/var(--leading-normal) var(--font-sans);
+  --type-meta-tracking:        -0.015rem;
+  --type-meta-small:           var(--weight-light) var(--font-size-16)/var(--leading-normal) var(--font-sans);
+  --type-meta-small-tracking:  -0.011rem;
+  --type-caption:              var(--weight-light) var(--font-size-13)/var(--leading-normal) var(--font-sans);
+  --type-caption-tracking:     -0.0025rem;
+  --type-overline:             var(--weight-bold) var(--font-size-13)/var(--leading-normal) var(--font-sans);
+  --type-overline-tracking:    0.025rem;
+  --type-label:                var(--weight-medium) var(--font-size-16)/var(--leading-normal) var(--font-sans);
+  --type-label-tracking:       -0.011rem;
+  --type-label-small:          var(--weight-medium) var(--font-size-14)/var(--leading-normal) var(--font-sans);
+  --type-label-small-tracking: -0.011rem;
+  --type-ornament:             var(--weight-light) var(--font-size-22)/var(--leading-normal) var(--font-sans);
+  --type-ornament-tracking:    -0.018rem;
+
+  /* Inline emphasis inside any text style. */
+  --weight-strong: var(--weight-semibold);
+}
+
+} /* @layer tokens */

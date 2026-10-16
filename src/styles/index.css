@@ -1,0 +1,38 @@
+/* ============================================================
+   STYLES: the one entry point, imported by Layout.astro
+
+   The contract:
+     - HTML says what things are; CSS decides how they look.
+       A class is allowed only when it names what something IS
+       (.prose, .work-tile, .facts), never how it looks.
+     - Every value lives in tokens/. Outside it, rules only use
+       var(). `npm run check:tokens` fails the build otherwise.
+     - Type is applied only through text styles (--type-*).
+
+   Layers, lowest to highest. A later layer always wins, whatever
+   the selector specificity, so a component never has to fight
+   the prose styles it sits inside:
+
+     tokens      values only, no rules that style elements
+     reset       browser defaults zeroed
+     base        bare elements anywhere on the site
+     prose       long-form content inside .prose
+     layout      page regions: header, main, footer, grids
+     components  self-contained pieces: tiles, controls
+   ============================================================ */
+
+@layer tokens, reset, base, prose, layout, components;
+
+@import "./tokens/color.css";
+@import "./tokens/type.css";
+@import "./tokens/space.css";
+@import "./tokens/effects.css";
+@import "./tokens/components.css";
+
+@import "./base.css";
+@import "./prose.css";
+@import "./layout.css";
+@import "./components/work-tile.css";
+@import "./components/end-mark.css";
+@import "./components/appearance.css";
+@import "./components/styleguide.css";

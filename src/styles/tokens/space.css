@@ -1,0 +1,54 @@
+/* ============================================================
+   SPACE, LAYOUT AND SHAPE TOKENS
+
+   One spacing scale, named by multiples of 4px at the default
+   16px root (--space-4 = 1rem = 16px), so a new step slots in
+   between without renaming the others.
+
+   A spacing value gets its own NAME only when it has a meaning
+   that would survive a redesign -- "the page gutter", "the gap
+   beside inline text". Everything else uses the scale directly;
+   that is honest, not a shortcut.
+
+   Breakpoints cannot be tokens: var() is not allowed inside
+   @media. They are listed here so there is still one place to
+   read them, and every @media in the codebase uses one of these:
+     narrow   max-width: 500px     phones
+     content  736px                the content column (--content-max)
+     wide     1200px               full-bleed images stop bleeding
+   ============================================================ */
+
+@layer tokens {
+
+:root {
+  /* ---- scale ---- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ---- named ---- */
+  --gutter:         var(--space-8);    /* page edge to content */
+  --content-max:    736px;             /* content column, gutters included */
+  --content-inner:  calc(var(--content-max) - 2 * var(--gutter));
+  --header-height:  5rem;
+  --text-gap:       0.5em;             /* beside inline text; scales with it */
+  --paragraph-gap:  1em;               /* between paragraphs; scales with them */
+
+  /* ---- shape ---- */
+  --radius-md:   0.5rem;
+  --radius-lg:   1rem;
+  --radius-full: 50%;
+  --border-hairline: 1px;              /* frames and separators */
+  --border-rule:   3px;                /* dividers and quote bars */
+  --border-accent: 2px;                /* link underlines, focus rings */
+  --underline-offset: 0.1em;
+  --focus-offset:   3px;
+}
+
+} /* @layer tokens */

@@ -1,0 +1,41 @@
+/* ============================================================
+   EFFECT TOKENS: elevation, motion, stacking
+
+   Shadows are built from --shadow-tint (colour.css), so their
+   colour is owned by the colour tokens like everything else.
+
+   Reduced motion is handled HERE, once: durations collapse to 0,
+   so no component needs its own prefers-reduced-motion block.
+   ============================================================ */
+
+@layer tokens {
+
+:root {
+  /* ---- elevation ---- */
+  --shadow-sm: 0 3px 9px  rgb(from var(--shadow-tint) r g b / 0.10);
+  --shadow-md: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.15);
+  --shadow-lg: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.25);
+
+  /* Darkens the lower part of an image so text on it stays legible. */
+  --scrim-bottom: linear-gradient(to bottom, transparent 50%, var(--scrim) 90%);
+
+  /* ---- motion ---- */
+  --duration-fast:     200ms;
+  --duration-moderate: 350ms;
+  --duration-slow:     600ms;
+  --ease-standard: ease;
+  --ease-in-out:   ease-in-out;
+
+  /* ---- stacking ---- */
+  --z-header: 100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:     0ms;
+    --duration-moderate: 0ms;
+    --duration-slow:     0ms;
+  }
+}
+
+} /* @layer tokens */

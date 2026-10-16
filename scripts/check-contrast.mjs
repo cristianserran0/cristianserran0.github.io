@@ -24,7 +24,7 @@ if (!CHROME) {
   process.exit(process.env.CONTRAST_CHECK_OPTIONAL ? 0 : 1);
 }
 
-const css = fs.readFileSync('public/css/tokens.css', 'utf8');
+const css = fs.readFileSync('src/styles/tokens/color.css', 'utf8');
 const modes = a => [...new Set([...css.matchAll(new RegExp(`\\[${a}="([^"]+)"\\]`, 'g'))].map(m => m[1]))];
 const SCHEMES = ['light', 'dark'];
 const TEMPS = modes('temperature');
