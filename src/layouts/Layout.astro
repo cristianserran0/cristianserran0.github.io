@@ -42,7 +42,7 @@ const jsonLd = {
 ---
 
 <!DOCTYPE html>
-<html lang="en" temperature="cold" accent="blue">
+<html lang="en" temperature="subtle" accent="blue">
   <head>
     <!-- Preconnect hints -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -149,51 +149,69 @@ const jsonLd = {
 </html>
 
 <style>
+  /* Matches #top-navbar li / a exactly: Inter 500, 2px accent underline.
+     No borders, pills or rings -- the site has none. */
+  nav#top-navbar-container { position: relative; }
+
   .appearance {
+    position: absolute;
+    top: 50%;
+    right: max(2rem, calc(50% - 368px + 2rem));
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .scheme-toggle {
-    font: inherit;
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+                 "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue",
+                 Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.4;
+    letter-spacing: -0.011rem;
+    font-weight: 500;
+    color: var(--text-primary);
     background: none;
-    border: 1px solid var(--border-subtle);
-    border-radius: 999px;
-    padding: 0.2rem 0.7rem;
+    border: none;
+    padding: 0;
     cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
+    text-decoration: underline;
+    text-decoration-color: var(--link);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1em;
   }
-  .scheme-toggle:hover { color: var(--link); border-color: var(--link); }
+  .scheme-toggle:hover { color: var(--link); }
 
-  .accents { display: flex; gap: 0.3rem; }
+  .accents { display: flex; gap: 0.4rem; }
 
   .accent-swatch {
-    width: 0.85rem;
-    height: 0.85rem;
+    width: 0.7rem;
+    height: 0.7rem;
     padding: 0;
     border: none;
     border-radius: 50%;
     background: var(--swatch);
     cursor: pointer;
-    opacity: 0.45;
-    transition: opacity 0.2s, transform 0.2s;
+    opacity: 0.35;
+    transition: opacity 0.2s;
   }
-  .accent-swatch:hover { opacity: 0.8; transform: scale(1.15); }
-  .accent-swatch[aria-pressed="true"] {
-    opacity: 1;
-    box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px var(--swatch);
-  }
+  .accent-swatch:hover { opacity: 0.7; }
+  .accent-swatch[aria-pressed="true"] { opacity: 1; }
 
   .scheme-toggle:focus-visible,
   .accent-swatch:focus-visible {
     outline: 2px solid var(--link);
-    outline-offset: 2px;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 46rem) {
+    .appearance { gap: 0.7rem; }
+    .scheme-toggle { font-size: 0.875rem; }
+    .accent-swatch { width: 0.6rem; height: 0.6rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .scheme-toggle, .accent-swatch { transition: none; }
+    .accent-swatch { transition: none; }
   }
 </style>
