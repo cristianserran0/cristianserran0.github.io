@@ -112,12 +112,14 @@ const jsonLd = {
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <link rel="stylesheet" href="/pieces.css">
     <script type="application/json" id="guide-data" set:html={JSON.stringify(guide)} />
+    <!-- Hold the first paint until the guide is rebuilt (see the end of
+         <body>), so a page change never shows it half-built. -->
+    <link rel="expect" href="#guide-ready" blocking="render">
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
     {readingTime && <script defer is:inline src="/js/reading-time-estimation.js"></script>}
     <script defer is:inline src="/js/current-year.js"></script>
     <script defer is:inline src="/js/appearance.js"></script>
-    <script defer is:inline src="/js/assistant.js"></script>
   </head>
 
   <body>
@@ -201,6 +203,14 @@ const jsonLd = {
 
       <ol class="assistant-log" aria-live="polite"></ol>
 
+      <!-- Where the visitor is, and what this room offers. Updated in place
+           on every page, never added to the conversation, so moving between
+           pages leaves the conversation exactly as it was. -->
+      <section class="assistant-here" aria-label="Where you are">
+        <p data-here></p>
+        <ul class="assistant-suggestions" data-here-suggestions></ul>
+      </section>
+
       <section class="assistant-keep" aria-label="Keep this chat" hidden>
         <h3>Keep this chat for next time?</h3>
         <p>Otherwise it's gone when you leave.</p>
@@ -237,5 +247,11 @@ const jsonLd = {
         </dialog>
       </div>
     </aside>
+
+    <!-- Not deferred: it runs here, before the first paint, so the guide is
+         complete when the page appears. The marker after it releases the
+         render block set in <head>. -->
+    <script is:inline src="/js/assistant.js"></script>
+    <span id="guide-ready" hidden></span>
   </body>
 </html>

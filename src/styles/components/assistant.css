@@ -147,6 +147,23 @@
   }
   .assistant-suggestions button:hover { border-color: var(--link); }
 
+  /* ---- where you are: above the composer, rewritten per page ---- */
+  .assistant-here {
+    padding: var(--space-3) var(--space-4) var(--space-2);
+    border-top: var(--border-hairline) solid var(--border-subtle);
+  }
+  .assistant-here p {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .assistant-here .assistant-suggestions { margin-top: var(--space-2); }
+  .assistant-here .assistant-suggestions button {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+  }
+
   /* ---- keep-this-chat card ---- */
   .assistant-keep {
     margin: 0 var(--space-4) var(--space-3);

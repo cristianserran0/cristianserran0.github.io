@@ -145,7 +145,7 @@
      page           resizes from the full window to its panel
      site-header    follows the page (its left side stays anchored)
      site-controls  rides the page's right edge, never jumps
-     guide          slides in from / out to the right edge
+     guide          slides between on screen and parked off the right edge
    The canvas, rounded corners and gaps are in the root snapshot and fade
    in with it. Text is not rewrapped frame by frame: each snapshot keeps
    its own size and the two cross-fade once, clipped by the moving panel.
@@ -175,14 +175,30 @@
 :root[motion]::view-transition-image-pair(page),
 :root[motion]::view-transition-image-pair(site-header) { overflow: clip; }
 
-:root[motion="enter"]::view-transition-new(guide) {
-  animation: guide-arrive var(--duration-panel) var(--ease-enter);
+/* The moving frame IS the panel: it carries the panel's surface and
+   corners itself. The snapshots inside keep their own (content) width,
+   so without this the canvas showed through beside the narrower one and
+   the panel looked as wide as its content mid-resize. */
+:root[motion]::view-transition-image-pair(page) { background: var(--bg-surface); }
+:root[motion="enter"]::view-transition-image-pair(page) {
+  animation: panel-round var(--duration-panel) var(--ease-enter) both;
 }
-:root[motion="exit"]::view-transition-old(guide) {
-  animation: guide-leave var(--duration-panel) var(--ease-exit) forwards;
+:root[motion="exit"]::view-transition-image-pair(page) {
+  animation: panel-square var(--duration-panel) var(--ease-exit) both;
 }
-@keyframes guide-arrive { from { translate: calc(100% + var(--frame-gap)) 0; } }
-@keyframes guide-leave  { to   { translate: calc(100% + var(--frame-gap)) 0; } }
+@keyframes panel-round  { from { border-radius: 0; } to { border-radius: var(--radius-lg); } }
+@keyframes panel-square { from { border-radius: var(--radius-lg); } to { border-radius: 0; } }
+
+/* Moving between pages with the guide open: the guide is the same on both
+   pages (rebuilt before first paint, same conversation, same scroll), so
+   it simply stays -- no cross-fade, no jump. */
+:root:not([motion])::view-transition-old(guide) { display: none; }
+:root:not([motion])::view-transition-new(guide) { animation: none; }
+
+/* The guide needs nothing extra: the browser captures it in both places
+   (on screen, and parked off the right edge while closed) and moves it
+   between them on the same group timing as the page, so the two edges
+   travel in step. */
 
 /* The page's content must not move while its panel does. The panel's top
    edge travels by the frame gap (0 <-> 8px) and would carry both

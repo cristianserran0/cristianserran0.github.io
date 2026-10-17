@@ -289,19 +289,39 @@
 
   transcript.forEach(render);
 
-  // What the guide says on entering a room, once the panel is open: the
-  // tour stop if one is due (part of the conversation, so it is stored),
-  // otherwise a greeting with what this room offers (shown, never stored,
-  // so it can't pile up from page to page).
-  var greeted = false;
+  // Where you are: a strip above the composer, rewritten in place on every
+  // page. It is not part of the conversation, so changing pages never
+  // changes the conversation (or its scroll).
+  var strip = panel.querySelector('.assistant-here');
+  strip.querySelector('[data-here]').textContent = roomGreeting();
+  var hereList = strip.querySelector('[data-here-suggestions]');
+  roomSuggestions().forEach(function (q) {
+    var b = el('button', null, q); b.type = 'button';
+    b.addEventListener('click', function () { ask(q); });
+    var i = el('li'); i.appendChild(b); hereList.appendChild(i);
+  });
+
+  // On entering a room with the guide open: the tour stop, if one is due.
+  // That IS conversation (progress through the tour), so it is stored.
   function arrive() {
     var stop = tourStop();
     var last = transcript[transcript.length - 1];
-    if (stop) { if (!last || last.stop !== stop.stop) say(stop); return; }
-    if (greeted) return;
-    greeted = true;
-    render({ from: 'assistant', text: [roomGreeting()], suggestions: roomSuggestions() });
+    if (stop && (!last || last.stop !== stop.stop)) say(stop);
   }
+
+  // Carried across pages for the session: where the conversation was
+  // scrolled to, and anything half-typed.
+  var VIEW = 'guide-view';
+  var view = {}; try { view = JSON.parse(read(session, VIEW)) || {}; } catch (e) {}
+  if (typeof view.top === 'number' && !view.bottom) log.scrollTop = view.top;
+  if (view.draft) { input.value = view.draft; send.disabled = !view.draft.trim(); }
+  window.addEventListener('pagehide', function () {
+    store(session, VIEW, JSON.stringify({
+      top: log.scrollTop,
+      bottom: log.scrollTop + log.clientHeight >= log.scrollHeight - 2,
+      draft: input.value,
+    }));
+  });
 
   keep.addEventListener('click', function (e) {
     var b = e.target.closest('[data-keep]');
