@@ -73,7 +73,12 @@
   --neutral-700: oklch(39.0% calc(var(--undertone) * 1.00) var(--accent-h));
   --neutral-800: oklch(32.5% calc(var(--undertone) * 0.90) var(--accent-h));
   --neutral-900: oklch(26.4% calc(var(--undertone) * 0.80) var(--accent-h));
+  /* 925, 975, 1000: added for depth in dark mode (see DEPTH below), so the
+     four levels step evenly: 11 -> 15.5 -> 20 -> 24% lightness. */
+  --neutral-925: oklch(24.0% calc(var(--undertone) * 0.55) var(--accent-h));
   --neutral-950: oklch(20.0% calc(var(--undertone) * 0.30) var(--accent-h));
+  --neutral-975: oklch(15.5% calc(var(--undertone) * 0.22) var(--accent-h));
+  --neutral-1000: oklch(11.0% calc(var(--undertone) * 0.15) var(--accent-h));
 }
 
 /* ------------------------------------------------------------
@@ -186,21 +191,48 @@
   --text-primary:   light-dark( var(--neutral-900), var(--white)      );
   --text-secondary: light-dark( var(--neutral-800), var(--neutral-100));
   --text-tertiary:  light-dark( var(--neutral-700), var(--neutral-200));
-  --bg-primary:     light-dark( var(--white),       var(--black)      );
-  --bg-secondary:   light-dark( var(--neutral-50),  var(--neutral-950));
-  --bg-tertiary:    light-dark( var(--neutral-200), var(--neutral-900));
   --border-subtle:  light-dark( var(--neutral-200), var(--neutral-800));
   --link:           light-dark( var(--accent-600),  var(--accent-400) );
   --link-hover:     light-dark( var(--accent-700),  var(--accent-300) );
   --selection-bg:   light-dark( var(--accent-100),  var(--accent-800) );
   --selection-text: light-dark( var(--neutral-900), var(--white)      );
-  --bg-header:      light-dark( rgb(255 255 255 / 0.9), rgb(0 0 0 / 0.9) );
 
-  /* Surfaces of the app shell: the canvas sits behind the panels, a
-     panel is where content lives, raised is anything floating above. */
-  --bg-canvas:      light-dark( var(--neutral-50),  var(--neutral-950));
-  --bg-surface:     var(--bg-primary);
-  --bg-raised:      light-dark( var(--white),       var(--neutral-950));
+  /* DEPTH -- back to front. Every background on the site is one of these
+     four, so "how close is it to the viewer" has one answer:
+
+       canvas    the app itself, behind the panels       (furthest back)
+       surface   a panel: the page, the guide
+       raised    a card inside a panel: keep-this-chat, the phone dock
+       overlay   floats above a panel: modals, the Display pop-up (closest)
+
+     Light: white panels on a pale canvas; depth reads from the shadows
+     (tokens/effects.css: --shadow-raised, --shadow-overlay).
+     Dark: shadows barely read on dark, so each level steps LIGHTER
+     instead -- the darkest at the back, the lightest at the front.
+     Shadows stay on in both. */
+  --bg-canvas:      light-dark( var(--neutral-50),  var(--neutral-1000));
+  --bg-surface:     light-dark( var(--white),       var(--neutral-975) );
+  --bg-raised:      light-dark( var(--white),       var(--neutral-950) );
+  --bg-overlay:     light-dark( var(--white),       var(--neutral-925) );
+
+  /* The sticky header: its panel's surface, slightly see-through. */
+  --bg-header:      light-dark( rgb(from var(--white) r g b / 0.9),
+                                rgb(from var(--neutral-975) r g b / 0.9) );
+
+  /* FILLS -- a tint ON a surface, not a level of its own: hovers, chat
+     bubbles, the chosen option, image placeholders. The text colour at
+     low opacity, so the same fill works on any depth. (Spelled per mode
+     rather than derived from --text-primary: relative colours of a
+     light-dark() value are not reliable across browsers yet.) */
+  --fill-subtle:    light-dark( rgb(from var(--neutral-900) r g b / 0.06),
+                                rgb(from var(--white) r g b / 0.07) );
+  --fill-strong:    light-dark( rgb(from var(--neutral-900) r g b / 0.12),
+                                rgb(from var(--white) r g b / 0.14) );
+
+  /* A panel's modal backdrop: the canvas colour -- the deepest level --
+     drawn over the panel, which is also blurred (--backdrop-blur). */
+  --backdrop:       light-dark( rgb(from var(--neutral-50) r g b / 0.7),
+                                rgb(from var(--neutral-1000) r g b / 0.7) );
 
   /* On imagery: text sits on a darkening scrim, in either scheme. */
   --text-on-media:  var(--white);

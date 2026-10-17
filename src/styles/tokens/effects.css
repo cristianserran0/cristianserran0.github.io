@@ -15,8 +15,12 @@
   --shadow-sm: 0 3px 9px  rgb(from var(--shadow-tint) r g b / 0.10);
   --shadow-md: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.15);
   --shadow-lg: 0 4px 12px rgb(from var(--shadow-tint) r g b / 0.25);
+  /* depth: a card inside a panel, and what floats above a panel */
   --shadow-raised: 0 1px 3px rgb(from var(--shadow-tint) r g b / 0.10),
                    0 8px 24px rgb(from var(--shadow-tint) r g b / 0.15);
+  --shadow-overlay: 0 2px 6px rgb(from var(--shadow-tint) r g b / 0.12),
+                    0 16px 48px rgb(from var(--shadow-tint) r g b / 0.22);
+  --backdrop-blur: 3px;   /* how much a modal blurs its panel */
 
   /* Darkens the lower part of an image so text on it stays legible. */
   --scrim-bottom: linear-gradient(to bottom, transparent 50%, var(--scrim) 90%);
@@ -32,6 +36,7 @@
   /* ---- stacking ---- */
   --z-header:    100;
   --z-dock:      120;   /* the quick-actions bar on phones */
+  --z-modal:     10;    /* a panel's modal, above that panel's content (inside the panel) */
   --z-assistant: 200;
 }
 

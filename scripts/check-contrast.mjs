@@ -30,7 +30,10 @@ const SCHEMES = ['light', 'dark'];
 const TEMPS = modes('temperature');
 const ACCENTS = modes('accent');
 const FG = ['--text-primary', '--text-secondary', '--text-tertiary', '--link', '--link-hover'];
-const BG = ['--bg-primary', '--bg-secondary', '--bg-raised'];
+// Every depth text sits on, plus the see-through fills over the panel (and
+// over the overlay) they are drawn on: "a+b" paints b over a, as on screen.
+const BG = ['--bg-surface', '--bg-raised', '--bg-overlay',
+            '--bg-surface+--fill-subtle', '--bg-surface+--fill-strong', '--bg-overlay+--fill-strong'];
 
 const page = `<!DOCTYPE html><html><head><style>${css}</style></head><body><pre id="o"></pre>
 <script>
@@ -44,13 +47,17 @@ S.forEach(function(s){T.forEach(function(t){A.forEach(function(a){
   document.body.appendChild(d);
   var row={scheme:s,temp:t,accent:a,roles:{}};
   R.forEach(function(k){
-    var i=document.createElement('i'); i.style.color='var('+k+')'; d.appendChild(i);
-    var c=getComputedStyle(i).color;
     // Chrome returns oklch() verbatim for non-legacy colour functions, so
     // rasterise: paint the pixel and read it back. That yields true sRGB
     // including the browser's own gamut mapping -- the values a reader sees.
-    cx.clearRect(0,0,1,1); cx.fillStyle='#000';
-    cx.fillStyle=c; cx.fillRect(0,0,1,1);
+    // "a+b": paint a, then b over it (a translucent fill on its surface).
+    cx.clearRect(0,0,1,1);
+    var c=k.split('+').map(function(part){
+      var i=document.createElement('i'); i.style.color='var('+part+')'; d.appendChild(i);
+      var v=getComputedStyle(i).color;
+      cx.fillStyle='#000'; cx.fillStyle=v; cx.fillRect(0,0,1,1);
+      return v;
+    }).join(' + ');
     var px=cx.getImageData(0,0,1,1).data;
     row.roles[k]=[px[0],px[1],px[2]];
     row.raw=row.raw||{}; row.raw[k]=c;
@@ -101,6 +108,8 @@ const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
 let n = 0; const fails = [];
 for (const r of rows)
   for (const f of FG) for (const b of BG) {
+    // fill-strong marks images and the chosen option, never a link
+    if (f.startsWith('--link') && b.endsWith('--fill-strong')) continue;
     const v = ratio(rgb(r.roles[f]), rgb(r.roles[b])); n++;
     if (v < 4.5) fails.push(`  ${r.scheme}/${r.temp}/${r.accent}  ${f.slice(2)} on ${b.slice(2)}` +
                             `  rgb(${r.roles[f]}) / rgb(${r.roles[b]})  ${v.toFixed(2)}:1`);

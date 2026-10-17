@@ -9,7 +9,7 @@
 
 @layer base {
   body {
-    background: var(--bg-primary);
+    background: var(--bg-surface);
     color: var(--text-primary);
     font: var(--type-body);
     letter-spacing: var(--type-body-tracking);

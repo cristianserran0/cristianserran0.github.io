@@ -62,16 +62,15 @@
     border-radius: var(--radius-md);
   }
 
-  .sg-shape { background: var(--bg-primary); }
+  .sg-shape { background: var(--bg-surface); }
 
   [data-token="text-primary"]   { background: var(--text-primary); }
   [data-token="text-secondary"] { background: var(--text-secondary); }
   [data-token="text-tertiary"]  { background: var(--text-tertiary); }
   [data-token="link"]           { background: var(--link); }
   [data-token="link-hover"]     { background: var(--link-hover); }
-  [data-token="bg-primary"]     { background: var(--bg-primary); }
-  [data-token="bg-secondary"]   { background: var(--bg-secondary); }
-  [data-token="bg-tertiary"]    { background: var(--bg-tertiary); }
+  [data-token="fill-subtle"]    { background: var(--fill-subtle); }
+  [data-token="fill-strong"]    { background: var(--fill-strong); }
   [data-token="border-subtle"]  { background: var(--border-subtle); }
   [data-token="selection-bg"]   { background: var(--selection-bg); }
 
@@ -97,7 +96,10 @@
   [data-token="neutral-700"] { background: var(--neutral-700); }
   [data-token="neutral-800"] { background: var(--neutral-800); }
   [data-token="neutral-900"] { background: var(--neutral-900); }
+  [data-token="neutral-925"] { background: var(--neutral-925); }
   [data-token="neutral-950"] { background: var(--neutral-950); }
+  [data-token="neutral-975"] { background: var(--neutral-975); }
+  [data-token="neutral-1000"] { background: var(--neutral-1000); }
 
   [data-step="1"]  { width: var(--space-1); }
   [data-step="2"]  { width: var(--space-2); }
@@ -114,4 +116,20 @@
   [data-shape="shadow-sm"] { box-shadow: var(--shadow-sm); border-color: transparent; }
   [data-shape="shadow-md"] { box-shadow: var(--shadow-md); border-color: transparent; }
   [data-shape="shadow-lg"] { box-shadow: var(--shadow-lg); border-color: transparent; }
+
+  /* depth: four nested levels */
+  .sg-depth,
+  .sg-depth div {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-secondary);
+  }
+  .sg-depth div { margin-top: var(--space-3); }
+  .sg-depth b { color: var(--text-primary); }
+  [data-level="canvas"]  { background: var(--bg-canvas); }
+  [data-level="surface"] { background: var(--bg-surface); }
+  [data-level="raised"]  { background: var(--bg-raised);  box-shadow: var(--shadow-raised); }
+  [data-level="overlay"] { background: var(--bg-overlay); box-shadow: var(--shadow-overlay); }
 }

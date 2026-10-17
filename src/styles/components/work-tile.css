@@ -20,7 +20,7 @@
     object-fit: cover;
     object-position: top;
     border-radius: var(--radius-lg);
-    background-color: var(--bg-tertiary);
+    background-color: var(--fill-strong);
     box-shadow: var(--shadow-sm);
     transition: transform var(--duration-moderate) var(--ease-in-out),
                 box-shadow var(--duration-moderate) var(--ease-in-out);

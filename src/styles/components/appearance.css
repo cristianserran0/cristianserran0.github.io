@@ -70,9 +70,9 @@
     padding: var(--space-4);
     border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-lg);
-    background: var(--bg-raised);
+    background: var(--bg-overlay);
     color: var(--text-primary);
-    box-shadow: var(--shadow-raised);
+    box-shadow: var(--shadow-overlay);
   }
   @media (min-width: 761px) {
     [assistant="open"] .display {
@@ -99,7 +99,7 @@
     gap: var(--space-1);
     padding: var(--space-1);
     border-radius: var(--radius-md);
-    background: var(--bg-secondary);
+    background: var(--fill-subtle);
   }
   .display [data-scheme] {
     font: var(--type-label-small);
@@ -113,8 +113,7 @@
   }
   .display [data-scheme][aria-pressed="true"] {
     color: var(--text-primary);
-    background: var(--bg-raised);
-    box-shadow: var(--shadow-sm);
+    background: var(--fill-strong);
   }
 
   .accents { display: flex; justify-content: space-between; }

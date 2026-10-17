@@ -11,13 +11,13 @@ const roles = [
   ['text-tertiary', 'Captions, eyebrows, quote bar'],
   ['link', 'Links, dividers, end mark'],
   ['link-hover', 'Link hover'],
-  ['bg-primary', 'Page'],
-  ['bg-secondary', 'Image placeholder'],
-  ['bg-tertiary', 'Tile placeholder'],
+  ['fill-subtle', 'Hover, chat bubble, image placeholder'],
+  ['fill-strong', 'Chosen option, tile placeholder'],
   ['border-subtle', 'Hairlines'],
   ['selection-bg', 'Text selection'],
 ];
 const rungs = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+const neutralRungs = [...rungs.slice(0, -1), '925', '950', '975', '1000'];
 const space = ['1', '2', '3', '4', '6', '8', '12', '16', '24'];
 ---
 
@@ -113,8 +113,23 @@ const space = ['1', '2', '3', '4', '6', '8', '12', '16', '24'];
     <h3>Neutral ramp</h3>
     <p>Grey, tinted toward the accent's hue by the temperature collection.</p>
     <ul class="sg-ramp">
-      {rungs.map((r) => <li><span class="sg-swatch" data-token={`neutral-${r}`}></span>{r}</li>)}
+      {neutralRungs.map((r) => <li><span class="sg-swatch" data-token={`neutral-${r}`}></span>{r}</li>)}
     </ul>
+  </section>
+
+  <section>
+    <h2>Depth</h2>
+    <p>Every background is one of four levels, back to front. In light mode depth reads from the shadows; in dark mode each level also steps lighter, the darkest at the back. A modal belongs to one panel: its backdrop is the canvas colour, blurred, and covers only that panel.</p>
+    <div class="sg-depth" data-level="canvas">
+      <b>canvas</b> behind the panels
+      <div data-level="surface">
+        <b>surface</b> a panel: the page, the guide
+        <div data-level="raised">
+          <b>raised</b> a card in a panel
+          <div data-level="overlay"><b>overlay</b> a modal, a pop-up</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section>

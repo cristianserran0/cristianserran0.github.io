@@ -1,0 +1,105 @@
+/* A modal that belongs to one panel.
+
+   <div class="panel-modal" hidden>  <dialog open> … </dialog>  </div>
+
+   The wrapper is the backdrop: the canvas colour (the deepest level) over
+   the panel, which it also blurs a little. It fills its panel and nothing
+   else, so a modal in the guide never covers the page, and one on the page
+   would never cover the guide. While it is open, the script makes the rest
+   of THAT panel inert, so focus and clicks stay in the modal; the other
+   panel keeps working.
+
+   The dialog itself sits one level up from its panel: --bg-overlay with
+   --shadow-overlay. (Not the browser's showModal(): that puts the dialog in
+   the top layer, over the whole window.) */
+
+@layer components {
+  .panel-modal {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: grid;
+    place-items: center;
+    padding: var(--space-4);
+    background: var(--backdrop);
+    backdrop-filter: blur(var(--backdrop-blur));
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  .panel-modal[hidden] { display: none; }
+  @starting-style { .panel-modal { opacity: 0; } }
+
+  .panel-modal dialog {
+    position: static;
+    width: 100%;
+    margin: 0;
+    padding: var(--space-4);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-overlay);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .panel-modal h3 {
+    font: var(--type-chat);
+    letter-spacing: var(--type-chat-tracking);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-3);
+  }
+  .panel-modal p {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-tertiary);
+    margin: var(--space-2) 0 0;
+  }
+  .panel-modal textarea {
+    display: block;
+    width: 100%;
+    resize: none;
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--fill-subtle);
+    color: var(--text-primary);
+    font: var(--type-chat);
+    letter-spacing: var(--type-chat-tracking);
+  }
+  .panel-modal textarea::placeholder { color: var(--text-tertiary); }
+  .panel-modal textarea:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: 0; }
+
+  .panel-modal form > div {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+  .panel-modal button {
+    font: var(--type-chat);
+    letter-spacing: var(--type-chat-tracking);
+    font-weight: var(--weight-medium);
+    color: var(--text-primary);
+    background: none;
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+  }
+  .panel-modal button:hover { border-color: var(--link); }
+  .panel-modal button:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+  .panel-modal [type="submit"] { background: var(--fill-strong); border-color: transparent; }
+
+  /* reasons: toggle chips */
+  .feedback-reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    list-style-type: none;
+  }
+  .feedback-reasons button { font-weight: var(--weight-regular); }
+  .feedback-reasons [aria-pressed="true"] {
+    background: var(--fill-strong);
+    border-color: var(--link);
+  }
+}

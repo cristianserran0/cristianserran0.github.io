@@ -22,6 +22,7 @@
   var input = form.querySelector('textarea');
   var send = form.querySelector('[type="submit"]');
   var keep = panel.querySelector('.assistant-keep');
+  var feedback = panel.querySelector('[data-feedback]');
 
   function store(area, k, v) { try { v === null ? area.removeItem(k) : area.setItem(k, v); } catch (e) {} }
   function read(area, k) { try { return area.getItem(k); } catch (e) { return null; } }
@@ -161,6 +162,7 @@
       });
       li.appendChild(s);
     }
+    if (m.rateable) li.appendChild(rating(m));
     log.appendChild(li);
     log.scrollTop = log.scrollHeight;
     return li;
@@ -171,6 +173,103 @@
     transcript.push(m);
     transcript = transcript.slice(-40);
     render(m);
+    persist();
+  }
+
+  // ---- rating an answer ----
+  var SVG = 'http://www.w3.org/2000/svg';
+  function thumb() {
+    var svg = document.createElementNS(SVG, 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('fill', 'none'); svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.4'); svg.setAttribute('stroke-linejoin', 'round');
+    var p = document.createElementNS(SVG, 'path');
+    p.setAttribute('d', 'M5 7.5v6H2.5v-6H5zm0 0 2.5-5c1.1 0 2 .9 2 2v2h3.1c.8 0 1.4.7 1.3 1.5l-.6 4.4c-.1.6-.7 1.1-1.3 1.1H5');
+    svg.appendChild(p);
+    return svg;
+  }
+  function rating(m) {
+    var g = el('div', 'assistant-rating');
+    g.setAttribute('role', 'group'); g.setAttribute('aria-label', 'Rate this answer');
+    [['up', 'Helpful'], ['down', 'Not helpful']].forEach(function (r) {
+      var b = el('button', 'icon-button'); b.type = 'button';
+      b.setAttribute('data-rate', r[0]); b.setAttribute('aria-label', r[1]);
+      b.setAttribute('aria-pressed', String(m.rating === r[0]));
+      b.appendChild(thumb());
+      b.addEventListener('click', function () { rate(m, r[0], g, b); });
+      g.appendChild(b);
+    });
+    if (m.rated) g.appendChild(el('span', null, 'Thanks for the feedback'));
+    return g;
+  }
+
+  var REASONS = {
+    up:   { title: 'Glad it helped! What was good?', reasons: ['Accurate', 'Clear', 'Quick', 'Something else'] },
+    down: { title: 'Sorry about that. What went wrong?', reasons: ['Wrong or made up', 'Didn’t answer my question', 'Too long', 'Something else'] },
+  };
+  var rated = null;   // the answer being rated while the modal is open
+  function rate(m, value, group, opener) {
+    m.rating = value;
+    group.querySelectorAll('[data-rate]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-rate') === value));
+    });
+    persist();
+    rated = { m: m, value: value, group: group };
+    var r = REASONS[value];
+    feedback.querySelector('[data-feedback-title]').textContent = r.title;
+    var list = feedback.querySelector('[data-feedback-reasons]');
+    list.textContent = '';
+    r.reasons.forEach(function (label) {
+      var b = el('button', null, label); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); });
+      var li = el('li'); li.appendChild(b); list.appendChild(li);
+    });
+    feedback.querySelector('textarea').value = '';
+    modal.open(opener);
+  }
+
+  /* A modal of this panel only (styles/components/modal.css): the rest of
+     the panel goes inert while it is open, the page does not. */
+  var modal = (function (wrap) {
+    var opener = null;
+    function others() { return Array.prototype.filter.call(panel.children, function (n) { return n !== wrap; }); }
+    return {
+      isOpen: function () { return !wrap.hidden; },
+      open: function (from) {
+        opener = from;
+        others().forEach(function (n) { n.inert = true; });
+        wrap.hidden = false;
+        var first = wrap.querySelector('button, textarea');
+        if (first) first.focus();
+      },
+      close: function () {
+        wrap.hidden = true;
+        others().forEach(function (n) { n.inert = false; });
+        if (opener) opener.focus();
+      },
+    };
+  })(feedback);
+
+  feedback.querySelector('[data-feedback-cancel]').addEventListener('click', function () { modal.close(); });
+  feedback.addEventListener('click', function (e) { if (e.target === feedback) modal.close(); });   // backdrop
+  feedback.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    // Prototype: kept in this browser only. A free store (Workers KV) can
+    // take it once the guide runs on the Worker.
+    var entry = {
+      at: new Date().toISOString(), page: here, rating: rated.value,
+      answer: rated.m.text.join(' '),
+      reasons: Array.prototype.map.call(feedback.querySelectorAll('[data-feedback-reasons] [aria-pressed="true"]'), function (b) { return b.textContent; }),
+      note: feedback.querySelector('textarea').value.trim(),
+    };
+    var all; try { all = JSON.parse(read(local, 'guide-feedback') || '[]'); } catch (x) { all = []; }
+    all.push(entry); store(local, 'guide-feedback', JSON.stringify(all.slice(-50)));
+    rated.m.rated = true; persist();
+    if (!rated.group.querySelector('span')) rated.group.appendChild(el('span', null, 'Thanks for the feedback'));
+    modal.close();
+  });
+
+  function persist() {
     var json = JSON.stringify(transcript);
     store(session, 'guide-log', json);
     if (kept) store(local, 'assistant-transcript', json);
@@ -182,7 +281,8 @@
     say({ from: 'user', text: [q] });
     input.value = ''; send.disabled = true;
     setTimeout(function () {
-      say(answer(q));
+      var a = answer(q); a.rateable = true;
+      say(a);
       if (!offered) { offered = true; keep.hidden = false; }
     }, 350);
   }
@@ -256,5 +356,9 @@
     var saved = +read(session, KEY);
     if (saved) scrollTo(saved);
   }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) setOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (modal.isOpen()) modal.close();        // the innermost layer closes first
+    else if (isOpen()) setOpen(false);
+  });
 })();

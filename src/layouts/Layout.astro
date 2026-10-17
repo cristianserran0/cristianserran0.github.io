@@ -211,6 +211,23 @@ const jsonLd = {
         </div>
       </form>
       <p class="assistant-disclaimer">Prototype: the guide is scripted, not AI yet.</p>
+
+      <!-- Feedback on an answer. A modal of THIS panel only: its backdrop
+           covers the guide, never the page. See styles/components/modal.css. -->
+      <div class="panel-modal" data-feedback hidden>
+        <dialog open aria-modal="true" aria-labelledby="feedback-title">
+          <form>
+            <h3 id="feedback-title" data-feedback-title>What went wrong?</h3>
+            <ul class="feedback-reasons" data-feedback-reasons aria-label="Reasons"></ul>
+            <textarea rows="3" aria-label="Anything to add? (optional)" placeholder="Anything to add? (optional)"></textarea>
+            <p>Prototype: feedback stays in your browser for now.</p>
+            <div>
+              <button type="button" data-feedback-cancel>Cancel</button>
+              <button type="submit">Send</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
     </aside>
   </body>
 </html>

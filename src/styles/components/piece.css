@@ -19,7 +19,7 @@
     margin-inline-start: calc((100% - min(100cqi - 2 * var(--gutter), var(--piece-max))) / 2);
     object-fit: cover;
     border-radius: var(--radius-lg);
-    background-color: var(--bg-tertiary);
+    background-color: var(--fill-strong);
     box-shadow: var(--shadow-md);
   }
   @container page (max-width: 500px) {
