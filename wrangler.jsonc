@@ -1,0 +1,13 @@
+// Production hosting: cristianserrano.ar on a Cloudflare Worker (static assets only).
+// Every push to master deploys; other branches get preview URLs.
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "cristianserrano-ar",
+  "compatibility_date": "2026-10-17",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

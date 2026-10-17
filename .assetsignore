@@ -1,0 +1,11 @@
+# Repo files that must not be published as part of the site.
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+.assetsignore
+wrangler.jsonc
+.wrangler
+node_modules
+sass
+CNAME
