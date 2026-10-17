@@ -13,8 +13,15 @@
   "name": "cristianserrano-ar",
   "compatibility_date": "2026-07-11",
   "observability": { "enabled": true },
-  // Required by `wrangler preview`, which builds each non-master branch.
-  "previews": {},
+  // `wrangler preview` builds each non-master branch. Previews don't
+  // inherit bindings, so the guide's AI and rate limit are declared again
+  // here (with their own rate-limit counter).
+  "previews": {
+    "ai": { "binding": "AI" },
+    "ratelimits": [
+      { "name": "LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
+    ]
+  },
   "build": { "command": "npm run build" },
   "main": "worker/index.js",
   "assets": {
