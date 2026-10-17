@@ -16,7 +16,9 @@
     display: flex;
     flex-direction: column;
     background: var(--bg-surface);
-    border-radius: var(--radius-lg);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-panel);
     color: var(--text-primary);
     font: var(--type-chat);
     letter-spacing: var(--type-chat-tracking);
@@ -42,7 +44,7 @@
     .assistant {
       inset: var(--sheet-top) 0 0;
       width: auto;
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-radius: var(--radius-panel) var(--radius-panel) 0 0;
       box-shadow: var(--shadow-raised);
       transform: translateY(100%);
     }
@@ -92,7 +94,9 @@
     scrollbar-color: var(--border-subtle) transparent;
     list-style-type: none;
     margin: 0;
-    padding: var(--space-2) var(--space-4) var(--space-4);
+    /* the conversation keeps a reading measure, centred, however wide the panel */
+    padding: var(--chat-padding-block) max(var(--chat-padding-inline), (100% - var(--chat-measure)) / 2);
+    scroll-padding-top: var(--chat-padding-block);
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
@@ -100,7 +104,7 @@
 
   .assistant-log [data-from="user"] {
     align-self: flex-end;
-    max-width: 85%;
+    max-width: var(--chat-bubble-max);
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-md);
     background: var(--fill-subtle);
@@ -150,7 +154,7 @@
 
   /* ---- where you are: above the composer, rewritten per page ---- */
   .assistant-here {
-    padding: var(--space-3) var(--space-4) var(--space-2);
+    padding: var(--space-3) max(var(--chat-padding-inline), (100% - var(--chat-measure)) / 2) var(--space-2);
     border-top: var(--border-hairline) solid var(--border-subtle);
   }
   .assistant-here p {
@@ -167,7 +171,7 @@
 
   /* ---- keep-this-chat card ---- */
   .assistant-keep {
-    margin: 0 var(--space-4) var(--space-3);
+    margin: 0 max(var(--space-4), (100% - var(--chat-measure)) / 2) var(--space-3);
     padding: var(--space-3) var(--space-4);
     border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-lg);
@@ -206,7 +210,7 @@
 
   /* ---- composer ---- */
   .assistant-composer {
-    margin: 0 var(--space-3);
+    margin-inline: max(var(--space-3), (100% - var(--chat-measure)) / 2);
     padding: var(--space-3);
     border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-lg);
@@ -255,4 +259,63 @@
   .assistant-rating [data-rate="down"] svg { scale: -1 -1; }   /* the same thumb, pointing down */
   .assistant-rating [aria-pressed="true"] { color: var(--link); background: var(--fill-subtle); }
   .assistant-rating span { margin-inline-start: var(--space-1); }
+}
+
+/* ---- AI answers: markdown, thinking dots, the word fade, Send/Stop ---- */
+@layer components {
+  /* Assistant replies have no bubble: long-form text on the panel itself.
+     The visitor's messages are bubbles. The asymmetry is the point. */
+  .assistant-md p,
+  .assistant-md ul,
+  .assistant-md ol { margin-block: 0; }
+  .assistant-md > * + * { margin-top: var(--space-2); }   /* after the reset above */
+  .assistant-md ul,
+  .assistant-md ol { padding-inline-start: var(--space-6); }
+  .assistant-md ul { list-style-type: disc; }
+  .assistant-md ol { list-style-type: decimal; }
+  .assistant-md li + li { margin-top: var(--space-1); }
+  .assistant-md strong { font-weight: var(--weight-semibold); }
+  .assistant-md code {
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-md);
+    background: var(--fill-subtle);
+  }
+  .assistant-md a { color: var(--text-primary); text-decoration-color: var(--link); }
+  .assistant-md a:hover { color: var(--link); }
+
+  /* a newly revealed word fades in; guide-ai.js keeps the fade's place
+     across re-renders with a negative animation-delay */
+  .assistant-md .word { animation: word-in var(--duration-word) var(--ease-standard) both; }
+  @keyframes word-in { from { opacity: 0; } }
+
+  /* thinking: three dots in the reply slot, the moment you send */
+  .assistant-pending {
+    display: flex;
+    gap: var(--space-1);
+    padding-block: var(--space-2);
+  }
+  .assistant-pending span {
+    width: var(--pending-dot);
+    height: var(--pending-dot);
+    border-radius: var(--radius-full);
+    background: var(--text-tertiary);
+    animation: pending var(--duration-pulse) var(--ease-in-out) infinite;
+  }
+  .assistant-pending span:nth-child(2) { animation-delay: calc(var(--duration-pulse) / 6); }
+  .assistant-pending span:nth-child(3) { animation-delay: calc(var(--duration-pulse) / 3); }
+  @keyframes pending { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+
+  /* Send becomes Stop while an answer streams, in the same place */
+  .assistant-composer [data-icon="stop"] { display: none; }
+  .assistant-composer[data-busy] [data-icon="send"] { display: none; }
+  .assistant-composer[data-busy] [data-icon="stop"] { display: block; }
+  .assistant-composer[data-busy] [type="submit"] { color: var(--text-primary); }
+
+  /* one timing for every hover in the panel */
+  .assistant button,
+  .assistant a { transition: color var(--duration-interaction) var(--ease-standard),
+                             background-color var(--duration-interaction) var(--ease-standard),
+                             border-color var(--duration-interaction) var(--ease-standard); }
 }

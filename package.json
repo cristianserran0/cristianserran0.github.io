@@ -11,7 +11,8 @@
     "snapshot:save": "node scripts/snapshot.mjs save .snapshot.json",
     "snapshot:compare": "node scripts/snapshot.mjs compare .snapshot.json",
     "check": "npm run check:tokens && npm run check:contrast",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "dev:worker": "npm run build && wrangler dev --env dev"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

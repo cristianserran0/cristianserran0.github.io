@@ -147,7 +147,12 @@
     li.setAttribute('data-from', m.from);
     if (m.stop) li.appendChild(el('p', 'assistant-stop', m.stop));
     if (m.read) li.appendChild(el('p', 'assistant-step', 'Read ' + m.read + ' for context'));
-    m.text.forEach(function (t) { li.appendChild(el('p', null, t)); });
+    if (m.md !== undefined) {
+      var body = el('div', 'assistant-md');
+      window.GuideAI.renderMarkdown(body, m.md);
+      li.appendChild(body);
+    }
+    (m.text || []).forEach(function (t) { li.appendChild(el('p', null, t)); });
     if (m.links) {
       var ul = el('ul', 'assistant-links');
       m.links.forEach(function (l) { var a = el('a', null, l[0]); a.href = l[1]; var i = el('li'); i.appendChild(a); ul.appendChild(i); });
@@ -258,7 +263,7 @@
     // take it once the guide runs on the Worker.
     var entry = {
       at: new Date().toISOString(), page: here, rating: rated.value,
-      answer: rated.m.text.join(' '),
+      answer: rated.m.md !== undefined ? rated.m.md : (rated.m.text || []).join(' '),
       reasons: Array.prototype.map.call(feedback.querySelectorAll('[data-feedback-reasons] [aria-pressed="true"]'), function (b) { return b.textContent; }),
       note: feedback.querySelector('textarea').value.trim(),
     };
@@ -275,16 +280,97 @@
     if (kept) store(local, 'assistant-transcript', json);
   }
 
+  // Tours and this room's own questions are scripted: instant, free and
+  // always right. Anything typed goes to the AI (worker/index.js).
+  function scripted(q) {
+    if (TOURS[q]) return true;
+    if (room.kind !== 'piece') return false;
+    return q === Q_SPECIAL || q === Q_ROLE || (room.next && q === 'Next piece: ' + room.next.title);
+  }
+
+  var turn = null;   // the answer streaming right now: { stop, li, scrolled }
   function ask(q) {
     q = q.trim();
-    if (!q) return;
+    if (!q || turn) return;
     say({ from: 'user', text: [q] });
     input.value = ''; send.disabled = true;
-    setTimeout(function () {
-      var a = answer(q); a.rateable = true;
-      say(a);
-      if (!offered) { offered = true; keep.hidden = false; }
-    }, 350);
+    if (!offered) { offered = true; keep.hidden = false; }
+    if (scripted(q) || !window.GuideAI) {
+      setTimeout(function () { var a = answer(q); a.rateable = true; say(a); }, 350);
+      return;
+    }
+    streamAnswer(q);
+  }
+
+  function history() {
+    return transcript.filter(function (m) { return !m.offline; }).slice(-12).map(function (m) {
+      return { role: m.from === 'user' ? 'user' : 'assistant', content: m.md !== undefined ? m.md : (m.text || []).join('\n\n') };
+    });
+  }
+  function pageLabel() {
+    return room.kind === 'piece'
+      ? room.title + ' (' + room.client + ', ' + room.years + '), at ' + here
+      : document.title + ', at ' + here;
+  }
+
+  // The reply slot appears at once with thinking dots; the first revealed
+  // word turns it into the answer in place -- no second bubble, no reflow.
+  function streamAnswer(q) {
+    var li = el('li', 'assistant-pending');
+    li.setAttribute('data-from', 'assistant');
+    li.setAttribute('aria-label', 'Thinking');
+    for (var i = 0; i < 3; i++) li.appendChild(el('span'));
+    log.appendChild(li);
+    var body = null;
+    turn = { li: li, scrolled: false };
+    busy(true);
+    follow();
+    turn.stop = window.GuideAI.stream({
+      url: '/api/ask',
+      body: { messages: history(), page: pageLabel() },
+      onReveal: function (shown, ages) {
+        if (!body) { li.textContent = ''; li.className = ''; li.removeAttribute('aria-label'); body = el('div', 'assistant-md'); li.appendChild(body); }
+        window.GuideAI.renderMarkdown(body, shown);
+        window.GuideAI.fadeNewest(body, ages);
+        follow();
+      },
+      onDone: function (finalText) {
+        li.remove();
+        turn = null; busy(false);
+        if (!finalText.trim()) return;
+        say({ from: 'assistant', md: finalText, rateable: true });
+      },
+      onError: function (kind) {
+        li.remove();
+        turn = null; busy(false);
+        say(offline(kind, q));
+      },
+    }).stop;
+  }
+
+  // Errors are sentences, followed by what the guide knows offline.
+  function offline(kind, q) {
+    var reset = new Date(); reset.setUTCHours(24, 0, 0, 0);
+    var why = {
+      quota: 'I’ve used up today’s free AI answers; they come back at ' + reset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' your time.',
+      rate: 'That’s a lot of questions at once; give me a minute.',
+    }[kind] || 'I couldn’t reach the AI just now.';
+    var a = answer(q);
+    return { offline: true, rateable: true, read: a.read, text: [why + ' Here’s what I know offline:'].concat(a.text), links: a.links, suggestions: a.suggestions };
+  }
+
+  // While an answer streams, keep its newest line in view -- until the
+  // visitor scrolls the conversation themselves; then leave it to them.
+  function follow() { if (turn && !turn.scrolled) log.scrollTop = log.scrollHeight; }
+  ['wheel', 'touchmove', 'keydown'].forEach(function (type) {
+    log.addEventListener(type, function () { if (turn) turn.scrolled = true; }, { passive: true });
+  });
+
+  // Send becomes Stop while an answer streams, in the same place.
+  function busy(on) {
+    form.toggleAttribute('data-busy', on);
+    send.setAttribute('aria-label', on ? 'Stop' : 'Send');
+    send.disabled = on ? false : !input.value.trim();
   }
 
   transcript.forEach(render);
@@ -332,11 +418,14 @@
   });
 
   // ---- composer ----
-  input.addEventListener('input', function () { send.disabled = !input.value.trim(); });
+  input.addEventListener('input', function () { if (!turn) send.disabled = !input.value.trim(); });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(input.value); }
   });
-  form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (turn) turn.stop(); else ask(input.value);
+  });
 
   // ---- open / close ----
   // Opening the guide on a wide screen moves the scrolling from the window

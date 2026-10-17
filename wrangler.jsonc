@@ -4,6 +4,10 @@
 // config says. master goes live on cristianserrano.ar; every other branch
 // gets a preview URL.
 // Response headers (security, caching) live in public/_headers.
+//
+// Static files are served without running any code. Only /api/* runs the
+// Worker (worker/index.js): the guide's AI answers, on Workers AI's free
+// plan, rate-limited per visitor. See worker/index.js for the limits.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cristianserrano-ar",
@@ -12,9 +16,27 @@
   // Required by `wrangler preview`, which builds each non-master branch.
   "previews": {},
   "build": { "command": "npm run build" },
+  "main": "worker/index.js",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"
+  },
+  // Workers AI. Free plan: a daily allowance, refused (never billed) when
+  // it runs out.
+  "ai": { "binding": "AI" },
+  // Per-visitor limit on /api/ask: 5 questions a minute. The window can only
+  // be 10 or 60 seconds; the daily AI allowance is the real ceiling.
+  "ratelimits": [
+    { "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+  // `npm run dev:worker`: the site and /api/ask on this machine, with no
+  // Cloudflare login. Bindings aren't inherited by an environment, so this
+  // one has no AI and no rate limit; MOCK_AI streams a canned answer in the
+  // real model's shape instead.
+  "env": {
+    "dev": { "vars": { "MOCK_AI": "1" } }
   }
 }

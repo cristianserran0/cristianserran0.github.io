@@ -20,6 +20,13 @@
   --bleed-offset:      -40%;
   --tile-hover-scale:  1.02;
   --end-mark-rotation: 45deg;
+
+  /* the guide's conversation (from the Coworker prototype's measures) */
+  --chat-measure:        45rem;    /* 720px: the conversation and the input never get wider */
+  --chat-padding-block:  1.125rem; /* 18px */
+  --chat-padding-inline: 1.25rem;  /* 20px */
+  --chat-bubble-max:     85%;      /* the visitor's own messages */
+  --pending-dot:         0.375rem; /* thinking dots */
 }
 
 } /* @layer tokens */

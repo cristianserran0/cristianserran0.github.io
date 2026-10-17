@@ -223,12 +223,14 @@ const jsonLd = {
       <form class="assistant-composer">
         <textarea rows="2" aria-label="Message" placeholder="Ask about Cristian’s work, CV or this site…"></textarea>
         <div>
+          <!-- Send; while an answer streams it becomes Stop, in the same place. -->
           <button type="submit" class="icon-button" aria-label="Send" disabled>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>
+            <svg data-icon="send" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>
+            <svg data-icon="stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor"/></svg>
           </button>
         </div>
       </form>
-      <p class="assistant-disclaimer">Prototype: the guide is scripted, not AI yet.</p>
+      <p class="assistant-disclaimer">Answers by a small AI model. It can be wrong.</p>
 
       <!-- Feedback on an answer. A modal of THIS panel only: its backdrop
            covers the guide, never the page. See styles/components/modal.css. -->
@@ -256,6 +258,7 @@ const jsonLd = {
     <!-- Not deferred: it runs here, before the first paint, so the guide is
          complete when the page appears. The marker after it releases the
          render block set in <head>. -->
+    <script is:inline src="/js/guide-ai.js"></script>
     <script is:inline src="/js/assistant.js"></script>
     <span id="guide-ready" hidden></span>
   </body>

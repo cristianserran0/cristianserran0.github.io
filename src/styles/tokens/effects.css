@@ -18,6 +18,7 @@
   /* depth: a card inside a panel, and what floats above a panel */
   --shadow-raised: 0 1px 3px rgb(from var(--shadow-tint) r g b / 0.10),
                    0 8px 24px rgb(from var(--shadow-tint) r g b / 0.15);
+  --shadow-panel: 0 1px 2px rgb(from var(--shadow-tint) r g b / 0.04);   /* a very soft lift for the panels */
   --shadow-overlay: 0 2px 6px rgb(from var(--shadow-tint) r g b / 0.12),
                     0 16px 48px rgb(from var(--shadow-tint) r g b / 0.22);
   --backdrop-blur: 3px;   /* how much a modal blurs its panel */
@@ -37,7 +38,11 @@
      decelerates (comes in quickly, settles); something leaving
      accelerates (eases off, then gets out of the way). */
   --duration-panel: 300ms;
-  --delay-hint: 500ms;   /* hover this long before a hint (the resize line) shows */
+  --delay-hint: 500ms;
+  /* every hover and small interactive change in the panels: one timing */
+  --duration-interaction: 120ms;
+  --duration-word: 280ms;    /* a revealed word fading in (guide-ai.js: FADE_MS) */
+  --duration-pulse: 1200ms;  /* the thinking dots */   /* hover this long before a hint (the resize line) shows */
   --ease-enter: cubic-bezier(0.2, 0, 0, 1);
   --ease-exit:  cubic-bezier(0.4, 0, 1, 1);
 
@@ -55,6 +60,8 @@
     --duration-moderate: 0ms;
     --duration-slow:     0ms;
     --duration-panel:    0ms;
+    --duration-interaction: 0ms;
+    --duration-word:     0ms;
   }
 }
 

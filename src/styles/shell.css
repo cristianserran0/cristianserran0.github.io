@@ -45,8 +45,10 @@
       left: var(--frame-gap);
       width: var(--panel-width);
       overflow: hidden auto;
-      border-radius: var(--radius-lg);
+      border: var(--border-hairline) solid var(--border-subtle);
+      border-radius: var(--radius-panel);
       background: var(--bg-surface);
+      box-shadow: var(--shadow-panel);
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
     }
@@ -186,8 +188,8 @@
 :root[motion="exit"]::view-transition-image-pair(page) {
   animation: panel-square var(--duration-panel) var(--ease-exit) both;
 }
-@keyframes panel-round  { from { border-radius: 0; } to { border-radius: var(--radius-lg); } }
-@keyframes panel-square { from { border-radius: var(--radius-lg); } to { border-radius: 0; } }
+@keyframes panel-round  { from { border-radius: 0; } to { border-radius: var(--radius-panel); } }
+@keyframes panel-square { from { border-radius: var(--radius-panel); } to { border-radius: 0; } }
 
 /* Moving between pages with the guide open: the guide is the same on both
    pages (rebuilt before first paint, same conversation, same scroll), so
