@@ -47,8 +47,15 @@
 
   /* ---- app shell ---- */
   --frame-gap:       var(--space-2);   /* canvas showing around the panels */
-  --assistant-width: 22rem;
-  --panel-width:     calc(100% - var(--assistant-width) - 3 * var(--frame-gap));
+  --assistant-width: 22rem;           /* default; the visitor can drag it (assistant.js) */
+  --assistant-min:   20rem;           /* 320px: the narrowest phones, which the guide already fits */
+  --panel-min:       35rem;           /* 560px: the page never gets narrower than this */
+  /* The width actually used: the chosen one, held between the guide's
+     minimum and what leaves the page its minimum -- so a width saved on a
+     big screen can never overshoot a small one. */
+  --assistant-size:  clamp(var(--assistant-min), var(--assistant-width),
+                           100vw - var(--panel-min) - 3 * var(--frame-gap));
+  --panel-width:     calc(100% - var(--assistant-size) - 3 * var(--frame-gap));
   --icon-size:       1rem;
   --icon-button:     2rem;
   --dock-height:     3.5rem;           /* the quick-actions bar on phones */

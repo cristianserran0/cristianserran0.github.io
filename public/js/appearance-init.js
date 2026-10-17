@@ -11,5 +11,7 @@
     var a = localStorage.getItem('accent');
     if (a) d.setAttribute('accent', a);
     if (localStorage.getItem('assistant') === 'open') d.setAttribute('assistant', 'open');
+    var w = +localStorage.getItem('assistant-width');
+    if (w) d.style.setProperty('--assistant-width', w + 'px');   // CSSOM: allowed by the CSP
   } catch (e) {}
 })();

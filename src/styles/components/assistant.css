@@ -11,7 +11,7 @@
     top: var(--frame-gap);
     right: var(--frame-gap);
     bottom: var(--frame-gap);
-    width: var(--assistant-width);
+    width: var(--assistant-size);
     z-index: var(--z-assistant);
     display: flex;
     flex-direction: column;
@@ -36,6 +36,7 @@
   /* While the view transition moves it, its own slide stays out of the
      way (after the rule above, which has the same specificity). */
   [motion] .assistant { transition: none; }
+  [resizing] .assistant { transition: none; }   /* follows the pointer exactly */
   /* Phones: a sheet rising from the bottom, the page still peeking above. */
   @media (max-width: 760px) {
     .assistant {

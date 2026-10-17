@@ -425,4 +425,84 @@
     if (modal.isOpen()) modal.close();        // the innermost layer closes first
     else if (isOpen()) setOpen(false);
   });
+
+  // ---- resizing the guide (styles/shell.css, "resizing the guide") ----
+  // Drag the handle between the panels, or focus it and use the arrow keys
+  // (Shift for bigger steps, Home/End for the limits); double-click resets.
+  // The width is a custom property on <html>, set through the CSSOM (which
+  // the CSP allows), remembered like the other display preferences, and
+  // kept between the guide's minimum and what leaves the page its minimum.
+  var resizer = document.querySelector('.panel-resizer');
+  if (resizer) {
+    var rootPx = function (name) {
+      var v = getComputedStyle(d).getPropertyValue(name).trim();
+      return v.endsWith('rem') ? parseFloat(v) * parseFloat(getComputedStyle(d).fontSize) : parseFloat(v);
+    };
+    var limits = function () {
+      var min = rootPx('--assistant-min');
+      var max = window.innerWidth - rootPx('--panel-min') - 3 * rootPx('--frame-gap');
+      return { min: min, max: Math.max(min, max) };
+    };
+    var width = function () { return panel.getBoundingClientRect().width; };
+    var setWidth = function (w, save) {
+      var l = limits();
+      w = Math.round(Math.min(l.max, Math.max(l.min, w)));
+      d.style.setProperty('--assistant-width', w + 'px');
+      resizer.setAttribute('aria-valuemin', String(Math.round(l.min)));
+      resizer.setAttribute('aria-valuemax', String(Math.round(l.max)));
+      resizer.setAttribute('aria-valuenow', String(w));
+      if (save) store(local, 'assistant-width', String(w));
+    };
+    var reset = function () {
+      var a = readingAnchor();
+      d.style.removeProperty('--assistant-width');
+      store(local, 'assistant-width', null);
+      keepPlace(a);
+      setWidth(width(), false);
+    };
+
+    var drag = null;
+    resizer.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      resizer.setPointerCapture(e.pointerId);
+      drag = { x: e.clientX, w: width(), anchor: readingAnchor(), frame: 0 };
+      d.setAttribute('resizing', '');
+    });
+    resizer.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var x = e.clientX;
+      cancelAnimationFrame(drag.frame);
+      drag.frame = requestAnimationFrame(function () {
+        setWidth(drag.w + (drag.x - x), false);   // the guide is on the right: left = wider
+        keepPlace(drag.anchor);                    // the paragraph you were on stays put
+      });
+    });
+    var stop = function () {
+      if (!drag) return;
+      cancelAnimationFrame(drag.frame);
+      drag = null;
+      d.removeAttribute('resizing');
+      setWidth(width(), true);
+    };
+    resizer.addEventListener('pointerup', stop);
+    resizer.addEventListener('pointercancel', stop);
+    resizer.addEventListener('dblclick', reset);
+
+    resizer.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 64 : 16, w = width(), l = limits(), a = readingAnchor();
+      if (e.key === 'ArrowLeft') setWidth(w + step, true);
+      else if (e.key === 'ArrowRight') setWidth(w - step, true);
+      else if (e.key === 'Home') setWidth(l.min, true);
+      else if (e.key === 'End') setWidth(l.max, true);
+      else if (e.key === 'Enter') reset();
+      else return;
+      e.preventDefault();
+      keepPlace(a);
+    });
+
+    // A smaller window may no longer fit a saved width: re-fit it (unsaved).
+    window.addEventListener('resize', function () { if (isOpen()) setWidth(width(), false); });
+    if (isOpen()) setWidth(width(), false);
+  }
 })();

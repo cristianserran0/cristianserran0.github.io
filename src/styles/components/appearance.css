@@ -57,7 +57,7 @@
   }
   @media (min-width: 761px) {
     [assistant="open"] .display {
-      right: calc(var(--assistant-width) + 2 * var(--frame-gap) + var(--gutter));
+      right: calc(var(--assistant-size) + 2 * var(--frame-gap) + var(--gutter));
     }
   }
   @media (max-width: 760px) {

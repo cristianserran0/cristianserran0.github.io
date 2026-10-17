@@ -219,3 +219,56 @@
 @keyframes page-in-enter  { from { opacity: 0; translate: 0 var(--frame-gap); } }
 @keyframes page-out-exit  { to   { opacity: 0; translate: 0 var(--frame-gap); } }
 @keyframes page-in-exit   { from { opacity: 0; translate: 0 calc(-1 * var(--frame-gap)); } }
+
+/* ---- resizing the guide ----
+   A handle in the gap between the two panels (assistant.js does the
+   dragging). Hover shows the resize cursor at once and, after
+   --delay-hint, a thicker accent line down the gap; dragging or keyboard
+   focus shows the line straight away. */
+@layer layout {
+  .panel-resizer { display: none; }
+
+  @media (min-width: 761px) {
+    [assistant="open"] .panel-resizer {
+      display: block;
+      position: fixed;
+      top: var(--frame-gap);
+      bottom: var(--frame-gap);
+      /* the gap, plus a little grab area over each panel's edge */
+      left: calc(var(--frame-gap) + var(--panel-width) - var(--space-1));
+      width: calc(var(--frame-gap) + var(--space-2));
+      z-index: var(--z-resizer);
+      cursor: col-resize;
+      touch-action: none;
+    }
+    .panel-resizer::after {
+      content: "";
+      position: absolute;
+      top: var(--space-4);
+      bottom: var(--space-4);
+      left: 50%;
+      width: var(--border-rule);
+      translate: -50% 0;
+      border-radius: var(--radius-full);
+      background: var(--link);
+      opacity: 0;
+      transition: opacity var(--duration-fast) var(--ease-standard);
+    }
+    .panel-resizer:hover::after {
+      opacity: 1;
+      transition-delay: var(--delay-hint);
+    }
+    .panel-resizer:focus-visible { outline: none; }
+    .panel-resizer:focus-visible::after,
+    [resizing] .panel-resizer::after {
+      opacity: 1;
+      transition-delay: var(--duration-instant);
+    }
+
+    /* while dragging: nothing animates, nothing gets selected */
+    [resizing] body {
+      cursor: col-resize;
+      user-select: none;
+    }
+  }
+}
