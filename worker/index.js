@@ -18,7 +18,11 @@ import KNOWLEDGE from '../public/llms.txt';
 // case studies are written once. (The build runs before wrangler bundles.)
 import PIECES from '../dist/guide/pieces.json';
 
-const MODEL = '@cf/meta/llama-3.1-8b-instruct';
+// llama-3.1-8b-instruct (the brief's model) was retired on 2026-05-30;
+// this is its fp8 build, same model. Models do get retired: if answers
+// stop, check https://developers.cloudflare.com/workers-ai/models/ and the
+// Worker's logs, then change this one line.
+const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
 const MAX_TOKENS = 600;
 const HISTORY = 12;            // turns replayed; more adds latency and cost, little else
 const MAX_CHARS = 2000;        // per message the visitor sends
@@ -47,7 +51,6 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (url.pathname === '/api/ask') return ask(req, env);
-    if (url.pathname === '/api/probe-models' && env.AI) return probe(env);   // TEMPORARY
     return env.ASSETS.fetch(req);
   },
 };
@@ -87,7 +90,7 @@ async function ask(req, env) {
     // The free plan's daily allowance is used up: a normal state, not a fault.
     const quota = /4006|daily free allocation|neurons/i.test(String(err && err.message));
     console.error('guide: model call failed', err);   // Workers Logs (observability)
-    return json(quota ? 429 : 502, { error: quota ? 'quota' : 'model', detail: String(err && err.message).slice(0, 300) });
+    return json(quota ? 429 : 502, { error: quota ? 'quota' : 'model' });
   }
 }
 
@@ -118,13 +121,3 @@ function mockStream(question) {
   });
 }
 
-// TEMPORARY: which chat models are live on this account (5 tokens each).
-async function probe(env) {
-  const models = ['@cf/meta/llama-3.2-3b-instruct', '@cf/meta/llama-3.1-8b-instruct-fast', '@cf/meta/llama-3.1-8b-instruct-fp8', '@cf/meta/llama-3.3-70b-instruct-fp8-fast', '@cf/meta/llama-4-scout-17b-16e-instruct', '@cf/mistralai/mistral-small-3.1-24b-instruct', '@cf/google/gemma-3-12b-it', '@cf/qwen/qwen3-30b-a3b-fp8', '@cf/ibm-granite/granite-4.0-h-micro'];
-  const out = {};
-  for (const m of models) {
-    try { const r = await env.AI.run(m, { messages: [{ role: 'user', content: 'Say ok' }], max_tokens: 5 }); out[m] = 'ok: ' + JSON.stringify(r).slice(0, 80); }
-    catch (e) { out[m] = 'x ' + String(e.message).slice(0, 90); }
-  }
-  return json(200, out);
-}

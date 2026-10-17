@@ -89,7 +89,12 @@
             if (s.indexOf('data:') !== 0) return;
             var payload = s.slice(5).trim();
             if (payload === '[DONE]') return;
-            try { buffer += JSON.parse(payload).response || ''; } catch (e) {}
+            // Workers AI's own shape {response}, or the OpenAI-style shape
+            // newer models stream {choices:[{delta:{content}}]}.
+            try {
+              var j = JSON.parse(payload);
+              buffer += j.response || (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || '';
+            } catch (e) {}
           });
           return read();
         });
