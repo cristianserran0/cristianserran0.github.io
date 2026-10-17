@@ -2,7 +2,8 @@
    Mode: System / Light / Dark. "System" removes the attribute so :root's
    `color-scheme: light dark` follows the OS natively and live -- no
    matchMedia listener needed, and it keeps working with JS disabled.
-   Accent: sets the attribute and remembers it. */
+   Temperature (Warm / Neutral / Cold, the greys) and Accent (the signal
+   colour) set their attribute on <html> and remember it. */
 (function () {
   var d = document.documentElement;
 
@@ -15,10 +16,12 @@
   }
 
   var schemes = Array.prototype.slice.call(document.querySelectorAll('[data-scheme]'));
+  var temps = Array.prototype.slice.call(document.querySelectorAll('[data-temperature]'));
   var swatches = Array.prototype.slice.call(document.querySelectorAll('[data-accent]'));
 
   function render() {
-    var s = currentScheme(), a = d.getAttribute('accent');
+    var s = currentScheme(), a = d.getAttribute('accent'), t = d.getAttribute('temperature');
+    temps.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-temperature') === t)); });
     schemes.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-scheme') === s)); });
     swatches.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-accent') === a)); });
   }
@@ -28,6 +31,14 @@
       var next = b.getAttribute('data-scheme');
       next === 'system' ? d.removeAttribute('scheme') : d.setAttribute('scheme', next);
       store('scheme', next === 'system' ? null : next);
+      render();
+    });
+  });
+
+  temps.forEach(function (b) {
+    b.addEventListener('click', function () {
+      d.setAttribute('temperature', b.getAttribute('data-temperature'));
+      store('temperature', b.getAttribute('data-temperature'));
       render();
     });
   });

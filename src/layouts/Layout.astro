@@ -69,7 +69,7 @@ const jsonLd = {
 ---
 
 <!DOCTYPE html>
-<html lang="en" temperature="subtle" accent="blue">
+<html lang="en" temperature="cold" accent="blue">
   <head>
     <!-- Preconnect hints -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -146,6 +146,12 @@ const jsonLd = {
             <button type="button" data-scheme="system">System</button>
             <button type="button" data-scheme="light">Light</button>
             <button type="button" data-scheme="dark">Dark</button>
+          </div>
+          <p id="display-temperature">Temperature</p>
+          <div role="group" aria-labelledby="display-temperature">
+            <button type="button" data-temperature="warm">Warm</button>
+            <button type="button" data-temperature="neutral">Neutral</button>
+            <button type="button" data-temperature="cold">Cold</button>
           </div>
           <p id="display-accent">Accent</p>
           <div class="accents" role="group" aria-labelledby="display-accent">

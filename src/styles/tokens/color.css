@@ -3,14 +3,18 @@
 
    Three collections compose into one appearance:
 
-     <html scheme="dark" temperature="strong" accent="purple">
+     <html scheme="dark" temperature="warm" accent="purple">
 
    scheme may be omitted entirely, in which case the OS decides.
 
    Each collection owns a disjoint slice of tokens, so every
    combination falls out without being written down:
-     temperature -> owns the neutral ramp, names no role
-     accent      -> owns the accent ramp,  names no role
+     temperature -> owns the greys (hue and amount), names no role
+     accent      -> owns the accent ramp, names no role
+   Greys carry every background, every body text and every hairline;
+   the accent carries links, highlights and the chosen option. So
+   temperature sets the mood of the whole page, accent its signal colour,
+   and the two never touch each other's tokens.
      scheme      -> owns the role mapping, names no hue
 
    Custom properties resolve lazily at point of use, so any
@@ -32,26 +36,26 @@
 
 
 /* ------------------------------------------------------------
-   COLLECTION: temperature   modes: neutral | subtle | strong
+   COLLECTION: temperature   modes: warm | neutral | cold
 
-   How strongly the accent tints the greys. The hue itself comes
-   from the accent, so this collection owns only the amount --
-   which is why the modes are strengths and not cold/warm: once
-   the undertone hue follows the accent there is no direction
-   left for cold or warm to point in. `neutral` is the escape
-   hatch: zero chroma, a true grey.
+   The greys' undertone: its hue (--neutral-h) and how much of it
+   (--undertone, peak chroma, reached at rung 700). Independent of
+   the accent -- a warm page can carry a blue accent, a cold page an
+   orange one. `neutral` is a true grey, zero chroma.
 
-   `strong` reproduces the original site, whose greyscale WAS the
-   blue ramp -- peak undertone chroma 0.154 at rung 700.
+   Hues: warm 70 (sand), cold 255 (slate). Warm sits a little lower
+   in chroma than cold: at the same amount, warm greys read as brown
+   sooner than cold ones read as blue.
    ------------------------------------------------------------ */
-[temperature="neutral"] { --undertone: 0;     }
-[temperature="subtle"]  { --undertone: 0.060; }
-[temperature="strong"]  { --undertone: 0.154; }
+:root,
+[temperature="cold"]    { --neutral-h: 255; --undertone: 0.060; }
+[temperature="neutral"] { --neutral-h: 0;   --undertone: 0;     }
+[temperature="warm"]    { --neutral-h: 70;  --undertone: 0.045; }
 
 
 /* ------------------------------------------------------------
    NEUTRAL RAMP — derived
-   Grey's measured lightness ladder, tinted at the accent's hue.
+   Grey's measured lightness ladder, tinted at the temperature's hue.
    Derivation is safe here (unlike the accents) because low
    chroma never leaves the sRGB gamut at any hue.
 
@@ -63,22 +67,22 @@
 [scheme],
 [temperature],
 [accent] {
-  --neutral-50:  oklch(96.1% calc(var(--undertone) * 0.07) var(--accent-h));
-  --neutral-100: oklch(91.3% calc(var(--undertone) * 0.29) var(--accent-h));
-  --neutral-200: oklch(81.7% calc(var(--undertone) * 0.52) var(--accent-h));
-  --neutral-300: oklch(75.7% calc(var(--undertone) * 0.68) var(--accent-h));
-  --neutral-400: oklch(64.0% calc(var(--undertone) * 0.80) var(--accent-h));
-  --neutral-500: oklch(53.8% calc(var(--undertone) * 0.90) var(--accent-h));
-  --neutral-600: oklch(43.5% calc(var(--undertone) * 0.97) var(--accent-h));
-  --neutral-700: oklch(39.0% calc(var(--undertone) * 1.00) var(--accent-h));
-  --neutral-800: oklch(32.5% calc(var(--undertone) * 0.90) var(--accent-h));
-  --neutral-900: oklch(26.4% calc(var(--undertone) * 0.80) var(--accent-h));
+  --neutral-50:  oklch(96.1% calc(var(--undertone) * 0.07) var(--neutral-h));
+  --neutral-100: oklch(91.3% calc(var(--undertone) * 0.29) var(--neutral-h));
+  --neutral-200: oklch(81.7% calc(var(--undertone) * 0.52) var(--neutral-h));
+  --neutral-300: oklch(75.7% calc(var(--undertone) * 0.68) var(--neutral-h));
+  --neutral-400: oklch(64.0% calc(var(--undertone) * 0.80) var(--neutral-h));
+  --neutral-500: oklch(53.8% calc(var(--undertone) * 0.90) var(--neutral-h));
+  --neutral-600: oklch(43.5% calc(var(--undertone) * 0.97) var(--neutral-h));
+  --neutral-700: oklch(39.0% calc(var(--undertone) * 1.00) var(--neutral-h));
+  --neutral-800: oklch(32.5% calc(var(--undertone) * 0.90) var(--neutral-h));
+  --neutral-900: oklch(26.4% calc(var(--undertone) * 0.80) var(--neutral-h));
   /* 925, 975, 1000: added for depth in dark mode (see DEPTH below), so the
      four levels step evenly: 11 -> 15.5 -> 20 -> 24% lightness. */
-  --neutral-925: oklch(24.0% calc(var(--undertone) * 0.55) var(--accent-h));
-  --neutral-950: oklch(20.0% calc(var(--undertone) * 0.30) var(--accent-h));
-  --neutral-975: oklch(15.5% calc(var(--undertone) * 0.22) var(--accent-h));
-  --neutral-1000: oklch(11.0% calc(var(--undertone) * 0.15) var(--accent-h));
+  --neutral-925: oklch(24.0% calc(var(--undertone) * 0.55) var(--neutral-h));
+  --neutral-950: oklch(20.0% calc(var(--undertone) * 0.30) var(--neutral-h));
+  --neutral-975: oklch(15.5% calc(var(--undertone) * 0.22) var(--neutral-h));
+  --neutral-1000: oklch(11.0% calc(var(--undertone) * 0.15) var(--neutral-h));
 }
 
 /* ------------------------------------------------------------

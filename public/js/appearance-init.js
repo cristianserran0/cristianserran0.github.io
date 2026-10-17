@@ -6,6 +6,8 @@
   try {
     var s = localStorage.getItem('scheme');
     if (s === 'light' || s === 'dark') d.setAttribute('scheme', s);
+    var t = localStorage.getItem('temperature');
+    if (t === 'warm' || t === 'neutral' || t === 'cold') d.setAttribute('temperature', t);
     var a = localStorage.getItem('accent');
     if (a) d.setAttribute('accent', a);
     if (localStorage.getItem('assistant') === 'open') d.setAttribute('assistant', 'open');

@@ -92,8 +92,8 @@
   }
   .display div + p { margin-top: var(--space-4); }
 
-  /* mode: three buttons, the chosen one pressed */
-  .display [role="group"]:first-of-type {
+  /* mode and temperature: three buttons each, the chosen one pressed */
+  .display [role="group"]:not(.accents) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-1);
@@ -101,7 +101,8 @@
     border-radius: var(--radius-md);
     background: var(--fill-subtle);
   }
-  .display [data-scheme] {
+  .display [data-scheme],
+  .display [data-temperature] {
     font: var(--type-label-small);
     letter-spacing: var(--type-label-small-tracking);
     color: var(--text-secondary);
@@ -111,7 +112,8 @@
     padding: var(--space-1) 0;
     cursor: pointer;
   }
-  .display [data-scheme][aria-pressed="true"] {
+  .display [data-scheme][aria-pressed="true"],
+  .display [data-temperature][aria-pressed="true"] {
     color: var(--text-primary);
     background: var(--fill-strong);
   }
