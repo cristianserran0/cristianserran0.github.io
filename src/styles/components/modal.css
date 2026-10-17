@@ -23,7 +23,7 @@
     padding: var(--space-4);
     background: var(--backdrop);
     backdrop-filter: blur(var(--backdrop-blur));
-    transition: opacity var(--duration-fast) var(--ease-standard);
+    transition: opacity var(--duration-panel) var(--ease-enter);
   }
   .panel-modal[hidden] { display: none; }
   @starting-style { .panel-modal { opacity: 0; } }

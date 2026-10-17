@@ -33,6 +33,13 @@
   --ease-standard: ease;
   --ease-in-out:   ease-in-out;
 
+  /* Panels, sheets and modals all move on one beat. Something arriving
+     decelerates (comes in quickly, settles); something leaving
+     accelerates (eases off, then gets out of the way). */
+  --duration-panel: 300ms;
+  --ease-enter: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit:  cubic-bezier(0.4, 0, 1, 1);
+
   /* ---- stacking ---- */
   --z-header:    100;
   --z-dock:      120;   /* the quick-actions bar on phones */
@@ -45,6 +52,7 @@
     --duration-fast:     0ms;
     --duration-moderate: 0ms;
     --duration-slow:     0ms;
+    --duration-panel:    0ms;
   }
 }
 

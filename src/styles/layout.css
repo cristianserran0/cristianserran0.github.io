@@ -14,7 +14,8 @@
     width: 100%;
     z-index: var(--z-header);
     background: var(--bg-header);
-    transition: all var(--duration-slow) var(--ease-standard);
+    /* only for hiding on scroll -- never for the shell opening or closing */
+    transition: top var(--duration-panel) var(--ease-standard);
   }
   .site-header.nav-hidden { top: var(--nav-hidden-offset); }
 

@@ -320,24 +320,68 @@
 
   // ---- open / close ----
   // Opening the guide on a wide screen moves the scrolling from the window
-  // to the page panel (styles/shell.css), and closing moves it back. Carry
-  // the reading position across, so the page doesn't jump.
+  // to the page panel (styles/shell.css), and the narrower panel rewraps
+  // the text. So instead of carrying a scroll NUMBER across, keep the
+  // reader's place: note the element at the top of the reading area, and
+  // after the change scroll so it sits exactly where it was.
   var page = document.querySelector('.page');
+  var header = document.querySelector('.site-header');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var wide = window.matchMedia('(min-width: 761px)');
+  var touch = window.matchMedia('(pointer: coarse)');
   function panelScrolls() { return page && getComputedStyle(page).overflowY === 'auto'; }
   function scrollTop() { return panelScrolls() ? page.scrollTop : window.pageYOffset; }
   function scrollTo(y) { if (panelScrolls()) page.scrollTop = y; else window.scrollTo(0, y); }
 
+  var READABLE = 'main h1, main h2, main h3, main h4, main p, main li, main dt, main dd, main figure, main blockquote, main .work-tile';
+  function readingAnchor() {
+    var line = (panelScrolls() ? page.getBoundingClientRect().top : 0) + (header ? header.offsetHeight : 0);
+    var nodes = document.querySelectorAll(READABLE);
+    for (var i = 0; i < nodes.length; i++) {
+      var r = nodes[i].getBoundingClientRect();
+      if (r.height && r.bottom > line) return { el: nodes[i], top: r.top };
+    }
+    return null;
+  }
+  function keepPlace(anchor) {
+    if (anchor) scrollTo(scrollTop() + anchor.el.getBoundingClientRect().top - anchor.top);
+  }
+
   function isOpen() { return d.getAttribute('assistant') === 'open'; }
   function setOpen(open, from) {
-    var y = scrollTop();
-    open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
-    scrollTo(y);
-    store(local, 'assistant', open ? 'open' : null);
-    toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
-    if (open) { arrive(); input.focus({ preventScroll: true }); }
-    else if (panel.contains(document.activeElement)) {
-      var back = from || toggles.filter(function (t) { return t.offsetParent; })[0];
-      if (back) back.focus();
+    if (open === isOpen()) return;
+    var anchor = readingAnchor();
+    function change() {
+      open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
+      keepPlace(anchor);
+      store(local, 'assistant', open ? 'open' : null);
+      toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
+      if (open) {
+        arrive();
+        // On touch screens focusing the box would pop up the keyboard
+        // and shove everything again; there it waits for a tap.
+        if (!touch.matches) input.focus({ preventScroll: true });
+      } else if (panel.contains(document.activeElement)) {
+        var back = from || toggles.filter(function (t) { return t.offsetParent; })[0];
+        if (back) back.focus({ preventScroll: true });
+      }
+    }
+    // Both panels move as one (styles/shell.css, "opening and closing the
+    // guide"). Phones use the sheet's own transition; reduced motion and
+    // browsers without view transitions switch at once.
+    if (document.startViewTransition && wide.matches && !reduce.matches) {
+      // [motion] makes the page a window-sized scroller (styles/shell.css):
+      // carry the window's scroll into it, and back out when it ends.
+      var y = window.pageYOffset;
+      d.setAttribute('motion', open ? 'enter' : 'exit');
+      if (open) page.scrollTop = y;
+      var vt = document.startViewTransition(change);
+      vt.finished.then(done, done);
+    } else change();
+    function done() {
+      var top = page.scrollTop;
+      d.removeAttribute('motion');
+      if (!isOpen()) window.scrollTo(0, top);
     }
   }
   toggles.forEach(function (t) {

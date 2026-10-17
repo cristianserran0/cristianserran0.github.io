@@ -16,11 +16,30 @@
   [assistant="open"] body { background: var(--bg-canvas); }
 
   @media (min-width: 761px) {
+    /* While the guide is opening or closing (<html motion>), the page is a
+       window-sized scrolling box even when closed -- it looks the same,
+       but now both before and after are window-sized boxes the view
+       transition can morph between. A document-tall box would fly. */
+    [motion],
+    [motion] body { overflow: hidden; }
+    [motion] .page {
+      position: fixed;
+      inset: 0;
+      overflow: hidden auto;
+    }
+    [motion] .site-header {
+      position: sticky;
+      top: 0;
+      width: auto;
+      margin-bottom: calc(-1 * var(--header-height));
+    }
+
     [assistant="open"],
     [assistant="open"] body { overflow: hidden; }
 
     [assistant="open"] .page {
       position: fixed;
+      inset: auto;
       top: var(--frame-gap);
       bottom: var(--frame-gap);
       left: var(--frame-gap);
@@ -82,7 +101,16 @@
 
     /* room for the dock below the footer */
     .page-body { padding-bottom: calc(var(--dock-height) + var(--space-8)); }
-    [assistant="open"] .dock { display: none; }
+
+    /* The guide's sheet covers it: fade out as the sheet rises, back in
+       as it falls -- on the panels' beat. */
+    .dock { transition: opacity var(--duration-panel) var(--ease-enter); }
+    [assistant="open"] .dock {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-panel) var(--ease-exit),
+                  visibility var(--duration-instant) linear var(--duration-panel);
+    }
   }
 }
 
@@ -95,11 +123,83 @@
   @view-transition { navigation: auto; }
 }
 @layer layout {
-  .site-header { view-transition-name: site-header; }
-  .assistant   { view-transition-name: guide; }
-  .dock        { view-transition-name: dock; }
+  /* the page only while it is a window- or panel-sized box: as a
+     document-tall box it would fly across page navigations */
+  [motion] .page,
+  [assistant="open"] .page { view-transition-name: page; }
+  .site-header  { view-transition-name: site-header; }
+  .site-actions { view-transition-name: site-controls; }
+  .assistant    { view-transition-name: guide; }
+  .dock         { view-transition-name: dock; }
   ::view-transition-group(*) {
     animation-duration: var(--duration-moderate);
     animation-timing-function: var(--ease-in-out);
   }
 }
+
+/* ---- opening and closing the guide ----
+   One movement for both panels: assistant.js runs the change inside a
+   same-document view transition and marks it on <html motion="enter|exit">.
+   The browser snapshots before and after and moves every named box from
+   its old place to its new one on the panels' beat:
+     page           resizes from the full window to its panel
+     site-header    follows the page (its left side stays anchored)
+     site-controls  rides the page's right edge, never jumps
+     guide          slides in from / out to the right edge
+   The canvas, rounded corners and gaps are in the root snapshot and fade
+   in with it. Text is not rewrapped frame by frame: each snapshot keeps
+   its own size and the two cross-fade once, clipped by the moving panel.
+   Without view-transition support (or with reduced motion), the guide
+   slides on its own CSS transition and the page switches at once. */
+:root[motion]::view-transition-group(*) { animation-duration: var(--duration-panel); }
+:root[motion="enter"]::view-transition-group(*) { animation-timing-function: var(--ease-enter); }
+:root[motion="exit"]::view-transition-group(*)  { animation-timing-function: var(--ease-exit); }
+
+/* Snapshots keep their own size (never stretched) and are pinned the way
+   their content is laid out: the page's column is centred, so the page's
+   two snapshots are centred -- the column then sits in the same place in
+   both and the cross-fade is invisible wherever the text didn't rewrap.
+   The header's content starts at its left, so its snapshots pin left. */
+:root[motion]::view-transition-old(page),
+:root[motion]::view-transition-new(page),
+:root[motion]::view-transition-old(site-header),
+:root[motion]::view-transition-new(site-header) {
+  inline-size: 100%;   /* the box fills the moving panel ... */
+  block-size: 100%;
+  object-fit: none;    /* ... and the image inside it is never scaled */
+}
+:root[motion]::view-transition-old(page),
+:root[motion]::view-transition-new(page) { object-position: center top; }
+:root[motion]::view-transition-old(site-header),
+:root[motion]::view-transition-new(site-header) { object-position: left top; }
+:root[motion]::view-transition-image-pair(page),
+:root[motion]::view-transition-image-pair(site-header) { overflow: clip; }
+
+:root[motion="enter"]::view-transition-new(guide) {
+  animation: guide-arrive var(--duration-panel) var(--ease-enter);
+}
+:root[motion="exit"]::view-transition-old(guide) {
+  animation: guide-leave var(--duration-panel) var(--ease-exit) forwards;
+}
+@keyframes guide-arrive { from { translate: calc(100% + var(--frame-gap)) 0; } }
+@keyframes guide-leave  { to   { translate: calc(100% + var(--frame-gap)) 0; } }
+
+/* The page's content must not move while its panel does. The panel's top
+   edge travels by the frame gap (0 <-> 8px) and would carry both
+   snapshots with it, so each one counter-moves by that gap: in viewport
+   terms the text stays exactly put while the panel grows or shrinks
+   around it. (These replace the browser's default fades, so they fade
+   too.) */
+:root[motion]::view-transition-old(page),
+:root[motion]::view-transition-new(page) {
+  animation-duration: var(--duration-panel);
+  animation-fill-mode: both;
+}
+:root[motion="enter"]::view-transition-old(page) { animation-name: page-out-enter; animation-timing-function: var(--ease-enter); }
+:root[motion="enter"]::view-transition-new(page) { animation-name: page-in-enter;  animation-timing-function: var(--ease-enter); }
+:root[motion="exit"]::view-transition-old(page)  { animation-name: page-out-exit;  animation-timing-function: var(--ease-exit); }
+:root[motion="exit"]::view-transition-new(page)  { animation-name: page-in-exit;   animation-timing-function: var(--ease-exit); }
+@keyframes page-out-enter { to   { opacity: 0; translate: 0 calc(-1 * var(--frame-gap)); } }
+@keyframes page-in-enter  { from { opacity: 0; translate: 0 var(--frame-gap); } }
+@keyframes page-out-exit  { to   { opacity: 0; translate: 0 var(--frame-gap); } }
+@keyframes page-in-exit   { from { opacity: 0; translate: 0 calc(-1 * var(--frame-gap)); } }
