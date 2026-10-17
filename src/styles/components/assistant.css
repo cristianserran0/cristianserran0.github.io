@@ -20,6 +20,8 @@
     color: var(--text-primary);
     font: var(--type-chat);
     letter-spacing: var(--type-chat-tracking);
+    overflow: hidden;
+    overscroll-behavior: contain;   /* header and composer too: never scroll the page */
     visibility: hidden;
     transform: translateX(calc(100% + var(--frame-gap)));
     transition: transform var(--duration-slow) var(--ease-standard),
@@ -73,9 +75,15 @@
   .icon-button:disabled { cursor: default; color: var(--text-tertiary); background: none; }
 
   /* ---- log ---- */
+  /* The guide scrolls on its own. overflow-y: scroll makes the log a scroll
+     container even when it is short, and overscroll-behavior: contain stops
+     the scroll there instead of passing it on to the page. */
   .assistant-log {
     flex: 1;
-    overflow-y: auto;
+    min-height: 0;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
     list-style-type: none;
     margin: 0;
     padding: var(--space-2) var(--space-4) var(--space-4);

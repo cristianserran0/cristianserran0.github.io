@@ -1,5 +1,8 @@
 /* The guide (assistant panel) -- PROTOTYPE, scripted, no AI behind it yet.
 
+   It stays silent until the visitor opens it: nothing is said, stored or
+   advanced while the panel is closed.
+
    It knows which room the visitor is in (the #guide-data JSON block, written
    by Layout.astro from src/data/pieces.ts), offers short tours through the
    pieces, and answers a few topics from a keyword table. The conversation
@@ -126,6 +129,9 @@
   var kept = !!read(local, 'assistant-transcript');
   var transcript = [];
   try { transcript = JSON.parse(read(local, 'assistant-transcript') || read(session, 'guide-log') || '[]'); } catch (e) {}
+  // Only the conversation is stored; room greetings are drawn fresh each
+  // time (older versions stored them -- drop those).
+  transcript = transcript.filter(function (m) { return !m.room; });
   var offered = kept || transcript.some(function (m) { return m.from === 'user'; });
 
   function el(tag, cls, text) {
@@ -157,6 +163,7 @@
     }
     log.appendChild(li);
     log.scrollTop = log.scrollHeight;
+    return li;
   }
 
   function say(m) {
@@ -181,12 +188,20 @@
   }
 
   transcript.forEach(render);
-  // Entering a room: a tour stop if one is due, otherwise a greeting with
-  // what this room offers -- once per room, not on every reload.
-  var last = transcript[transcript.length - 1];
-  var stop = tourStop();
-  if (stop) { if (!last || last.stop !== stop.stop) say(stop); }
-  else if (!last || last.room !== here) say({ room: here, text: [roomGreeting()], suggestions: roomSuggestions() });
+
+  // What the guide says on entering a room, once the panel is open: the
+  // tour stop if one is due (part of the conversation, so it is stored),
+  // otherwise a greeting with what this room offers (shown, never stored,
+  // so it can't pile up from page to page).
+  var greeted = false;
+  function arrive() {
+    var stop = tourStop();
+    var last = transcript[transcript.length - 1];
+    if (stop) { if (!last || last.stop !== stop.stop) say(stop); return; }
+    if (greeted) return;
+    greeted = true;
+    render({ from: 'assistant', text: [roomGreeting()], suggestions: roomSuggestions() });
+  }
 
   keep.addEventListener('click', function (e) {
     var b = e.target.closest('[data-keep]');
@@ -209,7 +224,7 @@
     open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
     store(local, 'assistant', open ? 'open' : null);
     toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
-    if (open) input.focus({ preventScroll: true });
+    if (open) { arrive(); input.focus({ preventScroll: true }); }
     else if (panel.contains(document.activeElement)) {
       var back = from || toggles.filter(function (t) { return t.offsetParent; })[0];
       if (back) back.focus();
@@ -220,5 +235,6 @@
     t.addEventListener('click', function () { setOpen(!isOpen(), t); });
   });
   closeBtn.addEventListener('click', function () { setOpen(false); });
+  if (isOpen()) arrive();
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) setOpen(false); });
 })();
