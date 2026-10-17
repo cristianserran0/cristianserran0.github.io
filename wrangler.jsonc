@@ -1,12 +1,15 @@
 // Cloudflare Worker that serves the site: the single source of truth for
-// hosting. Workers Builds runs `npm run build` and deploys dist/: master goes
-// live on cristianserrano.ar, every other branch gets a preview URL.
+// hosting. Wrangler itself runs `npm run build` (build.command below), so the
+// dashboard build command stays empty and each branch builds the way its own
+// config says. master goes live on cristianserrano.ar; every other branch
+// gets a preview URL.
 // Response headers (security, caching) live in public/_headers.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cristianserrano-ar",
   "compatibility_date": "2026-07-11",
   "observability": { "enabled": true },
+  "build": { "command": "npm run build" },
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
