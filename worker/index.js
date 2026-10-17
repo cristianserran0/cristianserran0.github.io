@@ -85,7 +85,8 @@ async function ask(req, env) {
   } catch (err) {
     // The free plan's daily allowance is used up: a normal state, not a fault.
     const quota = /4006|daily free allocation|neurons/i.test(String(err && err.message));
-    return json(quota ? 429 : 502, { error: quota ? 'quota' : 'model' });
+    console.error('guide: model call failed', err);   // Workers Logs (observability)
+    return json(quota ? 429 : 502, { error: quota ? 'quota' : 'model', detail: String(err && err.message).slice(0, 300) });
   }
 }
 
