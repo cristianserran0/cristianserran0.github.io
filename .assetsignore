@@ -8,4 +8,3 @@ wrangler.jsonc
 .wrangler
 node_modules
 sass
-CNAME
