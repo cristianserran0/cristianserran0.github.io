@@ -1,59 +1,40 @@
-/* Header actions and the Display panel.
+/* Header controls and the Display panel.
 
-   Contact and Guide read as text links in the label style. The Display
-   control is one small icon that opens a native popover (HTML `popover`,
+   Top right holds the two controls, nothing else: Display, then the
+   Guide. Display opens a native popover (HTML `popover`,
    no script needed to open, close or dismiss it) holding the colour scheme
    and the accent swatches. Each swatch carries its own accent="…"
    attribute, so var(--accent-500) on it resolves to that hue. */
 
 @layer components {
-  .contact-link,
-  .guide-toggle,
-  .display-toggle {
-    font: var(--type-label);
-    letter-spacing: var(--type-label-tracking);
-    color: var(--text-primary);
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  .contact-link,
+  /* Two icon buttons, top right: Display, then the Guide. */
+  .display-toggle,
   .guide-toggle {
-    text-decoration: underline;
-    text-decoration-color: var(--link);
-    text-decoration-thickness: var(--border-accent);
-    text-underline-offset: var(--underline-offset);
-  }
-  .contact-link:hover,
-  .guide-toggle:hover,
-  .display-toggle:hover,
-  [assistant="open"] .guide-toggle { color: var(--link); }
-
-  .display-toggle {
     display: inline-grid;
     place-items: center;
     width: var(--icon-button);
     height: var(--icon-button);
+    padding: 0;
+    border: none;
     border-radius: var(--radius-md);
+    background: none;
+    color: var(--text-primary);
+    cursor: pointer;
   }
-  .display-toggle svg { width: var(--icon-size); height: var(--icon-size); }
+  .display-toggle svg,
+  .guide-toggle svg { width: var(--icon-size); height: var(--icon-size); }
+  .display-toggle:hover,
+  .guide-toggle:hover { background: var(--fill-subtle); }
+  /* the guide is open: the icon stays lit */
+  [assistant="open"] .guide-toggle { color: var(--link); background: var(--fill-subtle); }
 
-  .contact-link:focus-visible,
-  .guide-toggle:focus-visible,
   .display-toggle:focus-visible,
+  .guide-toggle:focus-visible,
   .display button:focus-visible {
     outline: var(--border-accent) solid var(--link);
     outline-offset: var(--focus-offset);
   }
 
-  @container header (max-width: 560px) {
-    .contact-link,
-    .guide-toggle {
-      font: var(--type-label-small);
-      letter-spacing: var(--type-label-small-tracking);
-    }
-  }
   /* On phones the guide lives in the dock, at thumb height. */
   @media (max-width: 760px) {
     .guide-toggle { display: none; }

@@ -25,6 +25,7 @@ const accents = ['blue', 'purple', 'magenta', 'red', 'orange', 'green', 'emerald
 const nav = [
   { href: '/work/', label: 'Work', current: pathname.startsWith('/work') },
   { href: '/cv/',   label: 'CV',   current: pathname.startsWith('/cv') },
+  { href: '/contact/', label: 'Contact', current: pathname.startsWith('/contact') },
 ];
 
 /* What the guide needs to know about the room the visitor is in, and the
@@ -132,10 +133,11 @@ const jsonLd = {
           </ul>
 
           <div class="site-actions">
-            <a href="/contact/" class="contact-link" aria-current={pathname.startsWith('/contact') ? 'page' : undefined}>Contact</a>
-            <button type="button" class="guide-toggle" data-assistant-toggle aria-controls="assistant" aria-expanded="false">Guide</button>
-            <button type="button" class="display-toggle" popovertarget="display" aria-label="Display: colour scheme and accent">
+            <button type="button" class="display-toggle" popovertarget="display" aria-label="Display: mode, temperature and accent" title="Display">
               <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+            </button>
+            <button type="button" class="guide-toggle" data-assistant-toggle aria-controls="assistant" aria-expanded="false" aria-label="Guide" title="Guide">
+              <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.75c.4 2.9 1.85 4.35 4.75 4.75-2.9.4-4.35 1.85-4.75 4.75C6.6 8.35 5.15 6.9 2.25 6.5 5.15 6.1 6.6 4.65 7 1.75z"/><path d="M12.25 9.5c.2 1.35.9 2.05 2.25 2.25-1.35.2-2.05.9-2.25 2.25-.2-1.35-.9-2.05-2.25-2.25 1.35-.2 2.05-.9 2.25-2.25z"/></svg>
             </button>
           </div>
         </nav>

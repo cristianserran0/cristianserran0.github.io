@@ -18,8 +18,8 @@
   }
   .site-header.nav-hidden { top: var(--nav-hidden-offset); }
 
-  /* Name, sections, then the actions: Contact (the front desk), the guide
-     and the Display control. One row, everything centred on one line. */
+  /* Name and the sections (Work, CV, Contact) on the left; the controls
+     (Display, Guide) on the right. One row, centred on one line. */
   .site-nav {
     display: flex;
     align-items: center;
@@ -49,7 +49,7 @@
   .site-actions {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-1);
     margin-inline-start: auto;
   }
 
