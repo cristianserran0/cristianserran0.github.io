@@ -104,7 +104,9 @@ function sse(stream) {
    the same SSE shape as Workers AI, in uneven bursts, so the guide's
    reveal can be judged without spending anything. */
 function mockStream(question) {
-  const text = `Here's a **mock answer**, streamed in uneven bursts like the real model, to "${question.slice(0, 60)}".\n\nCristian has led design systems at:\n- **Kaia Health**, the Kinetic Design System\n- **Openbank**, through Globant\n\nSee [the work](/work/) for the full stories, or ask something else.`;
+  let text = `Here's a **mock answer**, streamed in uneven bursts like the real model, to "${question.slice(0, 60)}".\n\nCristian has led design systems at:\n- **Kaia Health**, the Kinetic Design System\n- **Openbank**, through Globant\n\nSee [the work](/work/) for the full stories, or ask something else.`;
+  // "long" in the question: a reply taller than the panel, to try the scroll model.
+  if (/\blong\b/i.test(question)) text = [1, 2, 3, 4, 5].map((n) => `**Part ${n}.** ` + text).join('\n\n');
   const enc = new TextEncoder();
   return new ReadableStream({
     async start(ctrl) {

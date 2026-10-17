@@ -90,6 +90,10 @@
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
+    /* assistant.js places the scroll itself (the scroll model); the
+       browser's own scroll anchoring would move the view when a finished
+       reply replaces the streaming one -- after the visitor took over. */
+    overflow-anchor: none;
     scrollbar-width: thin;
     scrollbar-color: var(--border-subtle) transparent;
     list-style-type: none;
@@ -318,4 +322,41 @@
   .assistant a { transition: color var(--duration-interaction) var(--ease-standard),
                              background-color var(--duration-interaction) var(--ease-standard),
                              border-color var(--duration-interaction) var(--ease-standard); }
+}
+
+/* ---- the scroll model: the question at the top, the reply growing down ----
+   assistant.js sizes the trailing spacer and places the question; see
+   "the scroll model" there. */
+@layer components {
+  .assistant-thread {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .assistant-spacer { flex: none; }
+  .assistant-log > .assistant-spacer { margin-top: calc(-1 * var(--space-4)); }   /* no extra list gap before it */
+
+  .assistant-jump {
+    position: absolute;
+    bottom: var(--space-3);
+    left: 50%;
+    translate: -50% 0;
+    display: inline-grid;
+    place-items: center;
+    width: var(--icon-button);
+    height: var(--icon-button);
+    padding: 0;
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    background: var(--bg-overlay);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-raised);
+    cursor: pointer;
+  }
+  .assistant-jump[hidden] { display: none; }
+  .assistant-jump svg { width: var(--icon-size); height: var(--icon-size); }
+  .assistant-jump:hover { border-color: var(--link); }
+  .assistant-jump:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
 }

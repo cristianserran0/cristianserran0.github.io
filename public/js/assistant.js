@@ -24,6 +24,81 @@
   var keep = panel.querySelector('.assistant-keep');
   var feedback = panel.querySelector('[data-feedback]');
 
+  // ---- the scroll model (the Coworker brief, section 6) ----
+  // The newest question is pinned to the TOP and the reply grows down into
+  // empty space below it, so the view never moves while an answer streams
+  // and the answer appears where the eyes already are. (Sticking to the
+  // bottom instead nudges the view on every word and pushes the start of
+  // the answer out of reach -- don't bring it back.)
+  //   send:      a full panel height of trailing space, then snap the
+  //              question to the top (two frames: commit, then paint).
+  //   done:      settle the space -- just enough to keep the question at
+  //              the top of a short reply, or a resting tail under a long one.
+  //   the visitor scrolls during a turn: hands off until their next send.
+  // Scrolling is set on the log itself, never with scrollIntoView(), which
+  // would also scroll the page panel behind the guide.
+  var JUMP_SLACK = 24;   // px the latest message may hide before "jump" shows
+  var spacer = document.createElement('li');
+  spacer.className = 'assistant-spacer';
+  spacer.setAttribute('aria-hidden', 'true');
+  log.appendChild(spacer);
+  var jump = panel.querySelector('.assistant-jump');
+  var userScrolled = false;
+
+  function restSpace() {
+    var v = getComputedStyle(log).getPropertyValue('--chat-rest-space').trim();
+    return parseFloat(v) * (v.endsWith('rem') ? parseFloat(getComputedStyle(document.documentElement).fontSize) : 1);
+  }
+  function scrollPad() { return parseFloat(getComputedStyle(log).scrollPaddingTop) || 0; }
+  function setSpacer(h) { spacer.style.height = Math.max(0, Math.round(h)) + 'px'; }   // CSSOM: CSP-safe
+  // A node's top inside the scrolled content, from rect differences (not
+  // offsetTop, which depends on the offset parent).
+  function topInLog(node) { return node.getBoundingClientRect().top - log.getBoundingClientRect().top + log.scrollTop - scrollPad(); }
+  function contentEnd() { return log.scrollHeight - spacer.offsetHeight; }
+  function lastQuestion() { var u = log.querySelectorAll('[data-from="user"]'); return u[u.length - 1]; }
+  function scrollLog(top, smooth) { log.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' }); }
+
+  function pin(node) {
+    userScrolled = false;
+    setSpacer(log.clientHeight);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!userScrolled && node.isConnected) scrollLog(topInLog(node));   // snap, never smooth: content is about to move
+        updateJump();
+      });
+    });
+  }
+  function settle(anchor) {
+    anchor = anchor && anchor.isConnected ? anchor : lastQuestion();
+    if (!anchor) { setSpacer(restSpace()); updateJump(); return; }
+    var at = topInLog(anchor), end = contentEnd();
+    var overflows = end - at >= log.clientHeight;
+    setSpacer(overflows ? restSpace() : Math.max(restSpace(), at + log.clientHeight - end));
+    if (!userScrolled) scrollLog(at);       // re-pin; a visitor who scrolled is left where they are
+    updateJump();
+  }
+
+  // Any scroll by the visitor wins for the rest of the turn.
+  ['wheel', 'touchmove', 'keydown', 'pointerdown'].forEach(function (type) {
+    log.addEventListener(type, function () { userScrolled = true; }, { passive: true });
+  });
+
+  // Jump to latest: only while the latest message hides more than
+  // JUMP_SLACK below the fold. Measured on the last real message, never the
+  // spacer (always below the fold, it would keep the button on forever).
+  function updateJump() {
+    var last = spacer.previousElementSibling;
+    jump.hidden = !last || last.getBoundingClientRect().bottom - log.getBoundingClientRect().bottom <= JUMP_SLACK;
+  }
+  var jumpFrame = 0;
+  function updateJumpSoon() { cancelAnimationFrame(jumpFrame); jumpFrame = requestAnimationFrame(updateJump); }
+  log.addEventListener('scroll', updateJumpSoon, { passive: true });
+  jump.addEventListener('click', function () {
+    userScrolled = true;                    // the visitor has taken over
+    var last = spacer.previousElementSibling;
+    if (last) scrollLog(topInLog(last) + scrollPad() + last.offsetHeight + restSpace() - log.clientHeight, true);
+  });
+
   function store(area, k, v) { try { v === null ? area.removeItem(k) : area.setItem(k, v); } catch (e) {} }
   function read(area, k) { try { return area.getItem(k); } catch (e) { return null; } }
   var local = window.localStorage, session = window.sessionStorage;
@@ -168,8 +243,7 @@
       li.appendChild(s);
     }
     if (m.rateable) li.appendChild(rating(m));
-    log.appendChild(li);
-    log.scrollTop = log.scrollHeight;
+    log.insertBefore(li, spacer);
     return li;
   }
 
@@ -177,8 +251,9 @@
     m.from = m.from || 'assistant';
     transcript.push(m);
     transcript = transcript.slice(-40);
-    render(m);
+    var li = render(m);
     persist();
+    return li;
   }
 
   // ---- rating an answer ----
@@ -292,11 +367,15 @@
   function ask(q) {
     q = q.trim();
     if (!q || turn) return;
-    say({ from: 'user', text: [q] });
+    var question = say({ from: 'user', text: [q] });
+    pin(question);
     input.value = ''; send.disabled = true;
     if (!offered) { offered = true; keep.hidden = false; }
     if (scripted(q) || !window.GuideAI) {
-      setTimeout(function () { var a = answer(q); a.rateable = true; say(a); }, 350);
+      setTimeout(function () {
+        var a = answer(q); a.rateable = true; say(a);
+        requestAnimationFrame(function () { settle(question); });
+      }, 350);
       return;
     }
     streamAnswer(q);
@@ -320,11 +399,12 @@
     li.setAttribute('data-from', 'assistant');
     li.setAttribute('aria-label', 'Thinking');
     for (var i = 0; i < 3; i++) li.appendChild(el('span'));
-    log.appendChild(li);
+    log.insertBefore(li, spacer);
     var body = null;
-    turn = { li: li, scrolled: false };
+    turn = { li: li };
     busy(true);
-    follow();
+    var question = lastQuestion();
+    function finish() { requestAnimationFrame(function () { settle(question); }); }
     turn.stop = window.GuideAI.stream({
       url: '/api/ask',
       body: { messages: history(), page: pageLabel() },
@@ -332,18 +412,19 @@
         if (!body) { li.textContent = ''; li.className = ''; li.removeAttribute('aria-label'); body = el('div', 'assistant-md'); li.appendChild(body); }
         window.GuideAI.renderMarkdown(body, shown);
         window.GuideAI.fadeNewest(body, ages);
-        follow();
+        updateJumpSoon();                    // the view itself never moves
       },
       onDone: function (finalText) {
         li.remove();
         turn = null; busy(false);
-        if (!finalText.trim()) return;
-        say({ from: 'assistant', md: finalText, rateable: true });
+        if (finalText.trim()) say({ from: 'assistant', md: finalText, rateable: true });
+        finish();
       },
       onError: function (kind) {
         li.remove();
         turn = null; busy(false);
         say(offline(kind, q));
+        finish();
       },
     }).stop;
   }
@@ -358,13 +439,6 @@
     var a = answer(q);
     return { offline: true, rateable: true, read: a.read, text: [why + ' Here’s what I know offline:'].concat(a.text), links: a.links, suggestions: a.suggestions };
   }
-
-  // While an answer streams, keep its newest line in view -- until the
-  // visitor scrolls the conversation themselves; then leave it to them.
-  function follow() { if (turn && !turn.scrolled) log.scrollTop = log.scrollHeight; }
-  ['wheel', 'touchmove', 'keydown'].forEach(function (type) {
-    log.addEventListener(type, function () { if (turn) turn.scrolled = true; }, { passive: true });
-  });
 
   // Send becomes Stop while an answer streams, in the same place.
   function busy(on) {
@@ -392,14 +466,22 @@
   function arrive() {
     var stop = tourStop();
     var last = transcript[transcript.length - 1];
-    if (stop && (!last || last.stop !== stop.stop)) say(stop);
+    if (stop && (!last || last.stop !== stop.stop)) {
+      // A tour stop is pinned to the top like a question, then settled
+      // (one frame after pin() has placed it).
+      var li = say(stop);
+      pin(li);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { requestAnimationFrame(function () { settle(li); }); }); });
+    }
   }
 
   // Carried across pages for the session: where the conversation was
   // scrolled to, and anything half-typed.
   var VIEW = 'guide-view';
   var view = {}; try { view = JSON.parse(read(session, VIEW)) || {}; } catch (e) {}
+  setSpacer(restSpace());
   if (typeof view.top === 'number' && !view.bottom) log.scrollTop = view.top;
+  else log.scrollTop = log.scrollHeight;    // otherwise open on the latest
   if (view.draft) { input.value = view.draft; send.disabled = !view.draft.trim(); }
   window.addEventListener('pagehide', function () {
     store(session, VIEW, JSON.stringify({
@@ -467,6 +549,7 @@
       toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
       if (open) {
         arrive();
+        updateJumpSoon();
         // On touch screens focusing the box would pop up the keyboard
         // and shove everything again; there it waits for a tap.
         if (!touch.matches) input.focus({ preventScroll: true });

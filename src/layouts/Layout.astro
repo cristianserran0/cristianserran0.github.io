@@ -201,7 +201,12 @@ const jsonLd = {
         </button>
       </header>
 
-      <ol class="assistant-log" aria-live="polite"></ol>
+      <div class="assistant-thread">
+        <ol class="assistant-log" aria-live="polite"></ol>
+        <button type="button" class="assistant-jump" aria-label="Jump to latest" title="Jump to latest" hidden>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </button>
+      </div>
 
       <!-- Where the visitor is, and what this room offers. Updated in place
            on every page, never added to the conversation, so moving between
