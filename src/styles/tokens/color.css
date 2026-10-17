@@ -51,9 +51,9 @@
    same chroma, warm greys turn brown sooner than cold ones turn blue.
    ------------------------------------------------------------ */
 :root,
-[temperature="cold"]    { --neutral-h: 255; --neutral-c: 0.025; }
+[temperature="cold"]    { --neutral-h: 255; --neutral-c: 0.016; }
 [temperature="neutral"] { --neutral-h: 0;   --neutral-c: 0;     }
-[temperature="warm"]    { --neutral-h: 70;  --neutral-c: 0.018; }
+[temperature="warm"]    { --neutral-h: 70;  --neutral-c: 0.012; }
 
 
 /* ------------------------------------------------------------
