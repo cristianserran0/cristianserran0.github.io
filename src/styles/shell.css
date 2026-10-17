@@ -1,46 +1,44 @@
-/* App shell: the page and the assistant as two floating panels.
+/* App shell: the page and the guide as two floating panels.
 
    <html assistant="open"> turns it on; without the attribute the page is
-   exactly the plain site. Like scheme and accent, it is an unprefixed
-   attribute on <html>, restored before first paint.
+   exactly the plain site, scrolling the window as usual. Like scheme and
+   accent, it is an unprefixed attribute on <html>, restored before first
+   paint.
 
-   The page keeps scrolling the WINDOW, not an inner box, so scroll
-   position, the hide-on-scroll header and anchor links all keep working.
-   The rounded panel look comes from .frame: a fixed, click-through ring
-   whose huge spread shadow paints the canvas everywhere outside a rounded
-   hole over the page. Content scrolls "inside" the hole. */
+   With the guide open on a wide screen, each panel is its own scrolling
+   box with its own scrollbar at its own edge: the window stops scrolling
+   and .page becomes the scroller. The header sticks to the top of the page
+   panel, taking no room in the flow (negative margin), just as the fixed
+   header does in the plain site. public/js/header-behaviour.js and
+   assistant.js follow whichever box is scrolling. */
 
 @layer layout {
-  .frame { display: none; }
-
   [assistant="open"] body { background: var(--bg-canvas); }
 
   @media (min-width: 761px) {
+    [assistant="open"],
+    [assistant="open"] body { overflow: hidden; }
+
     [assistant="open"] .page {
-      width: var(--panel-width);
-      margin: var(--frame-gap) 0 var(--frame-gap) var(--frame-gap);
-      background: var(--bg-surface);
-    }
-
-    [assistant="open"] .site-header {
-      top: var(--frame-gap);
-      left: var(--frame-gap);
-      width: var(--panel-width);
-    }
-    [assistant="open"] .site-header.nav-hidden { top: var(--nav-hidden-offset); }
-
-    [assistant="open"] .frame {
-      display: block;
       position: fixed;
       top: var(--frame-gap);
       bottom: var(--frame-gap);
       left: var(--frame-gap);
       width: var(--panel-width);
+      overflow: hidden auto;
       border-radius: var(--radius-lg);
-      box-shadow: 0 0 0 var(--frame-spread) var(--bg-canvas);
-      pointer-events: none;
-      z-index: var(--z-frame);
+      background: var(--bg-surface);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
     }
+
+    [assistant="open"] .site-header {
+      position: sticky;
+      top: 0;
+      width: auto;
+      margin-bottom: calc(-1 * var(--header-height));
+    }
+    [assistant="open"] .site-header.nav-hidden { top: var(--nav-hidden-offset); }
   }
 }
 

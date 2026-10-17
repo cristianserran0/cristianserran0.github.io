@@ -75,15 +75,16 @@
   .icon-button:disabled { cursor: default; color: var(--text-tertiary); background: none; }
 
   /* ---- log ---- */
-  /* The guide scrolls on its own. overflow-y: scroll makes the log a scroll
-     container even when it is short, and overscroll-behavior: contain stops
-     the scroll there instead of passing it on to the page. */
+  /* The guide scrolls on its own: only the log scrolls, so its scrollbar
+     spans just the log, and the panel (overscroll-behavior: contain, above)
+     never hands a scroll on to the page. */
   .assistant-log {
     flex: 1;
     min-height: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
+    scrollbar-color: var(--border-subtle) transparent;
     list-style-type: none;
     margin: 0;
     padding: var(--space-2) var(--space-4) var(--space-4);

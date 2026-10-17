@@ -219,9 +219,19 @@
   form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
 
   // ---- open / close ----
+  // Opening the guide on a wide screen moves the scrolling from the window
+  // to the page panel (styles/shell.css), and closing moves it back. Carry
+  // the reading position across, so the page doesn't jump.
+  var page = document.querySelector('.page');
+  function panelScrolls() { return page && getComputedStyle(page).overflowY === 'auto'; }
+  function scrollTop() { return panelScrolls() ? page.scrollTop : window.pageYOffset; }
+  function scrollTo(y) { if (panelScrolls()) page.scrollTop = y; else window.scrollTo(0, y); }
+
   function isOpen() { return d.getAttribute('assistant') === 'open'; }
   function setOpen(open, from) {
+    var y = scrollTop();
     open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
+    scrollTo(y);
     store(local, 'assistant', open ? 'open' : null);
     toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
     if (open) { arrive(); input.focus({ preventScroll: true }); }
@@ -236,5 +246,15 @@
   });
   closeBtn.addEventListener('click', function () { setOpen(false); });
   if (isOpen()) arrive();
+
+  // The browser restores the window's scroll on reload and Back, but not a
+  // panel's. Do it ourselves -- only then; a fresh visit starts at the top.
+  var KEY = 'guide-scroll:' + location.pathname;
+  window.addEventListener('pagehide', function () { store(session, KEY, String(scrollTop())); });
+  var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  if (nav && (nav.type === 'reload' || nav.type === 'back_forward') && panelScrolls()) {
+    var saved = +read(session, KEY);
+    if (saved) scrollTo(saved);
+  }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) setOpen(false); });
 })();
