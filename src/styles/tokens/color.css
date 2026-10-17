@@ -38,19 +38,22 @@
 /* ------------------------------------------------------------
    COLLECTION: temperature   modes: warm | neutral | cold
 
-   The greys' undertone: its hue (--neutral-h) and how much of it
-   (--undertone, peak chroma, reached at rung 700). Independent of
-   the accent -- a warm page can carry a blue accent, a cold page an
-   orange one. `neutral` is a true grey, zero chroma.
+   The greys' tint, as OKLCH hue and chroma (chroma = saturation):
+     --neutral-h  the hue: warm 70 (sand), cold 255 (slate)
+     --neutral-c  the saturation at its peak, rung 700; the ramp
+                  below scales it per rung, weakest at the ends
+   Independent of the accent -- a warm page can carry a blue accent,
+   a cold page an orange one. `neutral` is a true grey, zero chroma.
 
-   Hues: warm 70 (sand), cold 255 (slate). Warm sits a little lower
-   in chroma than cold: at the same amount, warm greys read as brown
-   sooner than cold ones read as blue.
+   Kept low on purpose: the peak lands on the text greys, where the
+   eye notices tint most. For scale, Tailwind's slate peaks near
+   0.045 and stone near 0.013. Warm sits a little below cold: at the
+   same chroma, warm greys turn brown sooner than cold ones turn blue.
    ------------------------------------------------------------ */
 :root,
-[temperature="cold"]    { --neutral-h: 255; --undertone: 0.060; }
-[temperature="neutral"] { --neutral-h: 0;   --undertone: 0;     }
-[temperature="warm"]    { --neutral-h: 70;  --undertone: 0.045; }
+[temperature="cold"]    { --neutral-h: 255; --neutral-c: 0.025; }
+[temperature="neutral"] { --neutral-h: 0;   --neutral-c: 0;     }
+[temperature="warm"]    { --neutral-h: 70;  --neutral-c: 0.018; }
 
 
 /* ------------------------------------------------------------
@@ -67,25 +70,25 @@
 [scheme],
 [temperature],
 [accent] {
-  --neutral-50:  oklch(96.1% calc(var(--undertone) * 0.07) var(--neutral-h));
-  --neutral-100: oklch(91.3% calc(var(--undertone) * 0.29) var(--neutral-h));
-  --neutral-200: oklch(81.7% calc(var(--undertone) * 0.52) var(--neutral-h));
-  --neutral-300: oklch(75.7% calc(var(--undertone) * 0.68) var(--neutral-h));
-  --neutral-400: oklch(64.0% calc(var(--undertone) * 0.80) var(--neutral-h));
-  --neutral-500: oklch(53.8% calc(var(--undertone) * 0.90) var(--neutral-h));
-  --neutral-600: oklch(43.5% calc(var(--undertone) * 0.97) var(--neutral-h));
-  --neutral-700: oklch(39.0% calc(var(--undertone) * 1.00) var(--neutral-h));
-  --neutral-800: oklch(32.5% calc(var(--undertone) * 0.90) var(--neutral-h));
-  --neutral-900: oklch(26.4% calc(var(--undertone) * 0.80) var(--neutral-h));
+  --neutral-50:  oklch(96.1% calc(var(--neutral-c) * 0.07) var(--neutral-h));
+  --neutral-100: oklch(91.3% calc(var(--neutral-c) * 0.29) var(--neutral-h));
+  --neutral-200: oklch(81.7% calc(var(--neutral-c) * 0.52) var(--neutral-h));
+  --neutral-300: oklch(75.7% calc(var(--neutral-c) * 0.68) var(--neutral-h));
+  --neutral-400: oklch(64.0% calc(var(--neutral-c) * 0.80) var(--neutral-h));
+  --neutral-500: oklch(53.8% calc(var(--neutral-c) * 0.90) var(--neutral-h));
+  --neutral-600: oklch(43.5% calc(var(--neutral-c) * 0.97) var(--neutral-h));
+  --neutral-700: oklch(39.0% calc(var(--neutral-c) * 1.00) var(--neutral-h));
+  --neutral-800: oklch(32.5% calc(var(--neutral-c) * 0.90) var(--neutral-h));
+  --neutral-900: oklch(26.4% calc(var(--neutral-c) * 0.80) var(--neutral-h));
   /* 925 to 1000 are the dark-mode depth levels (see DEPTH below):
      canvas 10, surface 18, raised 21, overlay 24% lightness. A clear gap
      between the app and its panels, then small steps toward the viewer,
      so a modal lifts off its panel without shouting. Nothing else uses
      them; 950 moved from 20 to 21 for this. */
-  --neutral-925: oklch(24.0% calc(var(--undertone) * 0.55) var(--neutral-h));
-  --neutral-950: oklch(21.0% calc(var(--undertone) * 0.30) var(--neutral-h));
-  --neutral-975: oklch(18.0% calc(var(--undertone) * 0.22) var(--neutral-h));
-  --neutral-1000: oklch(10.0% calc(var(--undertone) * 0.15) var(--neutral-h));
+  --neutral-925: oklch(24.0% calc(var(--neutral-c) * 0.55) var(--neutral-h));
+  --neutral-950: oklch(21.0% calc(var(--neutral-c) * 0.30) var(--neutral-h));
+  --neutral-975: oklch(18.0% calc(var(--neutral-c) * 0.22) var(--neutral-h));
+  --neutral-1000: oklch(10.0% calc(var(--neutral-c) * 0.15) var(--neutral-h));
 }
 
 /* ------------------------------------------------------------
