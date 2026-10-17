@@ -1,9 +1,10 @@
 // Cloudflare Worker that serves the site: the single source of truth for
-// hosting. Workers Builds runs `npm run build` and deploys dist/ on push.
+// hosting. Workers Builds runs `npm run build` and deploys dist/: master goes
+// live on cristianserrano.ar, every other branch gets a preview URL.
 // Response headers (security, caching) live in public/_headers.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "beta-cristianserrano-ar",
+  "name": "cristianserrano-ar",
   "compatibility_date": "2026-07-11",
   "observability": { "enabled": true },
   "assets": {
