@@ -9,6 +9,8 @@
   "name": "cristianserrano-ar",
   "compatibility_date": "2026-07-11",
   "observability": { "enabled": true },
+  // Required by `wrangler preview`, which builds each non-master branch.
+  "previews": {},
   "build": { "command": "npm run build" },
   "assets": {
     "directory": "./dist",
