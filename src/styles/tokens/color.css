@@ -77,12 +77,15 @@
   --neutral-700: oklch(39.0% calc(var(--undertone) * 1.00) var(--neutral-h));
   --neutral-800: oklch(32.5% calc(var(--undertone) * 0.90) var(--neutral-h));
   --neutral-900: oklch(26.4% calc(var(--undertone) * 0.80) var(--neutral-h));
-  /* 925, 975, 1000: added for depth in dark mode (see DEPTH below), so the
-     four levels step evenly: 11 -> 15.5 -> 20 -> 24% lightness. */
+  /* 925 to 1000 are the dark-mode depth levels (see DEPTH below):
+     canvas 10, surface 18, raised 21, overlay 24% lightness. A clear gap
+     between the app and its panels, then small steps toward the viewer,
+     so a modal lifts off its panel without shouting. Nothing else uses
+     them; 950 moved from 20 to 21 for this. */
   --neutral-925: oklch(24.0% calc(var(--undertone) * 0.55) var(--neutral-h));
-  --neutral-950: oklch(20.0% calc(var(--undertone) * 0.30) var(--neutral-h));
-  --neutral-975: oklch(15.5% calc(var(--undertone) * 0.22) var(--neutral-h));
-  --neutral-1000: oklch(11.0% calc(var(--undertone) * 0.15) var(--neutral-h));
+  --neutral-950: oklch(21.0% calc(var(--undertone) * 0.30) var(--neutral-h));
+  --neutral-975: oklch(18.0% calc(var(--undertone) * 0.22) var(--neutral-h));
+  --neutral-1000: oklch(10.0% calc(var(--undertone) * 0.15) var(--neutral-h));
 }
 
 /* ------------------------------------------------------------

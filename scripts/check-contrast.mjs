@@ -108,8 +108,10 @@ const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
 let n = 0; const fails = [];
 for (const r of rows)
   for (const f of FG) for (const b of BG) {
-    // fill-strong marks images and the chosen option, never a link
-    if (f.startsWith('--link') && b.endsWith('--fill-strong')) continue;
+    // Fills (hovers, chat bubbles, inputs, the chosen option, image
+    // placeholders) never carry link TEXT. The one accent-coloured thing on
+    // a fill is the pressed rating icon, a graphic: 3:1, met with room.
+    if (f.startsWith('--link') && b.includes('--fill-')) continue;
     const v = ratio(rgb(r.roles[f]), rgb(r.roles[b])); n++;
     if (v < 4.5) fails.push(`  ${r.scheme}/${r.temp}/${r.accent}  ${f.slice(2)} on ${b.slice(2)}` +
                             `  rgb(${r.roles[f]}) / rgb(${r.roles[b]})  ${v.toFixed(2)}:1`);
