@@ -31,6 +31,7 @@
 
   /* ---- stacking ---- */
   --z-header:    100;
+  --z-dock:      120;   /* the quick-actions bar on phones */
   --z-frame:     150;   /* the canvas ring, above the page header */
   --z-assistant: 200;
 }

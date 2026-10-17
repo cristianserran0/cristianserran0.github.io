@@ -1,57 +1,62 @@
-/* A project card: cover image, title and client over a scrim.
-   <a class="work-tile"> <img> <div> <h2>Title</h2> <p>Client</p> </div> </a> */
+/* A piece on the wall: its image, title, then the label beneath it, like
+   the sign next to a picture.
+   <article class="work-tile" data-piece="…">
+     <a href> <img> <h2>Title</h2> </a>
+     <p>Client · years</p>  <p>One-sentence label</p>
+   </article> */
 
 @layer components {
-  .work-tile {
-    display: grid;
-    position: relative;
+  .work-tile a {
+    display: block;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .work-tile img {
+    display: block;
     width: 100%;
-    height: 0;
-    padding-bottom: 100%;   /* square */
+    height: auto;
+    aspect-ratio: var(--tile-ratio);
+    object-fit: cover;
+    object-position: top;
     border-radius: var(--radius-lg);
-    overflow: hidden;
     background-color: var(--bg-tertiary);
+    box-shadow: var(--shadow-sm);
     transition: transform var(--duration-moderate) var(--ease-in-out),
                 box-shadow var(--duration-moderate) var(--ease-in-out);
   }
-  .work-tile:hover {
+  .work-tile a:hover img {
     transform: scale(var(--tile-hover-scale));
     box-shadow: var(--shadow-lg);
   }
 
-  .work-tile img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .work-tile > div {
-    position: absolute;
-    inset: 0;
-    color: var(--text-on-media);
-    background-image: var(--scrim-bottom);
-  }
-
-  .work-tile h2,
-  .work-tile p {
-    position: absolute;
-    left: var(--space-6);
-    color: var(--text-on-media);
-    text-align: left;
-  }
   .work-tile h2 {
     font: var(--type-heading);
     letter-spacing: var(--type-heading-tracking);
-    bottom: var(--space-12);
-    margin: 0 var(--space-6) 0 0;
+    color: var(--text-primary);
+    margin: var(--space-4) 0 0;
   }
-  .work-tile p {
+  .work-tile a:hover h2 { color: var(--link); }
+  .work-tile a:focus-visible { outline: none; }
+  .work-tile a:focus-visible img {
+    outline: var(--border-accent) solid var(--link);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* client · years */
+  .work-tile h2 + p,
+  .work-tile a + p {
     font: var(--type-overline);
     letter-spacing: var(--type-overline-tracking);
     text-transform: uppercase;
-    bottom: var(--space-3);
-    margin: var(--paragraph-gap) var(--space-6) var(--paragraph-gap) 0;
+    color: var(--text-secondary);
+    margin: var(--space-1) 0 0;
+  }
+  /* the label */
+  .work-tile p + p {
+    font: var(--type-meta-small);
+    letter-spacing: var(--type-meta-small-tracking);
+    color: var(--text-secondary);
+    margin: var(--space-2) 0 0;
   }
 }

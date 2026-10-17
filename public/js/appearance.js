@@ -1,12 +1,10 @@
-/* Appearance controls.
-   scheme: cycles system -> light -> dark. "system" removes the attribute so
-   :root's `color-scheme: light dark` follows the OS natively and live --
-   no matchMedia listener needed, and it keeps working with JS disabled.
-   accent: sets the attribute and remembers it. */
+/* Display controls, inside the Display popover in the header.
+   Mode: System / Light / Dark. "System" removes the attribute so :root's
+   `color-scheme: light dark` follows the OS natively and live -- no
+   matchMedia listener needed, and it keeps working with JS disabled.
+   Accent: sets the attribute and remembers it. */
 (function () {
   var d = document.documentElement;
-  var ORDER = ['system', 'light', 'dark'];
-  var LABEL = { system: 'System', light: 'Light', dark: 'Dark' };
 
   function store(k, v) { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -16,41 +14,33 @@
     return s === 'light' || s === 'dark' ? s : 'system';
   }
 
-  function applyScheme(next) {
-    next === 'system' ? d.removeAttribute('scheme') : d.setAttribute('scheme', next);
-    store('scheme', next === 'system' ? null : next);
-    render();
-  }
-
-  function applyAccent(name) {
-    d.setAttribute('accent', name);
-    store('accent', name);
-    render();
-  }
-
-  var toggle = document.querySelector('[data-scheme-toggle]');
-  var label = document.querySelector('[data-scheme-label]');
+  var schemes = Array.prototype.slice.call(document.querySelectorAll('[data-scheme]'));
   var swatches = Array.prototype.slice.call(document.querySelectorAll('[data-accent]'));
 
   function render() {
-    var s = currentScheme();
-    if (label) label.textContent = LABEL[s];
-    if (toggle) toggle.setAttribute('aria-label', 'Appearance: ' + LABEL[s] + '. Activate to change.');
-    var a = d.getAttribute('accent');
-    swatches.forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.getAttribute('data-accent') === a));
-    });
+    var s = currentScheme(), a = d.getAttribute('accent');
+    schemes.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-scheme') === s)); });
+    swatches.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-accent') === a)); });
   }
 
-  if (toggle) toggle.addEventListener('click', function () {
-    applyScheme(ORDER[(ORDER.indexOf(currentScheme()) + 1) % ORDER.length]);
+  schemes.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var next = b.getAttribute('data-scheme');
+      next === 'system' ? d.removeAttribute('scheme') : d.setAttribute('scheme', next);
+      store('scheme', next === 'system' ? null : next);
+      render();
+    });
   });
 
   swatches.forEach(function (b) {
-    b.addEventListener('click', function () { applyAccent(b.getAttribute('data-accent')); });
+    b.addEventListener('click', function () {
+      d.setAttribute('accent', b.getAttribute('data-accent'));
+      store('accent', b.getAttribute('data-accent'));
+      render();
+    });
   });
 
-  // the stored accent was already applied by the inline head script; just reflect it
+  // the stored accent was already applied by appearance-init.js; just reflect it
   if (!d.getAttribute('accent')) d.setAttribute('accent', read('accent') || 'blue');
   render();
 })();

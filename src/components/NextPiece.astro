@@ -1,0 +1,17 @@
+---
+/* The end of a story: where to go next, so browsing never dead-ends. */
+import PieceImage from './PieceImage.astro';
+import { nextPiece, href } from '../data/pieces';
+
+interface Props { slug: string; }
+const next = nextPiece(Astro.props.slug);
+---
+<nav class="next-piece" aria-label="Next piece">
+  {next
+    ? <a href={href(next)} rel="next" data-piece={next.slug}>
+        <PieceImage src={next.cover} alt="" />
+        <span>Next piece</span>
+        <strong>{next.title}</strong>
+      </a>
+    : <a href="/work/" rel="up"><span>Back to</span><strong>All work</strong></a>}
+</nav>

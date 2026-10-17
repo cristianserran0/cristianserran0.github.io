@@ -1,0 +1,136 @@
+/* Distance 2: a piece's first screen (components/PieceHeader.astro), and
+   the "next piece" at the end of its story (components/NextPiece.astro).
+
+   The image fills the first screen up to --piece-height and can run wider
+   than the text column, up to --piece-max; the label sits beneath it in the
+   column. Scroll down and the story begins: distance 3. */
+
+@layer components {
+  .piece { padding-top: calc(var(--header-height) + var(--space-4)); }
+
+  /* ---- the piece ---- */
+  .piece figure { margin: 0 0 var(--space-8); }
+  .piece figure img {
+    display: block;
+    width: min(100cqi - 2 * var(--gutter), var(--piece-max));
+    max-width: none;
+    height: var(--piece-height);
+    object-position: top;   /* screenshots of UI: keep their top, where titles sit */
+    margin-inline-start: calc((100% - min(100cqi - 2 * var(--gutter), var(--piece-max))) / 2);
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-tertiary);
+    box-shadow: var(--shadow-md);
+  }
+  @container page (max-width: 500px) {
+    .piece figure img { height: var(--piece-height-narrow); }
+  }
+
+  /* ---- its label ---- */
+  .piece h1 {
+    font: var(--type-title);
+    letter-spacing: var(--type-title-tracking);
+    margin: 0;
+  }
+  .piece hgroup p {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: var(--space-2) 0 0;
+  }
+  .piece hgroup small {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    color: var(--text-tertiary);
+  }
+  .piece hgroup small::before { content: " · "; }
+
+  .piece hgroup + p {
+    font: var(--type-lead);
+    letter-spacing: var(--type-lead-tracking);
+    color: var(--text-primary);
+    margin: var(--space-4) 0 0;
+  }
+
+  .piece .facts {
+    margin: var(--space-8) 0 0;
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline) solid var(--border-subtle);
+    gap: var(--space-6);
+  }
+  .piece dt {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: 0;
+    padding: 0;
+  }
+  .piece dd {
+    font: var(--type-meta-small);
+    letter-spacing: var(--type-meta-small-tracking);
+    color: var(--text-primary);
+    margin: var(--space-1) 0 0;
+  }
+
+  /* ---- the way on ---- */
+  .piece-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    font: var(--type-label);
+    letter-spacing: var(--type-label-tracking);
+  }
+  .piece-nav a { color: var(--text-primary); text-decoration-color: var(--link); }
+  .piece-nav a:hover { color: var(--link); }
+  .piece-nav [rel="up"]::before { content: "← "; }
+  .piece-nav [rel="next"]::after { content: " →"; }
+  @container page (max-width: 500px) {
+    .piece-nav {
+      flex-direction: column;
+      font: var(--type-label-small);
+      letter-spacing: var(--type-label-small-tracking);
+    }
+  }
+
+  /* ---- next piece, at the end of the story ---- */
+  .next-piece { margin-block: var(--space-16) var(--space-8); }
+  .next-piece a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-6);
+    align-items: center;
+    align-content: center;
+    padding: var(--space-4);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+  .next-piece a:hover { border-color: var(--link); }
+  .next-piece img {
+    grid-row: span 2;
+    width: var(--space-24);
+    height: auto;
+    aspect-ratio: var(--tile-ratio);
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+  .next-piece span {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    align-self: end;
+  }
+  .next-piece strong {
+    font: var(--type-heading);
+    letter-spacing: var(--type-heading-tracking);
+    align-self: start;
+  }
+  .next-piece strong::after { content: " →"; color: var(--link); }
+}

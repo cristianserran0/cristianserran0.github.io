@@ -10,10 +10,6 @@
 @layer tokens {
 
 :root {
-  --swatch-size:       0.7rem;
-  --swatch-size-small: 0.6rem;
-  --swatch-gap:        0.4rem;
-  --swatch-gap-group:  0.7rem;   /* toggle to swatches, narrow screens */
   --swatch-idle:       0.35;     /* opacity: unselected */
   --swatch-hover:      0.7;      /* opacity: hovered */
 

@@ -1,22 +1,15 @@
-/* Appearance control in the site header: scheme toggle + accent swatches.
-   Reads like the nav links beside it: label type, accent underline,
-   no borders, pills or rings. Each swatch carries its own accent="..."
+/* Header actions and the Display panel.
+
+   Contact and Guide read as text links in the label style. The Display
+   control is one small icon that opens a native popover (HTML `popover`,
+   no script needed to open, close or dismiss it) holding the colour scheme
+   and the accent swatches. Each swatch carries its own accent="…"
    attribute, so var(--accent-500) on it resolves to that hue. */
 
 @layer components {
-  .appearance {
-    position: absolute;
-    top: 50%;
-    right: max(var(--gutter), calc(50% - var(--content-max) / 2 + var(--gutter)));
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  /* The scheme toggle and the assistant toggle read as text links. */
-  .scheme-toggle,
-  .assistant-toggle {
+  .contact-link,
+  .guide-toggle,
+  .display-toggle {
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
     color: var(--text-primary);
@@ -24,20 +17,111 @@
     border: none;
     padding: 0;
     cursor: pointer;
+  }
+  .contact-link,
+  .guide-toggle {
     text-decoration: underline;
     text-decoration-color: var(--link);
     text-decoration-thickness: var(--border-accent);
     text-underline-offset: var(--underline-offset);
   }
-  .scheme-toggle:hover,
-  .assistant-toggle:hover { color: var(--link); }
-  [assistant="open"] .assistant-toggle { color: var(--link); }
+  .contact-link:hover,
+  .guide-toggle:hover,
+  .display-toggle:hover,
+  [assistant="open"] .guide-toggle { color: var(--link); }
 
-  .accents { display: flex; gap: var(--swatch-gap); }
+  .display-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: var(--icon-button);
+    height: var(--icon-button);
+    border-radius: var(--radius-md);
+  }
+  .display-toggle svg { width: var(--icon-size); height: var(--icon-size); }
+
+  .contact-link:focus-visible,
+  .guide-toggle:focus-visible,
+  .display-toggle:focus-visible,
+  .display button:focus-visible {
+    outline: var(--border-accent) solid var(--link);
+    outline-offset: var(--focus-offset);
+  }
+
+  @container header (max-width: 560px) {
+    .contact-link,
+    .guide-toggle {
+      font: var(--type-label-small);
+      letter-spacing: var(--type-label-small-tracking);
+    }
+  }
+  /* On phones the guide lives in the dock, at thumb height. */
+  @media (max-width: 760px) {
+    .guide-toggle { display: none; }
+  }
+
+  /* ---- the Display panel ---- */
+  .display {
+    position: fixed;
+    inset: auto;
+    top: calc(var(--header-height) - var(--space-2));
+    right: var(--gutter);
+    width: var(--display-width);
+    margin: 0;
+    padding: var(--space-4);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-raised);
+  }
+  @media (min-width: 761px) {
+    [assistant="open"] .display {
+      right: calc(var(--assistant-width) + 2 * var(--frame-gap) + var(--gutter));
+    }
+  }
+  @media (max-width: 760px) {
+    .display { right: var(--space-4); }
+  }
+
+  .display p {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: 0 0 var(--space-2);
+  }
+  .display div + p { margin-top: var(--space-4); }
+
+  /* mode: three buttons, the chosen one pressed */
+  .display [role="group"]:first-of-type {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+  }
+  .display [data-scheme] {
+    font: var(--type-label-small);
+    letter-spacing: var(--type-label-small-tracking);
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--space-1) 0;
+    cursor: pointer;
+  }
+  .display [data-scheme][aria-pressed="true"] {
+    color: var(--text-primary);
+    background: var(--bg-raised);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .accents { display: flex; justify-content: space-between; }
 
   .accent-swatch {
-    width: var(--swatch-size);
-    height: var(--swatch-size);
+    width: var(--space-6);
+    height: var(--space-6);
     padding: 0;
     border: none;
     border-radius: var(--radius-full);
@@ -47,25 +131,9 @@
     transition: opacity var(--duration-fast);
   }
   .accent-swatch:hover { opacity: var(--swatch-hover); }
-  .accent-swatch[aria-pressed="true"] { opacity: 1; }
-
-  .scheme-toggle:focus-visible,
-  .assistant-toggle:focus-visible,
-  .accent-swatch:focus-visible {
-    outline: var(--border-accent) solid var(--link);
-    outline-offset: var(--focus-offset);
-  }
-
-  @container header (max-width: 736px) {
-    .appearance { gap: var(--swatch-gap-group); }
-    .scheme-toggle,
-    .assistant-toggle {
-      font: var(--type-label-small);
-      letter-spacing: var(--type-label-small-tracking);
-    }
-    .accent-swatch {
-      width: var(--swatch-size-small);
-      height: var(--swatch-size-small);
-    }
+  .accent-swatch[aria-pressed="true"] {
+    opacity: 1;
+    outline: var(--border-accent) solid var(--accent-500);
+    outline-offset: var(--border-accent);
   }
 }

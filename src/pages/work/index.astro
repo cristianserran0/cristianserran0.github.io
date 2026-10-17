@@ -1,9 +1,9 @@
 ---
+/* Distance 1, "walking the room": every featured piece with its label.
+   Tiles and labels come from src/data/pieces.ts. */
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
-import coverKaia from '../../assets/work/work3-cover.png';
-import coverGoogle from '../../assets/work/work1-cover.png';
-import coverOpenbank from '../../assets/work/work2-cover.png';
+import PieceImage from '../../components/PieceImage.astro';
+import { featured, href } from '../../data/pieces';
 ---
 
 <Layout
@@ -15,33 +15,15 @@ import coverOpenbank from '../../assets/work/work2-cover.png';
   </header>
 
   <section class="projects">
-    <a href="/work/justrelate-head-of-design/" class="work-tile">
-      <img loading="eager" fetchpriority="high" src="/work/justrelate-head-of-design/cover.png" alt="JustRelate Home">
-      <div>
-        <h2>JustRelate Home</h2>
-        <p>JustRelate</p>
-      </div>
-    </a>
-    <a href="/work/kaia-health-kinetic-design-system/" class="work-tile">
-      <Image src={coverKaia} alt="Kinetic Design System" loading="lazy" decoding="async" />
-      <div>
-        <h2>Kinetic Design System</h2>
-        <p>Kaia Health</p>
-      </div>
-    </a>
-    <a href="/work/google-small-business-advisors/" class="work-tile">
-      <Image src={coverGoogle} alt="Small Business Advisors" loading="lazy" decoding="async" />
-      <div>
-        <h2>Small Business Advisors</h2>
-        <p>Globant + Google</p>
-      </div>
-    </a>
-    <a href="/work/openbank-design-system/" class="work-tile">
-      <Image src={coverOpenbank} alt="Openbank Design System" loading="lazy" decoding="async" />
-      <div>
-        <h2>Openbank Design System</h2>
-        <p>Globant + Openbank</p>
-      </div>
-    </a>
+    {featured.map((p, i) => (
+      <article class="work-tile" data-piece={p.slug}>
+        <a href={href(p)}>
+          <PieceImage src={p.cover} alt="" eager={i < 2} />
+          <h2>{p.title}</h2>
+        </a>
+        <p>{p.client} · {p.years}</p>
+        <p>{p.label}</p>
+      </article>
+    ))}
   </section>
 </Layout>

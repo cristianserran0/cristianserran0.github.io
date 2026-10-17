@@ -1,0 +1,36 @@
+---
+/* Distance 2, "standing in front of it": the first screen of a case study.
+   The piece, its label (title, client, years, one sentence, key facts) and
+   the way on to the next piece. Everything comes from src/data/pieces.ts. */
+import PieceImage from './PieceImage.astro';
+import { piece, nextPiece, href } from '../data/pieces';
+
+interface Props { slug: string; readingTime?: boolean; }
+const { slug, readingTime = false } = Astro.props;
+const p = piece(slug);
+const next = nextPiece(slug);
+---
+<header class="piece" data-piece={p.slug}>
+  <figure>
+    <PieceImage src={p.hero} alt="" eager />
+  </figure>
+
+  <hgroup>
+    <h1>{p.title}</h1>
+    <p>{p.client} · {p.years}{readingTime && <small><span id="reading-time"></span> min read</small>}</p>
+  </hgroup>
+
+  <p>{p.label}</p>
+
+  <dl class="facts">
+    <div><dt>Role</dt><dd>{p.facts.role}</dd></div>
+    <div><dt>Time</dt><dd>{p.facts.time}</dd></div>
+    <div><dt>Platforms</dt><dd>{p.facts.platforms}</dd></div>
+    <div><dt>Category</dt><dd>{p.facts.category}</dd></div>
+  </dl>
+
+  <nav class="piece-nav" aria-label="Pieces">
+    <a href="/work/" rel="up">All work</a>
+    {next && <a href={href(next)} rel="next">Next piece: {next.title}</a>}
+  </nav>
+</header>

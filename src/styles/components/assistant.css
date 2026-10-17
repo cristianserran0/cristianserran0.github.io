@@ -1,6 +1,9 @@
-/* The assistant panel: header, message log, composer, disclaimer.
-   A floating panel beside the page on wide screens; a sheet covering
-   the page below the "shell" breakpoint (tokens/space.css). */
+/* The guide panel (the assistant): header, message log, composer, disclaimer.
+   A floating panel beside the page on wide screens; a sheet rising from the
+   bottom below the "shell" breakpoint (tokens/space.css).
+
+   In the log, the guide's own messages can carry: a step ("Read … for
+   context"), links, suggestion buttons, and a tour stop ("Stop 2 of 5"). */
 
 @layer components {
   .assistant {
@@ -27,11 +30,14 @@
     transform: none;
     transition: transform var(--duration-slow) var(--ease-standard);
   }
+  /* Phones: a sheet rising from the bottom, the page still peeking above. */
   @media (max-width: 760px) {
     .assistant {
-      inset: 0;
+      inset: var(--sheet-top) 0 0;
       width: auto;
-      border-radius: 0;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      box-shadow: var(--shadow-raised);
+      transform: translateY(100%);
     }
   }
 
@@ -97,6 +103,14 @@
     margin-bottom: var(--space-2);
   }
   .assistant-step::after { content: " ›"; }
+
+  .assistant-stop {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--link);
+    margin-bottom: var(--space-1);
+  }
 
   .assistant-links,
   .assistant-suggestions {

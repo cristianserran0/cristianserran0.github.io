@@ -18,27 +18,56 @@
   }
   .site-header.nav-hidden { top: var(--nav-hidden-offset); }
 
+  /* Name, sections, then the actions: Contact (the front desk), the guide
+     and the Display control. One row, everything centred on one line. */
   .site-nav {
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
     height: var(--header-height);
-  }
-  .site-nav > ul {
-    max-width: var(--content-max);
-    margin: 0 auto;
-    padding: var(--gutter);
+    padding-inline: var(--gutter);
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
     color: var(--text-primary);
   }
-  .site-nav li {
-    display: inline-flex;
+  .site-nav a { color: var(--text-primary); }
+  .site-nav a:hover { color: var(--link); }
+
+  .site-name {
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
     list-style-type: none;
   }
-  .site-nav li:not(:last-child) { margin-right: var(--space-6); }
+
+  .site-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline-start: auto;
+  }
+
   .site-nav [aria-current="page"] {
     color: var(--link);
     cursor: default;
     text-decoration: none;
+  }
+
+  @container header (max-width: 560px) {
+    .site-nav,
+    .site-nav ul { gap: var(--space-4); }
+    .site-nav {
+      padding-inline: var(--space-4);
+      font: var(--type-label-small);
+      letter-spacing: var(--type-label-small-tracking);
+    }
+    .site-name span { display: none; }   /* "Cristian" alone fits a phone */
   }
 
   /* The page's scrolling content. Layout inside it responds to this
@@ -72,7 +101,7 @@
   .projects {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6);
+    gap: var(--space-12) var(--space-8);
     margin-block: var(--space-16) var(--space-8);
   }
   @container page (max-width: 500px) {

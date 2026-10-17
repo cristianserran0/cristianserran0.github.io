@@ -1,23 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
-import heroImg from '../../assets/work/kaia-health-kinetic-design-system/hero-img.png';
 ---
 
 <Layout
+  piece="kaia-health-kinetic-design-system"
   title="Kinetic Design System - Cristian Serrano"
   description="Case study: Kinetic Design System at Kaia Health — how Cristian Serrano built a cross-platform design system to support scalable product growth after two rounds of layoffs."
   readingTime={true}
 >
-  <header>
-    <hgroup>
-      <h1>Kinetic Design System</h1>
-      <p>Kaia Health · 2021 - 2023<br><small><span id="reading-time"></span> min read.</small></p>
-    </hgroup>
-    <figure class="wide">
-      <Image src={heroImg} alt="" loading="eager" fetchpriority="high" />
-    </figure>
-  </header>
 
   <section class="intro">
     <article class="overview">
@@ -25,26 +15,6 @@ import heroImg from '../../assets/work/kaia-health-kinetic-design-system/hero-im
     </article>
   </section>
 
-  <section id="basics">
-    <dl class="facts">
-      <div>
-        <dt>Category</dt>
-        <dd>Start-up, Design Systems, Design Operations, Product Design</dd>
-      </div>
-      <div>
-        <dt>Platforms</dt>
-        <dd>Web, iOS, Android</dd>
-      </div>
-      <div>
-        <dt>Role</dt>
-        <dd>Product Designer, Design System Manager, Design Operations Lead</dd>
-      </div>
-      <div>
-        <dt>Time</dt>
-        <dd>2 years</dd>
-      </div>
-    </dl>
-  </section>
 
   <hr>
 

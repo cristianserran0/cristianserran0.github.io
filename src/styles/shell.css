@@ -43,3 +43,65 @@
     }
   }
 }
+
+/* ---- the dock: quick actions at thumb height, phones only ---- */
+@layer layout {
+  .dock { display: none; }
+
+  @media (max-width: 760px) {
+    .dock {
+      display: flex;
+      position: fixed;
+      left: var(--space-4);
+      right: var(--space-4);
+      bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+      z-index: var(--z-dock);
+      height: var(--dock-height);
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding-inline: var(--space-6);
+      border: var(--border-hairline) solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      background: var(--bg-raised);
+      box-shadow: var(--shadow-raised);
+    }
+    .dock button,
+    .dock a {
+      font: var(--type-label);
+      letter-spacing: var(--type-label-tracking);
+      color: var(--text-primary);
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .dock [rel="next"] { margin-inline-start: auto; }
+    .dock [rel="next"]::after { content: " →"; color: var(--link); }
+    .dock button:focus-visible,
+    .dock a:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+
+    /* room for the dock below the footer */
+    .page-body { padding-bottom: calc(var(--dock-height) + var(--space-8)); }
+    [assistant="open"] .dock { display: none; }
+  }
+}
+
+/* ---- moving between rooms ----
+   Same-site navigations cross-fade, and a piece's image morphs from its tile
+   on the wall into its first screen (names in /pieces.css, generated from
+   src/data/pieces.ts). Plain CSS: browsers without support just navigate.
+   The header, guide and dock are named so they stay put instead of fading. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+@layer layout {
+  .site-header { view-transition-name: site-header; }
+  .assistant   { view-transition-name: guide; }
+  .dock        { view-transition-name: dock; }
+  ::view-transition-group(*) {
+    animation-duration: var(--duration-moderate);
+    animation-timing-function: var(--ease-in-out);
+  }
+}

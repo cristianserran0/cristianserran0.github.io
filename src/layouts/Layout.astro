@@ -1,25 +1,47 @@
 ---
 import '../styles/index.css';
+import PieceHeader from '../components/PieceHeader.astro';
+import NextPiece from '../components/NextPiece.astro';
+import { piece as getPiece, nextPiece, featured, href } from '../data/pieces';
 
 interface Props {
   title: string;
   description: string;
   readingTime?: boolean;
   noindex?: boolean;
+  /* On a case study: its slug in src/data/pieces.ts. The layout then draws
+     the piece's first screen and the "next piece" at the end of the story. */
+  piece?: string;
 }
 
-const { title, description, readingTime = false, noindex = false } = Astro.props;
+const { title, description, readingTime = false, noindex = false, piece } = Astro.props;
 const pathname = Astro.url.pathname;
+const current = piece ? getPiece(piece) : undefined;
+const next = piece ? nextPiece(piece) : undefined;
 
 // accent modes offered to visitors; must match [accent="..."] in styles/tokens/color.css
 const accents = ['blue', 'purple', 'magenta', 'red', 'orange', 'green', 'emerald', 'sky'];
 
 const nav = [
-  { href: '/',        label: 'Home',    current: pathname === '/' },
-  { href: '/cv',      label: 'CV',      current: pathname.startsWith('/cv') },
-  { href: '/work',    label: 'Work',    current: pathname.startsWith('/work') },
-  { href: '/contact', label: 'Contact', current: pathname.startsWith('/contact') },
+  { href: '/work/', label: 'Work', current: pathname.startsWith('/work') },
+  { href: '/cv/',   label: 'CV',   current: pathname.startsWith('/cv') },
 ];
+
+/* What the guide needs to know about the room the visitor is in, and the
+   featured pieces for its tours. Data, not code: a JSON block the CSP allows. */
+const room = current
+  ? { kind: 'piece', slug: current.slug, title: current.title, client: current.client, years: current.years,
+      label: current.label, facts: current.facts,
+      next: next && { title: next.title, href: href(next) } }
+  : pathname.startsWith('/work') ? { kind: 'wall' }
+  : pathname.startsWith('/cv') ? { kind: 'cv' }
+  : pathname.startsWith('/contact') ? { kind: 'contact' }
+  : pathname === '/' ? { kind: 'home' }
+  : { kind: 'other' };
+const guide = {
+  room,
+  pieces: featured.map((p) => ({ slug: p.slug, title: p.title, client: p.client, years: p.years, label: p.label, role: p.facts.role, category: p.facts.category, href: href(p) })),
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -87,6 +109,8 @@ const jsonLd = {
     <script is:inline src="/js/appearance-init.js"></script>
 
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
+    <link rel="stylesheet" href="/pieces.css">
+    <script type="application/json" id="guide-data" set:html={JSON.stringify(guide)} />
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
     {readingTime && <script defer is:inline src="/js/reading-time-estimation.js"></script>}
@@ -99,37 +123,51 @@ const jsonLd = {
     <div class="page">
 
       <header class="site-header nav-visible">
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label="Site">
+          <a class="site-name" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Cristian <span>Serrano</span></a>
           <ul>
             {nav.map((item) => (
               <li><a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a></li>
             ))}
           </ul>
 
-          <div class="appearance" role="group" aria-label="Appearance">
-            <button type="button" class="assistant-toggle" data-assistant-toggle aria-controls="assistant" aria-expanded="false">Ask me</button>
-            <button type="button" class="scheme-toggle" data-scheme-toggle aria-live="polite">
-              <span data-scheme-label>System</span>
+          <div class="site-actions">
+            <a href="/contact/" class="contact-link" aria-current={pathname.startsWith('/contact') ? 'page' : undefined}>Contact</a>
+            <button type="button" class="guide-toggle" data-assistant-toggle aria-controls="assistant" aria-expanded="false">Guide</button>
+            <button type="button" class="display-toggle" popovertarget="display" aria-label="Display: colour scheme and accent">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
             </button>
-            <div class="accents" role="group" aria-label="Accent colour">
-              {accents.map((name) => (
-                <button
-                  type="button"
-                  class="accent-swatch"
-                  data-accent={name}
-                  accent={name}
-                  aria-label={name}
-                  title={name}
-                />
-              ))}
-            </div>
           </div>
         </nav>
+
+        <div class="display" id="display" popover>
+          <p id="display-scheme">Mode</p>
+          <div role="group" aria-labelledby="display-scheme">
+            <button type="button" data-scheme="system">System</button>
+            <button type="button" data-scheme="light">Light</button>
+            <button type="button" data-scheme="dark">Dark</button>
+          </div>
+          <p id="display-accent">Accent</p>
+          <div class="accents" role="group" aria-labelledby="display-accent">
+            {accents.map((name) => (
+              <button
+                type="button"
+                class="accent-swatch"
+                data-accent={name}
+                accent={name}
+                aria-label={name}
+                title={name}
+              />
+            ))}
+          </div>
+        </div>
       </header>
 
       <div class="page-body">
         <main class="prose" id={readingTime ? 'content' : undefined}>
+          {piece && <PieceHeader slug={piece} readingTime={readingTime} />}
           <slot />
+          {piece && <NextPiece slug={piece} />}
         </main>
 
         <footer class="site-footer">
@@ -140,11 +178,16 @@ const jsonLd = {
 
     </div>
 
+    <nav class="dock" aria-label="Quick actions">
+      <button type="button" data-assistant-toggle aria-controls="assistant" aria-expanded="false">Guide</button>
+      {next && <a href={href(next)} rel="next">Next piece</a>}
+    </nav>
+
     <div class="frame" aria-hidden="true"></div>
 
     <aside class="assistant" id="assistant" aria-label="Assistant">
       <header class="assistant-header">
-        <h2>Ask about Cristian</h2>
+        <h2>Guide</h2>
         <button type="button" class="icon-button" data-assistant-close aria-label="Close assistant">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
         </button>
@@ -162,14 +205,14 @@ const jsonLd = {
       </section>
 
       <form class="assistant-composer">
-        <textarea rows="2" aria-label="Message" placeholder="Ask about my work, CV or this site…"></textarea>
+        <textarea rows="2" aria-label="Message" placeholder="Ask about Cristian’s work, CV or this site…"></textarea>
         <div>
           <button type="submit" class="icon-button" aria-label="Send" disabled>
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>
           </button>
         </div>
       </form>
-      <p class="assistant-disclaimer">Prototype: answers are scripted, not generated by AI.</p>
+      <p class="assistant-disclaimer">Prototype: the guide is scripted, not AI yet.</p>
     </aside>
   </body>
 </html>
