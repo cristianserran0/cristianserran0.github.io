@@ -47,6 +47,7 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (url.pathname === '/api/ask') return ask(req, env);
+    if (url.pathname === '/api/probe-models' && env.AI) return probe(env);   // TEMPORARY
     return env.ASSETS.fetch(req);
   },
 };
@@ -115,4 +116,15 @@ function mockStream(question) {
       ctrl.close();
     },
   });
+}
+
+// TEMPORARY: which chat models are live on this account (5 tokens each).
+async function probe(env) {
+  const models = ['@cf/meta/llama-3.2-3b-instruct', '@cf/meta/llama-3.1-8b-instruct-fast', '@cf/meta/llama-3.1-8b-instruct-fp8', '@cf/meta/llama-3.3-70b-instruct-fp8-fast', '@cf/meta/llama-4-scout-17b-16e-instruct', '@cf/mistralai/mistral-small-3.1-24b-instruct', '@cf/google/gemma-3-12b-it', '@cf/qwen/qwen3-30b-a3b-fp8', '@cf/ibm-granite/granite-4.0-h-micro'];
+  const out = {};
+  for (const m of models) {
+    try { const r = await env.AI.run(m, { messages: [{ role: 'user', content: 'Say ok' }], max_tokens: 5 }); out[m] = 'ok: ' + JSON.stringify(r).slice(0, 80); }
+    catch (e) { out[m] = 'x ' + String(e.message).slice(0, 90); }
+  }
+  return json(200, out);
 }
