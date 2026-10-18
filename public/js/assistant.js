@@ -86,9 +86,16 @@
   // Jump to latest: only while the latest message hides more than
   // JUMP_SLACK below the fold. Measured on the last real message, never the
   // spacer (always below the fold, it would keep the button on forever).
+  // Also the edge fades: the top one while anything is scrolled away above,
+  // the bottom one while the latest message runs past the bottom (1px,
+  // tighter than the jump button's 24).
+  var thread = log.parentNode;
   function updateJump() {
     var last = spacer.previousElementSibling;
-    jump.hidden = !last || last.getBoundingClientRect().bottom - log.getBoundingClientRect().bottom <= JUMP_SLACK;
+    var below = last ? last.getBoundingClientRect().bottom - log.getBoundingClientRect().bottom : 0;
+    jump.hidden = !last || below <= JUMP_SLACK;
+    thread.toggleAttribute('data-above', log.scrollTop > 0);
+    thread.toggleAttribute('data-below', below > 1);
   }
   var jumpFrame = 0;
   function updateJumpSoon() { cancelAnimationFrame(jumpFrame); jumpFrame = requestAnimationFrame(updateJump); }
