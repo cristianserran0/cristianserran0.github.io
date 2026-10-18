@@ -431,10 +431,19 @@
       return { role: m.from === 'user' ? 'user' : 'assistant', content: m.md !== undefined ? m.md : (m.text || []).join('\n\n') };
     });
   }
-  function pageLabel() {
-    return room.kind === 'piece'
-      ? room.title + ' (' + room.client + ', ' + room.years + '), at ' + here
-      : document.title + ', at ' + here;
+  // What the visitor is looking at, for the AI: this page, and the section
+  // heading (an h2 in <main>) at the top of the reading area right now.
+  // The Worker looks the section's text up in its own index of the site
+  // (scripts/guide-index.mjs); only the path and the heading are sent.
+  function lookingAt() {
+    var scroller = document.querySelector('.page');
+    var panel = scroller && getComputedStyle(scroller).overflowY === 'auto';
+    var line = (panel ? scroller.getBoundingClientRect().top : 0) + (header ? header.offsetHeight : 0) + 40;
+    var heading = 'intro';
+    document.querySelectorAll('main h2').forEach(function (h) {
+      if (h.getBoundingClientRect().top <= line) heading = h.textContent.trim().replace(/\s+/g, ' ');
+    });
+    return { path: here, heading: heading };
   }
 
   // The reply slot appears at once with thinking dots; the first revealed
@@ -452,7 +461,7 @@
     function finish() { requestAnimationFrame(function () { settle(question); }); }
     turn.stop = window.GuideAI.stream({
       url: '/api/ask',
-      body: { messages: history(), page: pageLabel() },
+      body: { messages: history(), page: lookingAt() },
       onReveal: function (shown, ages) {
         if (!body) { li.textContent = ''; li.className = ''; li.removeAttribute('aria-label'); body = el('div', 'assistant-md'); li.appendChild(body); }
         window.GuideAI.renderMarkdown(body, shown);

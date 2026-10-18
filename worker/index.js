@@ -17,6 +17,10 @@ import KNOWLEDGE from '../public/llms.txt';
 // Built from src/data/pieces.ts by src/pages/guide/pieces.json.ts, so the
 // case studies are written once. (The build runs before wrangler bundles.)
 import PIECES from '../dist/guide/pieces.json';
+// Every page's text, cut into sections at its h2 headings, written by
+// scripts/guide-index.mjs after the build. What the visitor is looking at
+// is looked up HERE -- the browser only says which page and section.
+import PAGES from '../dist/guide/pages.json';
 
 // Chosen on alpha (2026-10-18) from four models, same six questions, this
 // system prompt: llama-3.3-70b was the most accurate and concise, linked
@@ -43,10 +47,11 @@ Rules:
 - Answer ONLY from the facts below. If something isn't covered, say you don't know and suggest contacting Cristian by LinkedIn or email (both are in what you know about him). Never invent numbers, employers, dates, team sizes or results, and don't guess ("he likely...", "probably").
 - Talk about Cristian in the third person. Be warm, direct and brief: usually 2 to 5 sentences, at most about 120 words. Use a short list only when it really helps.
 - You may use simple markdown: **bold** and short lists.
-- Links go only to: a case study's page (each one's page is given below), /cv/, /contact/, /work/, or his LinkedIn. Write each link as part of the sentence, with the page's name as its text, for example: "the [Openbank Design System](/work/openbank-design-system/)", "his [CV](/cv/)", "all his [work](/work/)", "on [LinkedIn](https://www.linkedin.com/in/cristianserrano)". Whenever you mention LinkedIn, link it like that. Never "here", never capitals, never words from these instructions as link text.
+- Links go only to: a case study's page (each one's page is given below), /cv/, /contact/, /work/, his LinkedIn, or a link that appears in the text of what the visitor is looking at. Write each link as part of the sentence, with the page's name as its text, for example: "the [Openbank Design System](/work/openbank-design-system/)", "his [CV](/cv/)", "all his [work](/work/)", "on [LinkedIn](https://www.linkedin.com/in/cristianserrano)". Whenever you mention LinkedIn, link it like that. Never "here", never capitals, never words from these instructions as link text.
 - The visitor is already on this website: never link to the website itself or its home page, and never make up a link. Write the email address as plain text (cristianserrano@outlook.com).
 - Reply in the visitor's language.
-- If asked about yourself: you are an open model (Llama) running on Cloudflare Workers AI, guided by the facts on this site; you can make mistakes.
+- "This", "this project", "this page", "here" mean what the visitor is looking at right now (given at the end). Answer about that first, from its text.
+- Only if asked what you are: you are an open model (Llama) running on Cloudflare Workers AI, guided by the facts on this site; you can make mistakes. Never bring this up otherwise.
 
 What you know about Cristian, from his website:
 
@@ -86,8 +91,7 @@ async function ask(req, env) {
     .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }))
     .slice(-HISTORY);
   if (!messages.length || messages[messages.length - 1].role !== 'user') return json(400, { error: 'body' });
-  const page = typeof body.page === 'string' ? body.page.slice(0, 200) : '';
-  const system = page ? `${SYSTEM}\n\nThe visitor is currently looking at: ${page}` : SYSTEM;
+  const system = SYSTEM + looking(body.page);
 
   if (env.MOCK_AI === '1') return sse(mockStream(messages[messages.length - 1].content));
   if (!env.AI) return json(503, { error: 'model' });
@@ -106,6 +110,28 @@ async function ask(req, env) {
     console.error('guide: model call failed', err);   // Workers Logs (observability)
     return json(quota ? 429 : 502, { error: quota ? 'quota' : 'model' });
   }
+}
+
+/* What the visitor is looking at: the page (its title and outline) and
+   the full text of the section they're reading, from the build's index.
+   The browser sends only { path, heading }; anything not in the index is
+   ignored, so no text from the browser ever reaches the model. */
+function looking(page) {
+  if (!page || typeof page.path !== 'string') return '';
+  const p = PAGES[page.path.slice(0, 200)];
+  if (!p) return '';
+  const heading = typeof page.heading === 'string' ? page.heading.slice(0, 200) : '';
+  const section = p.sections.find((s) => s.heading === heading) || p.sections[0];
+  if (!section) return '';
+  const outline = p.sections.map((s) => s.heading).filter((h) => h !== 'intro').join(' / ');
+  return `
+
+WHAT THE VISITOR IS LOOKING AT NOW
+Page: ${p.title} (${page.path})${outline ? `. Its sections: ${outline}` : ''}
+They are reading ${section.heading === 'intro' ? 'the top of the page' : `the section "${section.heading}"`}, which says:
+"""
+${section.text}
+"""`;
 }
 
 function sse(stream) {

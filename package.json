@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:tokens && astro build",
+    "build": "npm run check:tokens && astro build && node scripts/guide-index.mjs",
     "preview": "astro preview",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
