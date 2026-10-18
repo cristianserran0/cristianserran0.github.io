@@ -37,7 +37,10 @@
 
 /* Inter 4.1, self-hosted (SIL OFL, see /fonts/inter/LICENSE.txt).
    Only the faces the site renders; a browser downloads a face only
-   when a page uses it. */
+   when a page uses it. Subset to Latin + Latin-1 + punctuation, arrows
+   and the shapes the site uses (~31 KB a face, from ~115 KB); emoji
+   come from the system's emoji font anyway. The upright faces are
+   preloaded in Layout.astro so they are usually there for first paint. */
 @font-face { font-family: Inter; font-style: normal; font-weight: 300; font-display: swap; src: url("/fonts/inter/Inter-Light.woff2") format("woff2"); }
 @font-face { font-family: Inter; font-style: italic; font-weight: 300; font-display: swap; src: url("/fonts/inter/Inter-LightItalic.woff2") format("woff2"); }
 @font-face { font-family: Inter; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/inter/Inter-Regular.woff2") format("woff2"); }
@@ -46,11 +49,22 @@
 @font-face { font-family: Inter; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/inter/Inter-SemiBold.woff2") format("woff2"); }
 @font-face { font-family: Inter; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/inter/Inter-Bold.woff2") format("woff2"); }
 
+/* Until Inter arrives, text is drawn in Arial scaled to Inter's measure,
+   so the swap changes letter shapes but moves nothing -- no jump on load.
+   Measured in Chrome on the site's own text: Inter is 4.6% wider than
+   Arial at weight 300 (the body), 6.3% at 400, 1% at 600 against Arial
+   Bold. Vertical metrics are Inter's (ascent 96.875%, descent 24.12% of
+   the em, no line gap), divided by the size-adjust. */
+@font-face { font-family: "Inter Fallback"; font-weight: 100 500; src: local("Arial"), local("Arimo");
+             size-adjust: 105%; ascent-override: 92.26%; descent-override: 22.97%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Fallback"; font-weight: 600 900; src: local("Arial Bold"), local("Arial-BoldMT"), local("Arimo Bold");
+             size-adjust: 101%; ascent-override: 95.92%; descent-override: 23.88%; line-gap-override: 0%; }
+
 @layer tokens {
 
 :root {
   /* ---- primitives ---- */
-  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+  --font-sans: Inter, "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
                "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue",
                Arial, sans-serif;
 

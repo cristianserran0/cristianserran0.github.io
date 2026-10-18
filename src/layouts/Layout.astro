@@ -109,6 +109,12 @@ const jsonLd = {
          color-scheme: light dark, so the OS is followed natively and live. -->
     <script is:inline src="/js/appearance-init.js"></script>
 
+    <!-- The upright Inter faces, asked for at once rather than after the
+         styles are read, so they are usually in place for the first paint
+         (see styles/tokens/type.css). -->
+    {['Light', 'Regular', 'Medium', 'SemiBold', 'Bold'].map((face) => (
+      <link rel="preload" href={`/fonts/inter/Inter-${face}.woff2`} as="font" type="font/woff2" crossorigin />
+    ))}
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <link rel="stylesheet" href="/pieces.css">
     <script type="application/json" id="guide-data" set:html={JSON.stringify(guide)} />
