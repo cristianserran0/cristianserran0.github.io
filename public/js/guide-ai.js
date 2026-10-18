@@ -143,7 +143,10 @@
 
   // ---- markdown -> DOM (paragraphs, lists, headings, bold, italic, code, links) ----
   var INLINE = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g;
-  function safeHref(u) { return /^(https?:\/\/|\/(?!\/))/.test(u) ? u : null; }
+  // A link the model wrote: kept only if it goes somewhere real -- a page
+  // of this site (not the bare "/", which models use as a placeholder),
+  // http(s), or mailto. Anything else shows as plain text.
+  function safeHref(u) { return u !== '/' && /^(https?:\/\/|mailto:|\/(?!\/))/.test(u) ? u : null; }
   function inline(parent, text) {
     var at = 0, m;
     INLINE.lastIndex = 0;
