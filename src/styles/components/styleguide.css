@@ -86,6 +86,7 @@
   [data-token="accent-900"] { background: var(--accent-900); }
   [data-token="accent-950"] { background: var(--accent-950); }
 
+  [data-token="neutral-75"]  { background: var(--neutral-75); }
   [data-token="neutral-50"]  { background: var(--neutral-50); }
   [data-token="neutral-100"] { background: var(--neutral-100); }
   [data-token="neutral-200"] { background: var(--neutral-200); }

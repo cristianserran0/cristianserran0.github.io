@@ -71,6 +71,7 @@
 [temperature],
 [accent] {
   --neutral-50:  oklch(96.1% calc(var(--neutral-c) * 0.07) var(--neutral-h));
+  --neutral-75:  oklch(93.5% calc(var(--neutral-c) * 0.18) var(--neutral-h));   /* the light canvas */
   --neutral-100: oklch(91.3% calc(var(--neutral-c) * 0.29) var(--neutral-h));
   --neutral-200: oklch(81.7% calc(var(--neutral-c) * 0.52) var(--neutral-h));
   --neutral-300: oklch(75.7% calc(var(--neutral-c) * 0.68) var(--neutral-h));
@@ -81,14 +82,14 @@
   --neutral-800: oklch(32.5% calc(var(--neutral-c) * 0.90) var(--neutral-h));
   --neutral-900: oklch(26.4% calc(var(--neutral-c) * 0.80) var(--neutral-h));
   /* 925 to 1000 are the dark-mode depth levels (see DEPTH below):
-     canvas 10, surface 18, raised 21, overlay 24% lightness. A clear gap
+     canvas 8, surface 18, raised 21, overlay 24% lightness. A clear gap
      between the app and its panels, then small steps toward the viewer,
      so a modal lifts off its panel without shouting. Nothing else uses
      them; 950 moved from 20 to 21 for this. */
   --neutral-925: oklch(24.0% calc(var(--neutral-c) * 0.55) var(--neutral-h));
   --neutral-950: oklch(21.0% calc(var(--neutral-c) * 0.30) var(--neutral-h));
   --neutral-975: oklch(18.0% calc(var(--neutral-c) * 0.22) var(--neutral-h));
-  --neutral-1000: oklch(10.0% calc(var(--neutral-c) * 0.15) var(--neutral-h));
+  --neutral-1000: oklch(8.0% calc(var(--neutral-c) * 0.15) var(--neutral-h));
 }
 
 /* ------------------------------------------------------------
@@ -220,7 +221,7 @@
      Dark: shadows barely read on dark, so each level steps LIGHTER
      instead -- the darkest at the back, the lightest at the front.
      Shadows stay on in both. */
-  --bg-canvas:      light-dark( var(--neutral-50),  var(--neutral-1000));
+  --bg-canvas:      light-dark( var(--neutral-75),  var(--neutral-1000));
   --bg-surface:     light-dark( var(--white),       var(--neutral-975) );
   --bg-raised:      light-dark( var(--white),       var(--neutral-950) );
   --bg-overlay:     light-dark( var(--white),       var(--neutral-925) );
@@ -241,7 +242,7 @@
 
   /* A panel's modal backdrop: the canvas colour -- the deepest level --
      drawn over the panel, which is also blurred (--backdrop-blur). */
-  --backdrop:       light-dark( rgb(from var(--neutral-50) r g b / 0.7),
+  --backdrop:       light-dark( rgb(from var(--neutral-75) r g b / 0.7),
                                 rgb(from var(--neutral-1000) r g b / 0.7) );
 
   /* A solid accent mark (the guide's tile): the accent at full strength,

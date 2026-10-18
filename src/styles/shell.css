@@ -45,10 +45,9 @@
       left: var(--frame-gap);
       width: var(--panel-width);
       overflow: hidden auto;
-      border: var(--border-hairline) solid var(--border-subtle);
       border-radius: var(--radius-panel);
       background: var(--bg-surface);
-      box-shadow: var(--shadow-panel);
+      box-shadow: var(--shadow-raised);
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
     }

@@ -16,9 +16,8 @@
     display: flex;
     flex-direction: column;
     background: var(--bg-surface);
-    border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-panel);
-    box-shadow: var(--shadow-panel);
+    box-shadow: var(--shadow-raised);
     color: var(--text-primary);
     font: var(--type-chat);
     letter-spacing: var(--type-chat-tracking);
