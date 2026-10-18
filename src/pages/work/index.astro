@@ -16,7 +16,7 @@ import { featured, href } from '../../data/pieces';
 
   <section class="projects">
     {featured.map((p, i) => (
-      <article class="work-tile" data-piece={p.slug}>
+      <article class="work-tile">
         <a href={href(p)}>
           <PieceImage src={p.cover} alt="" eager={i < 2} />
           <h2>{p.title}</h2>

@@ -1,6 +1,6 @@
 /* A piece on the wall: its image, title, then the label beneath it, like
    the sign next to a picture.
-   <article class="work-tile" data-piece="…">
+   <article class="work-tile">
      <a href> <img> <h2>Title</h2> </a>
      <p>Client · years</p>  <p>One-sentence label</p>
    </article> */

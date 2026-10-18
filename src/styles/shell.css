@@ -7,7 +7,7 @@
    slides in by the same distance, on the same beat. Both
    are real elements animating real properties (right, transform), so
    everything inside -- header, controls, content -- simply lives in the
-   moving panel, live, frame by frame. No snapshots.
+   moving panel, live, frame by frame. No snapshots, anywhere on the site.
 
    Like scheme and accent, the attribute is restored before first paint.
    Phones (below "shell", tokens/space.css) keep the plain page scrolling
@@ -157,32 +157,10 @@
   }
 }
 
-/* ---- moving between rooms ----
-   Same-site navigations cross-fade, and a piece's image morphs from its tile
-   on the wall into its first screen (names in /pieces.css, generated from
-   src/data/pieces.ts). Plain CSS: browsers without support just navigate.
-   The header, guide and dock are named so they stay put instead of fading.
-   (Only page-to-page: opening and closing the guide is live, see above.) */
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-}
-@layer layout {
-  .page         { view-transition-name: page; }
-  .site-header  { view-transition-name: site-header; }
-  .site-actions { view-transition-name: site-controls; }
-  .assistant    { view-transition-name: guide; }
-  .dock         { view-transition-name: dock; }
-  ::view-transition-group(*) {
-    animation-duration: var(--duration-moderate);
-    animation-timing-function: var(--ease-in-out);
-  }
-}
-
-/* Moving between pages with the guide open: the guide is the same on both
-   pages (rebuilt before first paint, same conversation, same scroll), so
-   it simply stays -- no cross-fade, no jump. */
-::view-transition-old(guide) { display: none; }
-::view-transition-new(guide) { animation: none; }
+/* Moving between pages: plain page loads, no transition. (No snapshot
+   cross-fades or morphs: they read as screenshots sliding about. The
+   guide still looks permanent because assistant.js rebuilds it before the
+   new page's first paint -- same conversation, same scroll.) */
 
 /* ---- resizing the guide ----
    A handle in the gap between the two panels (assistant.js does the

@@ -1,6 +1,6 @@
 /* The pieces in the gallery: one entry per case study, written once and read
    everywhere -- the wall (/work), each piece's first screen, the "Next piece"
-   links, the guide, and the page-transition names (/pieces.css).
+   links, and the guide (also as plain data for its AI: /guide/pieces.json).
 
    `label` is the wall text: one sentence, third person, like the sign next to
    a piece in a museum. DRAFTS, adapted from each page's meta description --

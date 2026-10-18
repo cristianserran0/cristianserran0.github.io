@@ -10,7 +10,7 @@ const { slug, readingTime = false } = Astro.props;
 const p = piece(slug);
 const next = nextPiece(slug);
 ---
-<header class="piece" data-piece={p.slug}>
+<header class="piece">
   <figure>
     <PieceImage src={p.hero} alt="" eager />
   </figure>

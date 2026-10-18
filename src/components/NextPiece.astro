@@ -8,7 +8,7 @@ const next = nextPiece(Astro.props.slug);
 ---
 <nav class="next-piece" aria-label="Next piece">
   {next
-    ? <a href={href(next)} rel="next" data-piece={next.slug}>
+    ? <a href={href(next)} rel="next">
         <PieceImage src={next.cover} alt="" />
         <span>Next piece</span>
         <strong>{next.title}</strong>
