@@ -34,9 +34,6 @@
     transform: none;
     transition: transform var(--duration-panel) var(--ease-enter);
   }
-  /* While the view transition moves it, its own slide stays out of the
-     way (after the rule above, which has the same specificity). */
-  [motion] .assistant { transition: none; }
   [resizing] .assistant { transition: none; }   /* follows the pointer exactly */
   /* Phones: a sheet rising from the bottom, the page still peeking above. */
   @media (max-width: 760px) {

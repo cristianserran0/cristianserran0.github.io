@@ -1,68 +1,66 @@
 /* App shell: the page and the guide as two floating panels.
 
-   <html assistant="open"> turns it on; without the attribute the page is
-   exactly the plain site, scrolling the window as usual. Like scheme and
-   accent, it is an unprefixed attribute on <html>, restored before first
-   paint.
+   On wide screens the page is ALWAYS a floating panel -- the frame gap
+   around it, rounded, scrolling inside itself. The guide closed is not a
+   different layout: it is the same panel reaching the right edge.
+   <html assistant="open"> moves the panel's right edge in to make room,
+   and the guide slides in by the same distance, on the same beat. Both
+   are real elements animating real properties (right, transform), so
+   everything inside -- header, controls, content -- simply lives in the
+   moving panel, live, frame by frame. No snapshots.
 
-   With the guide open on a wide screen, each panel is its own scrolling
-   box with its own scrollbar at its own edge: the window stops scrolling
-   and .page becomes the scroller. The header sticks to the top of the page
-   panel, taking no room in the flow (negative margin), just as the fixed
-   header does in the plain site. public/js/header-behaviour.js and
-   assistant.js follow whichever box is scrolling. */
+   Like scheme and accent, the attribute is restored before first paint.
+   Phones (below "shell", tokens/space.css) keep the plain page scrolling
+   the window, and the guide is a sheet over it. */
 
 @layer layout {
-  /* The canvas: lit from above, as daylight is -- a touch lighter at the
-     top, darker toward the bottom, fixed to the window (light doesn't move
-     when you scroll). It agrees with the shadows, which fall downward. */
-  [assistant="open"] body {
-    background: var(--bg-canvas-top) linear-gradient(var(--bg-canvas-top), var(--bg-canvas-bottom)) fixed;
-  }
-
   @media (min-width: 761px) {
-    /* While the guide is opening or closing (<html motion>), the page is a
-       window-sized scrolling box even when closed -- it looks the same,
-       but now both before and after are window-sized boxes the view
-       transition can morph between. A document-tall box would fly. */
-    [motion],
-    [motion] body { overflow: hidden; }
-    [motion] .page {
-      position: fixed;
-      inset: 0;
-      overflow: hidden auto;
-    }
-    [motion] .site-header {
-      position: sticky;
-      top: 0;
-      width: auto;
-      margin-bottom: calc(-1 * var(--header-height));
+    html, body { overflow: hidden; }
+
+    /* The canvas: lit from above, as daylight is -- a touch lighter at
+       the top, darker toward the bottom, fixed to the window. It agrees
+       with the shadows, which fall downward. */
+    body {
+      background: var(--bg-canvas-top) linear-gradient(var(--bg-canvas-top), var(--bg-canvas-bottom)) fixed;
     }
 
-    [assistant="open"],
-    [assistant="open"] body { overflow: hidden; }
-
-    [assistant="open"] .page {
+    .page {
       position: fixed;
-      inset: auto;
       top: var(--frame-gap);
       bottom: var(--frame-gap);
       left: var(--frame-gap);
-      width: var(--panel-width);
+      right: var(--frame-gap);
+      width: auto;                    /* the edges decide (layout.css sets 100%) */
       z-index: var(--z-assistant);   /* the guide's plane */
       overflow: hidden auto;
       border-radius: var(--radius-panel);
       background: var(--bg-surface);
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
+      /* closing: the edge eases out of the guide's way (exit curve) */
+      transition: right var(--duration-panel) var(--ease-exit);
+    }
+    .page:focus { outline: none; }   /* focused only to take keyboard scrolling */
+    [assistant="open"] .page {
+      right: calc(var(--assistant-size) + 2 * var(--frame-gap));
+      transition: right var(--duration-panel) var(--ease-enter);
+    }
+
+    /* The header sticks to the top of the panel, taking no room in the
+       flow (negative margin), as the fixed header does on phones. */
+    .site-header {
+      position: sticky;
+      top: 0;
+      width: auto;
+      margin-bottom: calc(-1 * var(--header-height));
     }
 
     /* One plane: the page and the guide sit side by side at the same
-       height, so neither may shadow the other. Their shadows are drawn by
-       two shapes beneath BOTH panels (same place, same corners), and the
+       height, so neither may shadow the other. Both shadows are drawn by
+       shapes beneath BOTH panels, moving exactly as the panels do; the
        panels themselves cast none. */
-    [assistant="open"] body::before,
-    [assistant="open"] body::after {
+    body::before,
+    body::after {
       content: "";
       position: fixed;
       top: var(--frame-gap);
@@ -72,16 +70,30 @@
       box-shadow: var(--shadow-raised);
       pointer-events: none;
     }
-    [assistant="open"] body::before { left: var(--frame-gap); width: var(--panel-width); }
-    [assistant="open"] body::after  { right: var(--frame-gap); width: var(--assistant-size); }
-
-    [assistant="open"] .site-header {
-      position: sticky;
-      top: 0;
-      width: auto;
-      margin-bottom: calc(-1 * var(--header-height));
+    body::before {                     /* the page's */
+      left: var(--frame-gap);
+      right: var(--frame-gap);
+      transition: right var(--duration-panel) var(--ease-exit);
     }
-    [assistant="open"] .site-header.nav-hidden { top: var(--nav-hidden-offset); }
+    [assistant="open"] body::before {
+      right: calc(var(--assistant-size) + 2 * var(--frame-gap));
+      transition: right var(--duration-panel) var(--ease-enter);
+    }
+    body::after {                      /* the guide's: parked with it off the right edge */
+      right: var(--frame-gap);
+      width: var(--assistant-size);
+      transform: translateX(calc(100% + var(--frame-gap)));
+      transition: transform var(--duration-panel) var(--ease-exit);
+    }
+    [assistant="open"] body::after {
+      transform: none;
+      transition: transform var(--duration-panel) var(--ease-enter);
+    }
+
+    /* while the guide is being resized: everything follows the pointer */
+    [resizing] .page,
+    [resizing] body::before,
+    [resizing] body::after { transition: none; }
   }
 }
 
@@ -142,15 +154,13 @@
    Same-site navigations cross-fade, and a piece's image morphs from its tile
    on the wall into its first screen (names in /pieces.css, generated from
    src/data/pieces.ts). Plain CSS: browsers without support just navigate.
-   The header, guide and dock are named so they stay put instead of fading. */
+   The header, guide and dock are named so they stay put instead of fading.
+   (Only page-to-page: opening and closing the guide is live, see above.) */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 }
 @layer layout {
-  /* the page only while it is a window- or panel-sized box: as a
-     document-tall box it would fly across page navigations */
-  [motion] .page,
-  [assistant="open"] .page { view-transition-name: page; }
+  .page         { view-transition-name: page; }
   .site-header  { view-transition-name: site-header; }
   .site-actions { view-transition-name: site-controls; }
   .assistant    { view-transition-name: guide; }
@@ -161,88 +171,11 @@
   }
 }
 
-/* ---- opening and closing the guide ----
-   One movement for both panels: assistant.js runs the change inside a
-   same-document view transition and marks it on <html motion="enter|exit">.
-   The browser snapshots before and after and moves every named box from
-   its old place to its new one on the panels' beat:
-     page           resizes from the full window to its panel
-     site-header    follows the page (its left side stays anchored)
-     site-controls  rides the page's right edge, never jumps
-     guide          slides between on screen and parked off the right edge
-   The canvas, rounded corners and gaps are in the root snapshot and fade
-   in with it. Text is not rewrapped frame by frame: each snapshot keeps
-   its own size and the two cross-fade once, clipped by the moving panel.
-   Without view-transition support (or with reduced motion), the guide
-   slides on its own CSS transition and the page switches at once. */
-:root[motion]::view-transition-group(*) { animation-duration: var(--duration-panel); }
-:root[motion="enter"]::view-transition-group(*) { animation-timing-function: var(--ease-enter); }
-:root[motion="exit"]::view-transition-group(*)  { animation-timing-function: var(--ease-exit); }
-
-/* Snapshots keep their own size (never stretched) and are pinned the way
-   their content is laid out: the page's column is centred, so the page's
-   two snapshots are centred -- the column then sits in the same place in
-   both and the cross-fade is invisible wherever the text didn't rewrap.
-   The header's content starts at its left, so its snapshots pin left. */
-:root[motion]::view-transition-old(page),
-:root[motion]::view-transition-new(page),
-:root[motion]::view-transition-old(site-header),
-:root[motion]::view-transition-new(site-header) {
-  inline-size: 100%;   /* the box fills the moving panel ... */
-  block-size: 100%;
-  object-fit: none;    /* ... and the image inside it is never scaled */
-}
-:root[motion]::view-transition-old(page),
-:root[motion]::view-transition-new(page) { object-position: center top; }
-:root[motion]::view-transition-old(site-header),
-:root[motion]::view-transition-new(site-header) { object-position: left top; }
-:root[motion]::view-transition-image-pair(page),
-:root[motion]::view-transition-image-pair(site-header) { overflow: clip; }
-
-/* The moving frame IS the panel: it carries the panel's surface and
-   corners itself. The snapshots inside keep their own (content) width,
-   so without this the canvas showed through beside the narrower one and
-   the panel looked as wide as its content mid-resize. */
-:root[motion]::view-transition-image-pair(page) { background: var(--bg-surface); }
-:root[motion="enter"]::view-transition-image-pair(page) {
-  animation: panel-round var(--duration-panel) var(--ease-enter) both;
-}
-:root[motion="exit"]::view-transition-image-pair(page) {
-  animation: panel-square var(--duration-panel) var(--ease-exit) both;
-}
-@keyframes panel-round  { from { border-radius: 0; } to { border-radius: var(--radius-panel); } }
-@keyframes panel-square { from { border-radius: var(--radius-panel); } to { border-radius: 0; } }
-
 /* Moving between pages with the guide open: the guide is the same on both
    pages (rebuilt before first paint, same conversation, same scroll), so
    it simply stays -- no cross-fade, no jump. */
-:root:not([motion])::view-transition-old(guide) { display: none; }
-:root:not([motion])::view-transition-new(guide) { animation: none; }
-
-/* The guide needs nothing extra: the browser captures it in both places
-   (on screen, and parked off the right edge while closed) and moves it
-   between them on the same group timing as the page, so the two edges
-   travel in step. */
-
-/* The page's content must not move while its panel does. The panel's top
-   edge travels by the frame gap (0 <-> 8px) and would carry both
-   snapshots with it, so each one counter-moves by that gap: in viewport
-   terms the text stays exactly put while the panel grows or shrinks
-   around it. (These replace the browser's default fades, so they fade
-   too.) */
-:root[motion]::view-transition-old(page),
-:root[motion]::view-transition-new(page) {
-  animation-duration: var(--duration-panel);
-  animation-fill-mode: both;
-}
-:root[motion="enter"]::view-transition-old(page) { animation-name: page-out-enter; animation-timing-function: var(--ease-enter); }
-:root[motion="enter"]::view-transition-new(page) { animation-name: page-in-enter;  animation-timing-function: var(--ease-enter); }
-:root[motion="exit"]::view-transition-old(page)  { animation-name: page-out-exit;  animation-timing-function: var(--ease-exit); }
-:root[motion="exit"]::view-transition-new(page)  { animation-name: page-in-exit;   animation-timing-function: var(--ease-exit); }
-@keyframes page-out-enter { to   { opacity: 0; translate: 0 calc(-1 * var(--frame-gap)); } }
-@keyframes page-in-enter  { from { opacity: 0; translate: 0 var(--frame-gap); } }
-@keyframes page-out-exit  { to   { opacity: 0; translate: 0 var(--frame-gap); } }
-@keyframes page-in-exit   { from { opacity: 0; translate: 0 calc(-1 * var(--frame-gap)); } }
+::view-transition-old(guide) { display: none; }
+::view-transition-new(guide) { animation: none; }
 
 /* ---- resizing the guide ----
    A handle in the gap between the two panels (assistant.js does the

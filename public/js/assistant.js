@@ -565,14 +565,11 @@
   });
 
   // ---- open / close ----
-  // Opening the guide on a wide screen moves the scrolling from the window
-  // to the page panel (styles/shell.css), and the narrower panel rewraps
-  // the text. So instead of carrying a scroll NUMBER across, keep the
-  // reader's place: note the element at the top of the reading area, and
-  // after the change scroll so it sits exactly where it was.
+  // The page panel narrowing can rewrap the text, so the reader's place is
+  // kept by ELEMENT, not by scroll number: note the element at the top of
+  // the reading area, and keep it exactly where it was.
   var page = document.querySelector('.page');
   var header = document.querySelector('.site-header');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var wide = window.matchMedia('(min-width: 761px)');
   var touch = window.matchMedia('(pointer: coarse)');
   function panelScrolls() { return page && getComputedStyle(page).overflowY === 'auto'; }
@@ -594,42 +591,37 @@
   }
 
   function isOpen() { return d.getAttribute('assistant') === 'open'; }
+  // Opening and closing is just the attribute: CSS moves the real panels
+  // (styles/shell.css). While the page panel's edge moves, its text may
+  // rewrap; keepPlace runs on every frame of the movement, so the
+  // paragraph being read stays where it is the whole way, not only at the end.
   function setOpen(open, from) {
     if (open === isOpen()) return;
     var anchor = readingAnchor();
-    function change() {
-      open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
+    open ? d.setAttribute('assistant', 'open') : d.removeAttribute('assistant');
+    holdPlace(anchor);
+    store(local, 'assistant', open ? 'open' : null);
+    toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
+    if (open) {
+      arrive();
+      updateJumpSoon();
+      // On touch screens focusing the box would pop up the keyboard
+      // and shove everything again; there it waits for a tap.
+      if (!touch.matches) input.focus({ preventScroll: true });
+    } else if (panel.contains(document.activeElement)) {
+      var back = from || toggles.filter(function (t) { return t.offsetParent; })[0];
+      if (back) back.focus({ preventScroll: true });
+    }
+  }
+  var holding = 0;
+  function holdPlace(anchor) {
+    cancelAnimationFrame(holding);
+    if (!anchor) return;
+    var until = performance.now() + parseFloat(getComputedStyle(d).getPropertyValue('--duration-panel')) + 50;
+    (function frame(now) {
       keepPlace(anchor);
-      store(local, 'assistant', open ? 'open' : null);
-      toggles.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
-      if (open) {
-        arrive();
-        updateJumpSoon();
-        // On touch screens focusing the box would pop up the keyboard
-        // and shove everything again; there it waits for a tap.
-        if (!touch.matches) input.focus({ preventScroll: true });
-      } else if (panel.contains(document.activeElement)) {
-        var back = from || toggles.filter(function (t) { return t.offsetParent; })[0];
-        if (back) back.focus({ preventScroll: true });
-      }
-    }
-    // Both panels move as one (styles/shell.css, "opening and closing the
-    // guide"). Phones use the sheet's own transition; reduced motion and
-    // browsers without view transitions switch at once.
-    if (document.startViewTransition && wide.matches && !reduce.matches) {
-      // [motion] makes the page a window-sized scroller (styles/shell.css):
-      // carry the window's scroll into it, and back out when it ends.
-      var y = window.pageYOffset;
-      d.setAttribute('motion', open ? 'enter' : 'exit');
-      if (open) page.scrollTop = y;
-      var vt = document.startViewTransition(change);
-      vt.finished.then(done, done);
-    } else change();
-    function done() {
-      var top = page.scrollTop;
-      d.removeAttribute('motion');
-      if (!isOpen()) window.scrollTo(0, top);
-    }
+      if (now < until) holding = requestAnimationFrame(frame);
+    })(performance.now());
   }
   toggles.forEach(function (t) {
     t.setAttribute('aria-expanded', String(isOpen()));

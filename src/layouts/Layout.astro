@@ -129,7 +129,9 @@ const jsonLd = {
   </head>
 
   <body>
-    <div class="page">
+    <!-- tabindex -1: focusable by script, not in the Tab order; see
+         header-behaviour.js (keyboard scrolling of the panel). -->
+    <div class="page" tabindex="-1">
 
       <header class="site-header nav-visible">
         <nav class="site-nav" aria-label="Site">
