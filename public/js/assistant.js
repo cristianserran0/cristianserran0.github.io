@@ -158,15 +158,49 @@
     return TOUR_NAMES;
   }
   // The blank state's words, for the room the visitor is in.
+  // The blank state: a greeting by the visitor's own clock, and this
+  // room's options as cards (q is what gets asked, so the scripted answers
+  // match). Descriptions come from the pieces, never typed twice.
   function blankState() {
-    if (room.kind === 'piece') return {
-      title: 'Ask about ' + room.title,
-      text: room.client + ', ' + room.years + '. Or ask anything about Cristian’s work, his CV or how this site is built.',
-    };
+    var h = new Date().getHours();
+    var hello = h >= 5 && h < 12 ? 'Good morning!' : h >= 12 && h < 18 ? 'Good afternoon!' : 'Good evening!';
+    var clients = function (re) { return byCategory(re).map(function (p) { return p.client.replace(/^Globant \+ /, ''); }).join(' and '); };
+    if (room.kind === 'piece') {
+      var opts = [
+        { q: Q_SPECIAL, title: Q_SPECIAL, text: 'The piece in a few lines', icon: 'sparkle' },
+        { q: Q_ROLE, title: Q_ROLE, text: 'Role, time and platforms', icon: 'person' },
+      ];
+      if (room.next) {
+        var next = pieces.filter(function (p) { return p.title === room.next.title; })[0];
+        opts.push({ q: 'Next piece: ' + room.next.title, title: 'Next piece: ' + room.next.title, text: next ? next.client + ' · ' + next.years : 'The next case study', icon: 'arrow' });
+      }
+      return { title: hello + ' Curious about ' + room.title + '?', options: opts };
+    }
     return {
-      title: 'Ask about Cristian’s work',
-      text: 'His case studies, his CV, how this site is built. Or let me show you around:',
+      title: hello + ' What would you like to know?',
+      options: [
+        { q: TOUR_NAMES[0], title: TOUR_NAMES[0], text: pieces.length + ' pieces, newest first', icon: 'compass' },
+        { q: TOUR_NAMES[1], title: TOUR_NAMES[1], text: clients(/design system/i), icon: 'layers' },
+        { q: TOUR_NAMES[2], title: TOUR_NAMES[2], text: 'Where he led teams and design operations', icon: 'people' },
+      ],
     };
+  }
+  var ICONS = {
+    sparkle: 'M7 1.75c.4 2.9 1.85 4.35 4.75 4.75-2.9.4-4.35 1.85-4.75 4.75C6.6 8.35 5.15 6.9 2.25 6.5 5.15 6.1 6.6 4.65 7 1.75zM12.25 9.5c.2 1.35.9 2.05 2.25 2.25-1.35.2-2.05.9-2.25 2.25-.2-1.35-.9-2.05-2.25-2.25 1.35-.2 2.05-.9 2.25-2.25z',
+    person:  'M8 7.25a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM3 14c.4-2.8 2.4-4.25 5-4.25s4.6 1.45 5 4.25',
+    arrow:   'M3 8h10M9 4l4 4-4 4',
+    compass: 'M8 1.75a6.25 6.25 0 1 0 0 12.5 6.25 6.25 0 0 0 0-12.5zM10.5 5.5l-1.4 3.6-3.6 1.4 1.4-3.6z',
+    layers:  'M8 2l6 3-6 3-6-3 6-3zM2 8l6 3 6-3M2 11l6 3 6-3',
+    people:  'M5.5 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM1.75 13c.3-2.2 1.8-3.5 3.75-3.5s3.45 1.3 3.75 3.5M11 7a1.75 1.75 0 1 0 0-3.5M12 9.5c1.3.4 2 1.6 2.25 3.5',
+  };
+  function icon(name) {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('fill', 'none'); svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.3'); svg.setAttribute('stroke-linecap', 'round'); svg.setAttribute('stroke-linejoin', 'round');
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', ICONS[name]); svg.appendChild(p);
+    return svg;
   }
 
   function answer(q) {
@@ -463,14 +497,15 @@
   // The blank state: shown while the conversation is empty, with this
   // room's suggestions; it gives way as soon as anything is said.
   var empty = panel.querySelector('.assistant-empty');
-  var words = blankState();
-  empty.querySelector('[data-empty-title]').textContent = words.title;
-  empty.querySelector('[data-empty-text]').textContent = words.text;
-  var emptyList = empty.querySelector('[data-empty-suggestions]');
-  roomSuggestions().forEach(function (q) {
-    var b = el('button', null, q); b.type = 'button';
-    b.addEventListener('click', function () { ask(q); });
-    var i = el('li'); i.appendChild(b); emptyList.appendChild(i);
+  var blank = blankState();
+  empty.querySelector('[data-empty-title]').textContent = blank.title;
+  var options = empty.querySelector('[data-empty-options]');
+  blank.options.forEach(function (o) {
+    var b = el('button'); b.type = 'button';
+    var i = el('span'); i.appendChild(icon(o.icon)); b.appendChild(i);
+    var t = el('span'); t.appendChild(el('strong', null, o.title)); t.appendChild(el('span', null, o.text)); b.appendChild(t);
+    b.addEventListener('click', function () { ask(o.q); });
+    var li = el('li'); li.appendChild(b); options.appendChild(li);
   });
   // (Also called while the saved conversation is first drawn, before
   // `empty` is looked up just above -- hence the guard.)

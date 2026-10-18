@@ -244,6 +244,11 @@
   --backdrop:       light-dark( rgb(from var(--neutral-50) r g b / 0.7),
                                 rgb(from var(--neutral-1000) r g b / 0.7) );
 
+  /* A solid accent mark (the guide's tile): the accent at full strength,
+     with a white symbol on it, in either scheme. */
+  --bg-accent:      var(--accent-600);
+  --text-on-accent: var(--white);
+
   /* On imagery: text sits on a darkening scrim, in either scheme. */
   --text-on-media:  var(--white);
   --scrim:          rgb(0 0 0 / 0.5);

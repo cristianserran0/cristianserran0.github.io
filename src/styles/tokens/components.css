@@ -27,6 +27,8 @@
   --chat-padding-inline: 1.25rem;  /* 20px */
   --chat-bubble-max:     85%;      /* the visitor's own messages */
   --pending-dot:         0.375rem; /* thinking dots */
+  --guide-mark:          3.5rem;   /* the accent tile in the blank state */
+  --guide-options:       17rem;    /* the blank state's option cards */
   --chat-fade:           2.5rem;   /* the gradients over the conversation's top and bottom edges */
   --chat-rest-space:     5.5rem;   /* 88px of breathing room below a long reply (assistant.js reads it) */
 }

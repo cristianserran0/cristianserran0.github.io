@@ -335,26 +335,74 @@
     text-align: center;
   }
   .assistant-empty[hidden] { display: none; }
-  .assistant-empty svg {
-    width: var(--icon-button);
-    height: var(--icon-button);
+  /* the mark: a solid accent tile with the sparkle */
+  .assistant-mark {
+    display: grid;
+    place-items: center;
+    width: var(--guide-mark);
+    height: var(--guide-mark);
     margin-bottom: var(--space-2);
-    color: var(--link);
+    border-radius: var(--radius-lg);
+    background: var(--bg-accent);
+    color: var(--text-on-accent);
+    box-shadow: var(--shadow-sm);
   }
+  .assistant-mark svg { width: var(--icon-button); height: var(--icon-button); }
   .assistant-empty h3 {
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
     font-weight: var(--weight-semibold);
-    margin: 0;
+    max-width: var(--guide-options);
+    margin: 0 0 var(--space-3);
+    text-wrap: balance;
   }
-  .assistant-empty p {
-    color: var(--text-secondary);
+
+  /* options: stacked cards -- icon, title, a line of what it is */
+  .assistant-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: min(100%, var(--guide-options));
     margin: 0;
-    max-width: var(--display-width);
+    padding: 0;
+    list-style-type: none;
   }
-  .assistant-empty .assistant-suggestions {
-    justify-content: center;
-    margin-top: var(--space-3);
+  .assistant-options button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .assistant-options button:hover { border-color: var(--link); background: var(--fill-subtle); }
+  .assistant-options button:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+  .assistant-options button > span:first-child {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: var(--icon-button);
+    height: var(--icon-button);
+    border-radius: var(--radius-md);
+    background: var(--fill-subtle);
+  }
+  .assistant-options svg { width: var(--icon-size); height: var(--icon-size); }
+  .assistant-options strong {
+    display: block;
+    font: var(--type-chat);
+    letter-spacing: var(--type-chat-tracking);
+    font-weight: var(--weight-medium);
+  }
+  .assistant-options strong + span {
+    display: block;
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-tertiary);
   }
 
   /* Fades over the conversation's edges: the panel's own colour, shown

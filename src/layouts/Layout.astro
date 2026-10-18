@@ -210,10 +210,11 @@ const jsonLd = {
         <!-- The blank state: until the first question, what the guide can do
              here, with suggestions that fit the page. Filled by assistant.js. -->
         <section class="assistant-empty" aria-labelledby="guide-empty-title" hidden>
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M7 1.75c.4 2.9 1.85 4.35 4.75 4.75-2.9.4-4.35 1.85-4.75 4.75C6.6 8.35 5.15 6.9 2.25 6.5 5.15 6.1 6.6 4.65 7 1.75z"/><path d="M12.25 9.5c.2 1.35.9 2.05 2.25 2.25-1.35.2-2.05.9-2.25 2.25-.2-1.35-.9-2.05-2.25-2.25 1.35-.2 2.05-.9 2.25-2.25z"/></svg>
+          <span class="assistant-mark" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M7 1.75c.4 2.9 1.85 4.35 4.75 4.75-2.9.4-4.35 1.85-4.75 4.75C6.6 8.35 5.15 6.9 2.25 6.5 5.15 6.1 6.6 4.65 7 1.75z"/><path d="M12.25 9.5c.2 1.35.9 2.05 2.25 2.25-1.35.2-2.05.9-2.25 2.25-.2-1.35-.9-2.05-2.25-2.25 1.35-.2 2.05-.9 2.25-2.25z"/></svg>
+          </span>
           <h3 id="guide-empty-title" data-empty-title></h3>
-          <p data-empty-text></p>
-          <ul class="assistant-suggestions" data-empty-suggestions></ul>
+          <ul class="assistant-options" data-empty-options></ul>
         </section>
         <ol class="assistant-log" aria-live="polite"></ol>
         <button type="button" class="assistant-jump" aria-label="Jump to latest" title="Jump to latest" hidden>
