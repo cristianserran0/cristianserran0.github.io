@@ -50,7 +50,8 @@
   --z-dock:      120;   /* the quick-actions bar on phones */
   --z-lift:      1;     /* one step above a sibling inside the same component */
   --z-modal:     10;    /* a panel's modal, above that panel's content (inside the panel) */
-  --z-assistant: 200;
+  --z-panel-shadow: 190;   /* both panels' shadows, drawn beneath both panels */
+  --z-assistant: 200;      /* the panels: the page (guide open) and the guide, one plane */
   --z-resizer:   210;   /* the handle between the panels, over both edges */
 }
 

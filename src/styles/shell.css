@@ -13,7 +13,12 @@
    assistant.js follow whichever box is scrolling. */
 
 @layer layout {
-  [assistant="open"] body { background: var(--bg-canvas); }
+  /* The canvas: lit from above, as daylight is -- a touch lighter at the
+     top, darker toward the bottom, fixed to the window (light doesn't move
+     when you scroll). It agrees with the shadows, which fall downward. */
+  [assistant="open"] body {
+    background: var(--bg-canvas-top) linear-gradient(var(--bg-canvas-top), var(--bg-canvas-bottom)) fixed;
+  }
 
   @media (min-width: 761px) {
     /* While the guide is opening or closing (<html motion>), the page is a
@@ -44,13 +49,31 @@
       bottom: var(--frame-gap);
       left: var(--frame-gap);
       width: var(--panel-width);
+      z-index: var(--z-assistant);   /* the guide's plane */
       overflow: hidden auto;
       border-radius: var(--radius-panel);
       background: var(--bg-surface);
-      box-shadow: var(--shadow-raised);
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
     }
+
+    /* One plane: the page and the guide sit side by side at the same
+       height, so neither may shadow the other. Their shadows are drawn by
+       two shapes beneath BOTH panels (same place, same corners), and the
+       panels themselves cast none. */
+    [assistant="open"] body::before,
+    [assistant="open"] body::after {
+      content: "";
+      position: fixed;
+      top: var(--frame-gap);
+      bottom: var(--frame-gap);
+      z-index: var(--z-panel-shadow);
+      border-radius: var(--radius-panel);
+      box-shadow: var(--shadow-raised);
+      pointer-events: none;
+    }
+    [assistant="open"] body::before { left: var(--frame-gap); width: var(--panel-width); }
+    [assistant="open"] body::after  { right: var(--frame-gap); width: var(--assistant-size); }
 
     [assistant="open"] .site-header {
       position: sticky;

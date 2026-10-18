@@ -225,6 +225,12 @@
   --bg-surface:     light-dark( var(--white),       var(--neutral-975) );
   --bg-raised:      light-dark( var(--white),       var(--neutral-950) );
   --bg-overlay:     light-dark( var(--white),       var(--neutral-925) );
+  /* The canvas as light from above (shell.css): the same colour, 2.5
+     points lighter at the top and darker at the bottom (2 in dark). */
+  --bg-canvas-top:    light-dark( oklch(from var(--neutral-75) calc(l + 0.025) c h),
+                                  oklch(from var(--neutral-1000) calc(l + 0.02) c h) );
+  --bg-canvas-bottom: light-dark( oklch(from var(--neutral-75) calc(l - 0.025) c h),
+                                  oklch(from var(--neutral-1000) calc(l - 0.02) c h) );
 
   /* The sticky header: its panel's surface, slightly see-through. */
   --bg-header:      light-dark( rgb(from var(--white) r g b / 0.9),
