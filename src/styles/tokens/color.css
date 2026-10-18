@@ -118,48 +118,56 @@
    ------------------------------------------------------------ */
 [accent="blue"] {
   --accent-h: 265;
+  --ink-h: 261;   /* the live site's navy: measured hue 260-263 */
   --accent-50: #f0f3f9;   --accent-100: #d2dffb;  --accent-200: #b2c9fa;  --accent-300: #8daff9;
   --accent-400: #5a8aff;  --accent-500: #3065ff;  --accent-600: #1035fd;  --accent-700: #0911d7;
   --accent-800: #0511a3;  --accent-900: #030f75;  --accent-950: #010a49;
 }
 [accent="purple"] {
   --accent-h: 305;
+  --ink-h: 305;
   --accent-50: #f4f1f9;   --accent-100: #e7d7fb;  --accent-200: #d7bafa;  --accent-300: #c698f9;
   --accent-400: #b360ff;  --accent-500: #a200fe;  --accent-600: #8204cd;  --accent-700: #650b9f;
   --accent-800: #4c0a78;  --accent-900: #350956;  --accent-950: #200636;
 }
 [accent="magenta"] {
   --accent-h: 355;
+  --ink-h: 355;
   --accent-50: #faf0f3;   --accent-100: #fbd2e1;  --accent-200: #fab0cc;  --accent-300: #fa84b5;
   --accent-400: #ff179a;  --accent-500: #d5007e;  --accent-600: #ac0365;  --accent-700: #85084e;
   --accent-800: #65083a;  --accent-900: #480729;  --accent-950: #2d0518;
 }
 [accent="red"] {
   --accent-h: 25;
+  --ink-h: 25;
   --accent-50: #faf0ef;   --accent-100: #fbd5d0;  --accent-200: #fab5ae;  --accent-300: #fa8d85;
   --accent-400: #ff3d42;  --accent-500: #e00024;  --accent-600: #b5031c;  --accent-700: #8c0916;
   --accent-800: #6a0910;  --accent-900: #4c080b;  --accent-950: #2f0506;
 }
 [accent="orange"] {
   --accent-h: 69;
+  --ink-h: 69;
   --accent-50: #faf1e9;   --accent-100: #fbd8b3;  --accent-200: #fabb73;  --accent-300: #ee9c2b;
   --accent-400: #c97e00;  --accent-500: #a66700;  --accent-600: #855301;  --accent-700: #674005;
   --accent-800: #4e2f05;  --accent-900: #372104;  --accent-950: #221303;
 }
 [accent="green"] {
   --accent-h: 152;
+  --ink-h: 152;
   --accent-50: #e3fae8;   --accent-100: #8cfbad;  --accent-200: #42ec85;  --accent-300: #32d073;
   --accent-400: #00ae59;  --accent-500: #008f48;  --accent-600: #027339;  --accent-700: #07592c;
   --accent-800: #074320;  --accent-900: #062f16;  --accent-950: #041c0c;
 }
 [accent="emerald"] {
   --accent-h: 190;
+  --ink-h: 190;
   --accent-50: #defaf7;   --accent-100: #57fbf3;  --accent-200: #42e4dc;  --accent-300: #32c9c1;
   --accent-400: #00a7a1;  --accent-500: #008a84;  --accent-600: #026e6a;  --accent-700: #075552;
   --accent-800: #07403d;  --accent-900: #062d2b;  --accent-950: #041b1a;
 }
 [accent="sky"] {
   --accent-h: 237;
+  --ink-h: 237;
   --accent-50: #ecf4f9;   --accent-100: #c3e4fb;  --accent-200: #93d2fa;  --accent-300: #50bcf9;
   --accent-400: #009dde;  --accent-500: #0081b7;  --accent-600: #026793;  --accent-700: #064f72;
   --accent-800: #063b56;  --accent-900: #052a3d;  --accent-950: #041926;
@@ -168,15 +176,19 @@
 
 /* ------------------------------------------------------------
    INK RAMP -- derived, owned by the accent
-   The text colours: the accent's hue at a text's depth. With the blue
-   accent this IS the live site's navy -- headings #001A61 (L 26.1%,
-   C 0.129) and body #0D3372 (L 33.7%, C 0.117), measured. With another
-   accent, the same depth in that hue. Not taken from the accent ramp:
-   its steps run at the hue's full saturation (blue 900: C 0.165, 800:
-   C 0.215), far more than text wants.
-   700 continues the step for captions (my value; the live site has no
-   such tone). The light end (50-200) is the same idea for dark mode: a
-   faint tint of the accent on near-white.
+   The text colours: the accent's hue at a text's depth -- coloured, but
+   dark enough for contrast. Lightness and chroma are the live site's
+   three text tones, measured:
+     900  #001A61  L 26.1%  C 0.129   titles, headings, nav, footer
+     800  #0D3372  L 33.7%  C 0.117   paragraphs, lead, dates, quotes
+     700  #0A439B  L 40.7%  C 0.154   eyebrows, highlights, captions
+   The hue is each accent's --ink-h: its own hue, except blue, whose ink
+   sits at the live navy's 261 while its accent ramp sits at 265. (Every
+   accent states --ink-h, so a subtree with another accent never inherits
+   blue's.) Not the accent ramp itself: its steps run at the hue's full
+   saturation (blue 900: C 0.165, 800: C 0.215).
+   The light end (50-200) is the same idea for dark mode: a faint tint of
+   the accent on near-white.
    Out-of-gamut hues are mapped by the browser; the contrast gate checks
    what actually renders, for every accent.
    ------------------------------------------------------------ */
@@ -184,12 +196,12 @@
 [scheme],
 [temperature],
 [accent] {
-  --ink-900: oklch(26.1% 0.129 var(--accent-h));
-  --ink-800: oklch(33.7% 0.117 var(--accent-h));
-  --ink-700: oklch(40.5% 0.105 var(--accent-h));
-  --ink-200: oklch(82.0% 0.045 var(--accent-h));
-  --ink-100: oklch(91.0% 0.030 var(--accent-h));
-  --ink-50:  oklch(97.0% 0.012 var(--accent-h));
+  --ink-900: oklch(26.1% 0.129 var(--ink-h));
+  --ink-800: oklch(33.7% 0.117 var(--ink-h));
+  --ink-700: oklch(40.7% 0.154 var(--ink-h));
+  --ink-200: oklch(82.0% 0.045 var(--ink-h));
+  --ink-100: oklch(91.0% 0.030 var(--ink-h));
+  --ink-50:  oklch(97.0% 0.012 var(--ink-h));
 }
 
 
