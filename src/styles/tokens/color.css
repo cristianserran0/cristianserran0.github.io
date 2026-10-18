@@ -11,10 +11,11 @@
    combination falls out without being written down:
      temperature -> owns the greys (hue and amount), names no role
      accent      -> owns the accent ramp, names no role
-   Greys carry every background, every body text and every hairline;
-   the accent carries links, highlights and the chosen option. So
-   temperature sets the mood of the whole page, accent its signal colour,
-   and the two never touch each other's tokens.
+   Greys carry every background and every hairline; the accent carries
+   links, highlights, the chosen option -- and the text, as a deep ink of
+   its hue (INK RAMP). So temperature sets the mood of the surfaces,
+   accent the colour of everything you read, and the two never touch
+   each other's tokens.
      scheme      -> owns the role mapping, names no hue
 
    Custom properties resolve lazily at point of use, so any
@@ -166,6 +167,33 @@
 
 
 /* ------------------------------------------------------------
+   INK RAMP -- derived, owned by the accent
+   The text colours: the accent's hue at a text's depth. With the blue
+   accent this IS the live site's navy -- headings #001A61 (L 26.1%,
+   C 0.129) and body #0D3372 (L 33.7%, C 0.117), measured. With another
+   accent, the same depth in that hue. Not taken from the accent ramp:
+   its steps run at the hue's full saturation (blue 900: C 0.165, 800:
+   C 0.215), far more than text wants.
+   700 continues the step for captions (my value; the live site has no
+   such tone). The light end (50-200) is the same idea for dark mode: a
+   faint tint of the accent on near-white.
+   Out-of-gamut hues are mapped by the browser; the contrast gate checks
+   what actually renders, for every accent.
+   ------------------------------------------------------------ */
+:root,
+[scheme],
+[temperature],
+[accent] {
+  --ink-900: oklch(26.1% 0.129 var(--accent-h));
+  --ink-800: oklch(33.7% 0.117 var(--accent-h));
+  --ink-700: oklch(40.5% 0.105 var(--accent-h));
+  --ink-200: oklch(82.0% 0.045 var(--accent-h));
+  --ink-100: oklch(91.0% 0.030 var(--accent-h));
+  --ink-50:  oklch(97.0% 0.012 var(--accent-h));
+}
+
+
+/* ------------------------------------------------------------
    COLLECTION: scheme   modes: light | dark
 
    The mode is carried by the native `color-scheme` property, so
@@ -199,14 +227,15 @@
 [scheme],
 [temperature],
 [accent] {
-  --text-primary:   light-dark( var(--neutral-900), var(--white)      );
-  --text-secondary: light-dark( var(--neutral-800), var(--neutral-100));
-  --text-tertiary:  light-dark( var(--neutral-700), var(--neutral-200));
+  /* text follows the accent (INK RAMP above); backgrounds follow temperature */
+  --text-primary:   light-dark( var(--ink-900), var(--ink-50) );
+  --text-secondary: light-dark( var(--ink-800), var(--ink-100));
+  --text-tertiary:  light-dark( var(--ink-700), var(--ink-200));
   --border-subtle:  light-dark( var(--neutral-200), var(--neutral-800));
   --link:           light-dark( var(--accent-600),  var(--accent-400) );
   --link-hover:     light-dark( var(--accent-700),  var(--accent-300) );
   --selection-bg:   light-dark( var(--accent-100),  var(--accent-800) );
-  --selection-text: light-dark( var(--neutral-900), var(--white)      );
+  --selection-text: light-dark( var(--ink-900), var(--ink-50) );
 
   /* DEPTH -- back to front. Every background on the site is one of these
      four, so "how close is it to the viewer" has one answer:
