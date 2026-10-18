@@ -96,7 +96,7 @@
     letter-spacing: var(--type-caption-tracking);
     color: var(--text-primary);
   }
-  .site-footer .love { color: var(--link); }
+  .site-footer .love { color: var(--mark); }
 
   /* ---- grid of projects ---- */
   .projects {

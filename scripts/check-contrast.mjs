@@ -30,6 +30,10 @@ const SCHEMES = ['light', 'dark'];
 const TEMPS = modes('temperature');
 const ACCENTS = modes('accent');
 const FG = ['--text-primary', '--text-secondary', '--text-tertiary', '--link', '--link-hover'];
+// Shapes in the accent (underlines, dividers, focus rings, the guide's
+// tile): WCAG 1.4.11 asks 3:1 for graphics, not 4.5:1. --text-on-accent on
+// --bg-accent is the white sparkle on the tile.
+const MARKS = [['--mark', '--bg-surface'], ['--mark', '--bg-raised'], ['--mark', '--bg-overlay'], ['--text-on-accent', '--bg-accent']];
 // Every depth text sits on, plus the see-through fills over the panel (and
 // over the overlay) they are drawn on: "a+b" paints b over a, as on screen.
 const BG = ['--bg-surface', '--bg-raised', '--bg-overlay',
@@ -40,7 +44,7 @@ const page = `<!DOCTYPE html><html><head><style>${css}</style></head><body><pre 
 var cv=document.createElement('canvas'); cv.width=cv.height=1;
 var cx=cv.getContext('2d',{willReadFrequently:true});
 var S=${JSON.stringify(SCHEMES)},T=${JSON.stringify(TEMPS)},A=${JSON.stringify(ACCENTS)},
-    R=${JSON.stringify([...FG, ...BG])}, out=[];
+    R=${JSON.stringify([...new Set([...FG, ...BG, '--mark', '--text-on-accent', '--bg-accent'])])}, out=[];
 S.forEach(function(s){T.forEach(function(t){A.forEach(function(a){
   var d=document.createElement('div');
   d.setAttribute('scheme',s); d.setAttribute('temperature',t); d.setAttribute('accent',a);
@@ -90,8 +94,9 @@ if (rows.length !== want) {
 }
 const rgb = v => Array.isArray(v) && v.length === 3 && v.every(x => Number.isInteger(x) && x >= 0 && x <= 255) ? v : [];
 const unresolved = [];
+const ALL = [...new Set([...FG, ...BG, ...MARKS.flat()])];
 for (const r of rows)
-  for (const k of [...FG, ...BG])
+  for (const k of ALL)
     if (rgb(r.roles[k]).length !== 3)
       unresolved.push(`${r.scheme}/${r.temp}/${r.accent} ${k} = ${JSON.stringify(r.roles[k])} (raw ${r.raw?r.raw[k]:'?'})`);
 if (unresolved.length) {
@@ -99,7 +104,7 @@ if (unresolved.length) {
   unresolved.slice(0, 8).forEach(u => console.error('  ' + u));
   process.exit(1);
 }
-console.log(`✓ self-test: ${rows.length} appearances × ${FG.length + BG.length} roles all resolved by the browser`);
+console.log(`✓ self-test: ${rows.length} appearances × ${ALL.length} roles all resolved by the browser`);
 
 const lum = c => { const v = c.map(x => x / 255).map(x => x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4);
   return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
@@ -116,7 +121,12 @@ for (const r of rows)
     if (v < 4.5) fails.push(`  ${r.scheme}/${r.temp}/${r.accent}  ${f.slice(2)} on ${b.slice(2)}` +
                             `  rgb(${r.roles[f]}) / rgb(${r.roles[b]})  ${v.toFixed(2)}:1`);
   }
-console.log(`${SCHEMES.length}×${TEMPS.length}×${ACCENTS.length} = ${rows.length} appearances, ${n} pairs vs WCAG AA 4.5:1\n`);
+for (const r of rows)
+  for (const [f, b] of MARKS) {
+    const v = ratio(rgb(r.roles[f]), rgb(r.roles[b])); n++;
+    if (v < 3) fails.push(`  ${r.scheme}/${r.temp}/${r.accent}  ${f.slice(2)} on ${b.slice(2)}  ${v.toFixed(2)}:1 (shapes need 3:1)`);
+  }
+console.log(`${SCHEMES.length}×${TEMPS.length}×${ACCENTS.length} = ${rows.length} appearances, ${n} pairs (text 4.5:1, shapes 3:1)\n`);
 console.log(fails.length ? `FAILURES (${fails.length}):\n` + fails.slice(0, 20).join('\n') +
   (fails.length > 20 ? `\n  ... +${fails.length - 20} more` : '') : '✓ every pair passes');
 process.exit(fails.length ? 1 : 0);

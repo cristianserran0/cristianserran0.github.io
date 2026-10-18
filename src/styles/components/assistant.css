@@ -74,7 +74,7 @@
     cursor: pointer;
   }
   .icon-button:hover { background: var(--fill-subtle); color: var(--text-primary); }
-  .icon-button:focus-visible { outline: var(--border-accent) solid var(--link); }
+  .icon-button:focus-visible { outline: var(--border-accent) solid var(--mark); }
   .icon-button svg { width: var(--icon-size); height: var(--icon-size); }
   .icon-button:disabled { cursor: default; color: var(--text-tertiary); background: none; }
 
@@ -151,7 +151,7 @@
     cursor: pointer;
     text-align: left;
   }
-  .assistant-suggestions button:hover { border-color: var(--link); }
+  .assistant-suggestions button:hover { border-color: var(--mark); }
 
   /* ---- where you are: above the composer, rewritten per page ---- */
   /* ---- keep-this-chat card ---- */
@@ -191,7 +191,7 @@
     cursor: pointer;
   }
   .assistant-keep button[data-keep="yes"] { border-color: transparent; }
-  .assistant-keep button:hover { border-color: var(--link); }
+  .assistant-keep button:hover { border-color: var(--mark); }
 
   /* ---- composer ---- */
   .assistant-composer {
@@ -200,7 +200,7 @@
     border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-lg);
   }
-  .assistant-composer:focus-within { border-color: var(--link); }
+  .assistant-composer:focus-within { border-color: var(--mark); }
   .assistant-composer textarea {
     display: block;
     width: 100%;
@@ -242,7 +242,7 @@
     color: var(--text-tertiary);
   }
   .assistant-rating [data-rate="down"] svg { scale: -1 -1; }   /* the same thumb, pointing down */
-  .assistant-rating [aria-pressed="true"] { color: var(--link); background: var(--fill-subtle); }
+  .assistant-rating [aria-pressed="true"] { color: var(--mark); background: var(--fill-subtle); }
   .assistant-rating span { margin-inline-start: var(--space-1); }
 }
 
@@ -267,7 +267,7 @@
     border-radius: var(--radius-md);
     background: var(--fill-subtle);
   }
-  .assistant-md a { color: var(--text-primary); text-decoration-color: var(--link); }
+  .assistant-md a { color: var(--text-primary); text-decoration-color: var(--mark); }
   .assistant-md a:hover { color: var(--link); }
 
   /* a newly revealed word fades in; guide-ai.js keeps the fade's place
@@ -376,8 +376,8 @@
     text-align: left;
     cursor: pointer;
   }
-  .assistant-options button:hover { border-color: var(--link); background: var(--fill-subtle); }
-  .assistant-options button:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+  .assistant-options button:hover { border-color: var(--mark); background: var(--fill-subtle); }
+  .assistant-options button:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: var(--focus-offset); }
   .assistant-options button > span:first-child {
     display: grid;
     place-items: center;
@@ -442,6 +442,6 @@
   }
   .assistant-jump[hidden] { display: none; }
   .assistant-jump svg { width: var(--icon-size); height: var(--icon-size); }
-  .assistant-jump:hover { border-color: var(--link); }
-  .assistant-jump:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+  .assistant-jump:hover { border-color: var(--mark); }
+  .assistant-jump:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: var(--focus-offset); }
 }

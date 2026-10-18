@@ -118,7 +118,7 @@
 
   /* ---- divider ---- */
   .prose hr {
-    border: var(--border-rule) solid var(--link);
+    border: var(--border-rule) solid var(--mark);
     width: var(--divider-width);
     margin-block: var(--space-16);
   }

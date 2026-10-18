@@ -58,7 +58,7 @@
   .sg-bar {
     display: block;
     height: var(--space-4);
-    background: var(--link);
+    background: var(--mark);
     border-radius: var(--radius-md);
   }
 
@@ -68,6 +68,7 @@
   [data-token="text-secondary"] { background: var(--text-secondary); }
   [data-token="text-tertiary"]  { background: var(--text-tertiary); }
   [data-token="link"]           { background: var(--link); }
+  [data-token="mark"]           { background: var(--mark); }
   [data-token="link-hover"]     { background: var(--link-hover); }
   [data-token="fill-subtle"]    { background: var(--fill-subtle); }
   [data-token="fill-strong"]    { background: var(--fill-strong); }

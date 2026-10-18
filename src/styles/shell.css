@@ -138,9 +138,9 @@
       cursor: pointer;
     }
     .dock [rel="next"] { margin-inline-start: auto; }
-    .dock [rel="next"]::after { content: " →"; color: var(--link); }
+    .dock [rel="next"]::after { content: " →"; color: var(--mark); }
     .dock button:focus-visible,
-    .dock a:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+    .dock a:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: var(--focus-offset); }
 
     /* room for the dock below the footer */
     .page-body { padding-bottom: calc(var(--dock-height) + var(--space-8)); }
@@ -192,7 +192,7 @@
       width: var(--border-rule);
       translate: -50% 0;
       border-radius: var(--radius-full);
-      background: var(--link);
+      background: var(--mark);
       opacity: 0;
       transition: opacity var(--duration-fast) var(--ease-standard);
     }

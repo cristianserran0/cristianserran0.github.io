@@ -4,7 +4,7 @@
   .end-mark {
     font: var(--type-ornament);
     letter-spacing: var(--type-ornament-tracking);
-    color: var(--link);
+    color: var(--mark);
     text-align: center;
     transform: rotate(var(--end-mark-rotation));
     margin-block: var(--space-16);

@@ -26,12 +26,12 @@
   .display-toggle:hover,
   .guide-toggle:hover { background: var(--fill-subtle); }
   /* the guide is open: the icon stays lit */
-  [assistant="open"] .guide-toggle { color: var(--link); background: var(--fill-subtle); }
+  [assistant="open"] .guide-toggle { color: var(--mark); background: var(--fill-subtle); }
 
   .display-toggle:focus-visible,
   .guide-toggle:focus-visible,
   .display button:focus-visible {
-    outline: var(--border-accent) solid var(--link);
+    outline: var(--border-accent) solid var(--mark);
     outline-offset: var(--focus-offset);
   }
 

@@ -119,6 +119,7 @@
 [accent="blue"] {
   --accent-h: 265;
   --ink-h: 261;   /* the live site's navy: measured hue 260-263 */
+  --mark-light: var(--accent-600);  --mark-dark: var(--accent-500);
   --accent-50: #f0f3f9;   --accent-100: #d2dffb;  --accent-200: #b2c9fa;  --accent-300: #8daff9;
   --accent-400: #5a8aff;  --accent-500: #3065ff;  --accent-600: #1035fd;  --accent-700: #0911d7;
   --accent-800: #0511a3;  --accent-900: #030f75;  --accent-950: #010a49;
@@ -126,6 +127,7 @@
 [accent="purple"] {
   --accent-h: 305;
   --ink-h: 305;
+  --mark-light: var(--accent-500);  --mark-dark: var(--accent-500);
   --accent-50: #f4f1f9;   --accent-100: #e7d7fb;  --accent-200: #d7bafa;  --accent-300: #c698f9;
   --accent-400: #b360ff;  --accent-500: #a200fe;  --accent-600: #8204cd;  --accent-700: #650b9f;
   --accent-800: #4c0a78;  --accent-900: #350956;  --accent-950: #200636;
@@ -133,6 +135,7 @@
 [accent="magenta"] {
   --accent-h: 355;
   --ink-h: 355;
+  --mark-light: var(--accent-400);  --mark-dark: var(--accent-400);
   --accent-50: #faf0f3;   --accent-100: #fbd2e1;  --accent-200: #fab0cc;  --accent-300: #fa84b5;
   --accent-400: #ff179a;  --accent-500: #d5007e;  --accent-600: #ac0365;  --accent-700: #85084e;
   --accent-800: #65083a;  --accent-900: #480729;  --accent-950: #2d0518;
@@ -140,6 +143,7 @@
 [accent="red"] {
   --accent-h: 25;
   --ink-h: 25;
+  --mark-light: var(--accent-500);  --mark-dark: var(--accent-500);
   --accent-50: #faf0ef;   --accent-100: #fbd5d0;  --accent-200: #fab5ae;  --accent-300: #fa8d85;
   --accent-400: #ff3d42;  --accent-500: #e00024;  --accent-600: #b5031c;  --accent-700: #8c0916;
   --accent-800: #6a0910;  --accent-900: #4c080b;  --accent-950: #2f0506;
@@ -147,6 +151,7 @@
 [accent="orange"] {
   --accent-h: 69;
   --ink-h: 69;
+  --mark-light: var(--accent-400);  --mark-dark: var(--accent-300);
   --accent-50: #faf1e9;   --accent-100: #fbd8b3;  --accent-200: #fabb73;  --accent-300: #ee9c2b;
   --accent-400: #c97e00;  --accent-500: #a66700;  --accent-600: #855301;  --accent-700: #674005;
   --accent-800: #4e2f05;  --accent-900: #372104;  --accent-950: #221303;
@@ -154,6 +159,7 @@
 [accent="green"] {
   --accent-h: 152;
   --ink-h: 152;
+  --mark-light: var(--accent-500);  --mark-dark: var(--accent-200);
   --accent-50: #e3fae8;   --accent-100: #8cfbad;  --accent-200: #42ec85;  --accent-300: #32d073;
   --accent-400: #00ae59;  --accent-500: #008f48;  --accent-600: #027339;  --accent-700: #07592c;
   --accent-800: #074320;  --accent-900: #062f16;  --accent-950: #041c0c;
@@ -161,6 +167,7 @@
 [accent="emerald"] {
   --accent-h: 190;
   --ink-h: 190;
+  --mark-light: var(--accent-500);  --mark-dark: var(--accent-100);
   --accent-50: #defaf7;   --accent-100: #57fbf3;  --accent-200: #42e4dc;  --accent-300: #32c9c1;
   --accent-400: #00a7a1;  --accent-500: #008a84;  --accent-600: #026e6a;  --accent-700: #075552;
   --accent-800: #07403d;  --accent-900: #062d2b;  --accent-950: #041b1a;
@@ -168,6 +175,7 @@
 [accent="sky"] {
   --accent-h: 237;
   --ink-h: 237;
+  --mark-light: var(--accent-400);  --mark-dark: var(--accent-400);
   --accent-50: #ecf4f9;   --accent-100: #c3e4fb;  --accent-200: #93d2fa;  --accent-300: #50bcf9;
   --accent-400: #009dde;  --accent-500: #0081b7;  --accent-600: #026793;  --accent-700: #064f72;
   --accent-800: #063b56;  --accent-900: #052a3d;  --accent-950: #041926;
@@ -244,7 +252,17 @@
   --text-secondary: light-dark( var(--ink-800), var(--ink-100));
   --text-tertiary:  light-dark( var(--ink-700), var(--ink-200));
   --border-subtle:  light-dark( var(--neutral-200), var(--neutral-800));
+  /* The accent has two jobs. --link is accent-coloured TEXT (a hovered
+     link, the current page): it must reach 4.5:1, which pins every hue
+     at the same lightness -- vivid for blue, muddy for orange or teal.
+     --mark is the accent as a SHAPE (underlines, dividers, the end mark,
+     focus rings, the guide's tile): only 3:1 is needed, so each accent
+     uses its most vivid step that reaches 3:1 on the panel
+     (--mark-light / --mark-dark in each accent block, measured). Text
+     stays ink; the accent shows as marks -- as on the live site, where
+     links are navy text with a vivid #1133FF underline. */
   --link:           light-dark( var(--accent-600),  var(--accent-400) );
+  --mark:           light-dark( var(--mark-light),  var(--mark-dark)  );
   --link-hover:     light-dark( var(--accent-700),  var(--accent-300) );
   --selection-bg:   light-dark( var(--accent-100),  var(--accent-800) );
   --selection-text: light-dark( var(--ink-900), var(--ink-50) );
@@ -294,7 +312,7 @@
 
   /* A solid accent mark (the guide's tile): the accent at full strength,
      with a white symbol on it, in either scheme. */
-  --bg-accent:      var(--accent-600);
+  --bg-accent:      var(--mark-light);   /* white on it >= 3.1:1 for every accent */
   --text-on-accent: var(--white);
 
   /* On imagery: text sits on a darkening scrim, in either scheme. */

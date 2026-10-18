@@ -65,7 +65,7 @@
     letter-spacing: var(--type-chat-tracking);
   }
   .panel-modal textarea::placeholder { color: var(--text-tertiary); }
-  .panel-modal textarea:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: 0; }
+  .panel-modal textarea:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: 0; }
 
   .panel-modal form > div {
     display: flex;
@@ -84,8 +84,8 @@
     padding: var(--space-1) var(--space-3);
     cursor: pointer;
   }
-  .panel-modal button:hover { border-color: var(--link); }
-  .panel-modal button:focus-visible { outline: var(--border-accent) solid var(--link); outline-offset: var(--focus-offset); }
+  .panel-modal button:hover { border-color: var(--mark); }
+  .panel-modal button:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: var(--focus-offset); }
   .panel-modal [type="submit"] { background: var(--fill-strong); border-color: transparent; }
 
   /* reasons: toggle chips */
@@ -100,6 +100,6 @@
   .feedback-reasons button { font-weight: var(--weight-regular); }
   .feedback-reasons [aria-pressed="true"] {
     background: var(--fill-strong);
-    border-color: var(--link);
+    border-color: var(--mark);
   }
 }

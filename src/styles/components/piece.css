@@ -83,7 +83,7 @@
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
   }
-  .piece-nav a { color: var(--text-primary); text-decoration-color: var(--link); }
+  .piece-nav a { color: var(--text-primary); text-decoration-color: var(--mark); }
   .piece-nav a:hover { color: var(--link); }
   .piece-nav [rel="up"]::before { content: "← "; }
   .piece-nav [rel="next"]::after { content: " →"; }
@@ -111,7 +111,7 @@
     text-decoration: none;
     transition: border-color var(--duration-fast) var(--ease-standard);
   }
-  .next-piece a:hover { border-color: var(--link); }
+  .next-piece a:hover { border-color: var(--mark); }
   .next-piece img {
     grid-row: span 2;
     width: var(--space-24);
@@ -132,5 +132,5 @@
     letter-spacing: var(--type-heading-tracking);
     align-self: start;
   }
-  .next-piece strong::after { content: " →"; color: var(--link); }
+  .next-piece strong::after { content: " →"; color: var(--mark); }
 }
