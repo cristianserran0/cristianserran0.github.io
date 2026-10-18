@@ -25,6 +25,7 @@
    meta          aside inside a heading (dates)        19 / 1.4 / 300
    meta-small    aside inside a subheading (places)    16 / 1.4 / 300
    caption       figure captions, notes, footer        13 / 1.4 / 300
+   fineprint     the guide's disclaimer                 12 / 1.4 / 300
    overline      small uppercase label on imagery      13 / 1.4 / 700
    label         navigation, controls                  16 / 1.4 / 500
    label-small   controls on narrow screens            14 / 1.4 / 500
@@ -68,6 +69,7 @@
                "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue",
                Arial, sans-serif;
 
+  --font-size-12: 0.75rem;
   --font-size-13: 0.8125rem;
   --font-size-14: 0.875rem;
   --font-size-16: 1rem;
@@ -108,6 +110,8 @@
   --type-meta-small-tracking:  -0.011rem;
   --type-caption:              var(--weight-light) var(--font-size-13)/var(--leading-normal) var(--font-sans);
   --type-caption-tracking:     -0.0025rem;
+  --type-fineprint:            var(--weight-light) var(--font-size-12)/var(--leading-normal) var(--font-sans);
+  --type-fineprint-tracking:   var(--type-caption-tracking);
   --type-overline:             var(--weight-bold) var(--font-size-13)/var(--leading-normal) var(--font-sans);
   --type-overline-tracking:    0.025rem;
   --type-label:                var(--weight-medium) var(--font-size-16)/var(--leading-normal) var(--font-sans);

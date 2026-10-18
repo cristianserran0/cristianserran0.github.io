@@ -220,8 +220,8 @@
   .assistant-composer [type="submit"] { background: var(--fill-subtle); }
 
   .assistant-disclaimer {
-    font: var(--type-caption);
-    letter-spacing: var(--type-caption-tracking);
+    font: var(--type-fineprint);
+    letter-spacing: var(--type-fineprint-tracking);
     color: var(--text-tertiary);
     text-align: center;
     margin-block: var(--space-2) var(--space-3);
