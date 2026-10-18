@@ -58,6 +58,7 @@
     gap: var(--space-2);
     padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
   }
+  .assistant-actions { display: flex; gap: var(--space-1); }
   .assistant-header h2 {
     font: var(--type-chat);
     letter-spacing: var(--type-chat-tracking);
@@ -157,23 +158,6 @@
   .assistant-suggestions button:hover { border-color: var(--link); }
 
   /* ---- where you are: above the composer, rewritten per page ---- */
-  /* Part of the composer block, in the conversation's column: no rule
-     across the panel (the bottom fade marks the edge instead). */
-  .assistant-here {
-    padding: var(--space-2) max(var(--chat-padding-inline), (100% - var(--chat-measure)) / 2) var(--space-3);
-  }
-  .assistant-here p {
-    font: var(--type-caption);
-    letter-spacing: var(--type-caption-tracking);
-    color: var(--text-secondary);
-    margin: 0;
-  }
-  .assistant-here .assistant-suggestions { margin-top: var(--space-2); }
-  .assistant-here .assistant-suggestions button {
-    font: var(--type-caption);
-    letter-spacing: var(--type-caption-tracking);
-  }
-
   /* ---- keep-this-chat card ---- */
   .assistant-keep {
     margin: 0 max(var(--space-4), (100% - var(--chat-measure)) / 2) var(--space-3);
@@ -337,6 +321,41 @@
     flex-direction: column;
   }
   .assistant-spacer { flex: none; }
+
+  /* the blank state: centred in the empty conversation, in its column */
+  .assistant-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--chat-padding-block) max(var(--chat-padding-inline), (100% - var(--chat-measure)) / 2);
+    text-align: center;
+  }
+  .assistant-empty[hidden] { display: none; }
+  .assistant-empty svg {
+    width: var(--icon-button);
+    height: var(--icon-button);
+    margin-bottom: var(--space-2);
+    color: var(--link);
+  }
+  .assistant-empty h3 {
+    font: var(--type-label);
+    letter-spacing: var(--type-label-tracking);
+    font-weight: var(--weight-semibold);
+    margin: 0;
+  }
+  .assistant-empty p {
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: var(--display-width);
+  }
+  .assistant-empty .assistant-suggestions {
+    justify-content: center;
+    margin-top: var(--space-3);
+  }
 
   /* Fades over the conversation's edges: the panel's own colour, shown
      only when there is more to scroll to in that direction (assistant.js

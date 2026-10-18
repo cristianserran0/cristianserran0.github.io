@@ -17,6 +17,7 @@
   if (!panel) return;
   var toggles = Array.prototype.slice.call(document.querySelectorAll('[data-assistant-toggle]'));
   var closeBtn = panel.querySelector('[data-assistant-close]');
+  var clearBtn = panel.querySelector('[data-assistant-clear]');
   var log = panel.querySelector('.assistant-log');
   var form = panel.querySelector('.assistant-composer');
   var input = form.querySelector('textarea');
@@ -156,14 +157,16 @@
     }
     return TOUR_NAMES;
   }
-  function roomGreeting() {
-    switch (room.kind) {
-      case 'piece': return 'You’re in front of ' + room.title + ', ' + room.client + ', ' + room.years + '.';
-      case 'wall':  return 'This is the wall: ' + pieces.length + ' pieces. Pick one, or let me take you through them.';
-      case 'cv':    return 'This is the CV: the detail behind the pieces.';
-      case 'contact': return 'This is the front desk: how to reach Cristian.';
-      default:      return 'Hi! I’m the guide to Cristian’s work. Take a short tour, or ask me anything.';
-    }
+  // The blank state's words, for the room the visitor is in.
+  function blankState() {
+    if (room.kind === 'piece') return {
+      title: 'Ask about ' + room.title,
+      text: room.client + ', ' + room.years + '. Or ask anything about Cristian’s work, his CV or how this site is built.',
+    };
+    return {
+      title: 'Ask about Cristian’s work',
+      text: 'His case studies, his CV, how this site is built. Or let me show you around:',
+    };
   }
 
   function answer(q) {
@@ -251,6 +254,7 @@
     }
     if (m.rateable) li.appendChild(rating(m));
     log.insertBefore(li, spacer);
+    updateEmpty();
     return li;
   }
 
@@ -456,17 +460,26 @@
 
   transcript.forEach(render);
 
-  // Where you are: a strip above the composer, rewritten in place on every
-  // page. It is not part of the conversation, so changing pages never
-  // changes the conversation (or its scroll).
-  var strip = panel.querySelector('.assistant-here');
-  strip.querySelector('[data-here]').textContent = roomGreeting();
-  var hereList = strip.querySelector('[data-here-suggestions]');
+  // The blank state: shown while the conversation is empty, with this
+  // room's suggestions; it gives way as soon as anything is said.
+  var empty = panel.querySelector('.assistant-empty');
+  var words = blankState();
+  empty.querySelector('[data-empty-title]').textContent = words.title;
+  empty.querySelector('[data-empty-text]').textContent = words.text;
+  var emptyList = empty.querySelector('[data-empty-suggestions]');
   roomSuggestions().forEach(function (q) {
     var b = el('button', null, q); b.type = 'button';
     b.addEventListener('click', function () { ask(q); });
-    var i = el('li'); i.appendChild(b); hereList.appendChild(i);
+    var i = el('li'); i.appendChild(b); emptyList.appendChild(i);
   });
+  // (Also called while the saved conversation is first drawn, before
+  // `empty` is looked up just above -- hence the guard.)
+  function updateEmpty() {
+    var has = log.children.length > 1;    // the spacer is always there
+    if (empty) empty.hidden = has;
+    if (clearBtn) clearBtn.disabled = !has;
+  }
+  updateEmpty();
 
   // On entering a room with the guide open: the tour stop, if one is due.
   // That IS conversation (progress through the tour), so it is stored.
@@ -588,6 +601,26 @@
     t.addEventListener('click', function () { setOpen(!isOpen(), t); });
   });
   closeBtn.addEventListener('click', function () { setOpen(false); });
+
+  // Clear: an empty conversation and the blank state again. Stops an answer
+  // in flight first, and resets everything that belongs to the conversation
+  // together (a tour in progress, the saved scroll, the keep-it choice), so
+  // nothing from the old one shows up in the next.
+  clearBtn.addEventListener('click', function () {
+    if (turn) turn.stop();
+    transcript = [];
+    Array.prototype.slice.call(log.children).forEach(function (n) { if (n !== spacer) n.remove(); });
+    store(session, 'guide-log', null);
+    store(session, 'guide-tour', null);
+    store(session, VIEW, null);
+    store(local, 'assistant-transcript', null);
+    kept = false; offered = false; keep.hidden = true;
+    userScrolled = false;
+    setSpacer(restSpace());
+    log.scrollTop = 0;
+    updateEmpty(); updateJump();
+    input.focus({ preventScroll: true });
+  });
   if (isOpen()) arrive();
 
   // The browser restores the window's scroll on reload and Back, but not a
