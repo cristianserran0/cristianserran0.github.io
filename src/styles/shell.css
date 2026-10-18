@@ -1,10 +1,10 @@
 /* App shell: the page and the guide as two floating panels.
 
-   On wide screens the page is ALWAYS a floating panel -- the frame gap
-   around it, rounded, scrolling inside itself. The guide closed is not a
-   different layout: it is the same panel reaching the right edge.
-   <html assistant="open"> moves the panel's right edge in to make room,
-   and the guide slides in by the same distance, on the same beat. Both
+   On wide screens the page is ALWAYS the same panel, scrolling inside
+   itself. With the guide closed it runs edge to edge: no gap, square
+   corners. <html assistant="open"> brings in the frame gap, rounds the
+   corners and moves the right edge in to make room, while the guide
+   slides in by the same distance, on the same beat. Both
    are real elements animating real properties (right, transform), so
    everything inside -- header, controls, content -- simply lives in the
    moving panel, live, frame by frame. No snapshots.
@@ -24,27 +24,42 @@
       background: var(--bg-canvas-top) linear-gradient(var(--bg-canvas-top), var(--bg-canvas-bottom)) fixed;
     }
 
-    .page {
+    /* The panel's shape: its four edges and its corners, moving together. */
+    .page,
+    body::before {
       position: fixed;
+      inset: 0;
+      border-radius: 0;
+      /* closing: back to edge to edge, easing out of the guide's way */
+      transition: top var(--duration-panel) var(--ease-exit),
+                  right var(--duration-panel) var(--ease-exit),
+                  bottom var(--duration-panel) var(--ease-exit),
+                  left var(--duration-panel) var(--ease-exit),
+                  border-radius var(--duration-panel) var(--ease-exit);
+    }
+    [assistant="open"] .page,
+    [assistant="open"] body::before {
       top: var(--frame-gap);
       bottom: var(--frame-gap);
       left: var(--frame-gap);
-      right: var(--frame-gap);
+      right: calc(var(--assistant-size) + 2 * var(--frame-gap));
+      border-radius: var(--radius-panel);
+      transition: top var(--duration-panel) var(--ease-enter),
+                  right var(--duration-panel) var(--ease-enter),
+                  bottom var(--duration-panel) var(--ease-enter),
+                  left var(--duration-panel) var(--ease-enter),
+                  border-radius var(--duration-panel) var(--ease-enter);
+    }
+
+    .page {
       width: auto;                    /* the edges decide (layout.css sets 100%) */
       z-index: var(--z-assistant);   /* the guide's plane */
       overflow: hidden auto;
-      border-radius: var(--radius-panel);
       background: var(--bg-surface);
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
-      /* closing: the edge eases out of the guide's way (exit curve) */
-      transition: right var(--duration-panel) var(--ease-exit);
     }
     .page:focus { outline: none; }   /* focused only to take keyboard scrolling */
-    [assistant="open"] .page {
-      right: calc(var(--assistant-size) + 2 * var(--frame-gap));
-      transition: right var(--duration-panel) var(--ease-enter);
-    }
 
     /* The header sticks to the top of the panel, taking no room in the
        flow (negative margin), as the fixed header does on phones. */
@@ -62,24 +77,16 @@
     body::before,
     body::after {
       content: "";
-      position: fixed;
-      top: var(--frame-gap);
-      bottom: var(--frame-gap);
       z-index: var(--z-panel-shadow);
-      border-radius: var(--radius-panel);
       box-shadow: var(--shadow-raised);
       pointer-events: none;
     }
-    body::before {                     /* the page's */
-      left: var(--frame-gap);
-      right: var(--frame-gap);
-      transition: right var(--duration-panel) var(--ease-exit);
-    }
-    [assistant="open"] body::before {
-      right: calc(var(--assistant-size) + 2 * var(--frame-gap));
-      transition: right var(--duration-panel) var(--ease-enter);
-    }
+    /* body::before is the page's: it takes the panel's shape (above) */
     body::after {                      /* the guide's: parked with it off the right edge */
+      position: fixed;
+      top: var(--frame-gap);
+      bottom: var(--frame-gap);
+      border-radius: var(--radius-panel);
       right: var(--frame-gap);
       width: var(--assistant-size);
       transform: translateX(calc(100% + var(--frame-gap)));
