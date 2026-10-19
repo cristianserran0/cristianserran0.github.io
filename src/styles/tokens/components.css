@@ -33,4 +33,8 @@
   --chat-rest-space:     5.5rem;   /* 88px of breathing room below a long reply (assistant.js reads it) */
 }
 
+/* The guide's narrower reading column, also switchable from its menu:
+   <html guide-measure="narrow">. */
+[guide-measure="narrow"] { --chat-measure: 37.5rem; }   /* 600px */
+
 } /* @layer tokens */

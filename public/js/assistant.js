@@ -638,6 +638,38 @@
   });
   closeBtn.addEventListener('click', function () { setOpen(false); });
 
+  // ---- More options: the guide's text style and column, live ----
+  var menu = document.getElementById('guide-menu');
+  var typeButtons = Array.prototype.slice.call(menu.querySelectorAll('[data-guide-type]'));
+  var measureButton = menu.querySelector('[data-guide-measure]');
+  function renderMenu() {
+    var t = d.getAttribute('guide-type') || 'coworker';
+    typeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-guide-type') === t)); });
+    measureButton.setAttribute('aria-pressed', String(d.getAttribute('guide-measure') === 'narrow'));
+  }
+  typeButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.getAttribute('data-guide-type');
+      t === 'coworker' ? d.removeAttribute('guide-type') : d.setAttribute('guide-type', t);
+      store(local, 'guide-type', t === 'coworker' ? null : t);
+      renderMenu(); updateJumpSoon();
+    });
+  });
+  measureButton.addEventListener('click', function () {
+    var on = d.getAttribute('guide-measure') !== 'narrow';
+    on ? d.setAttribute('guide-measure', 'narrow') : d.removeAttribute('guide-measure');
+    store(local, 'guide-measure', on ? 'narrow' : null);
+    renderMenu(); updateJumpSoon();
+  });
+  // A popover lives in the top layer, so it's placed by hand under its button.
+  menu.addEventListener('beforetoggle', function (e) {
+    if (e.newState !== 'open') return;
+    var r = panel.querySelector('[popovertarget="guide-menu"]').getBoundingClientRect();
+    menu.style.top = Math.round(r.bottom + 6) + 'px';            // CSSOM: CSP-safe
+    menu.style.right = Math.round(window.innerWidth - r.right) + 'px';
+  });
+  renderMenu();
+
   // Clear: an empty conversation and the blank state again. Stops an answer
   // in flight first, and resets everything that belongs to the conversation
   // together (a tour in progress, the saved scroll, the keep-it choice), so
@@ -655,6 +687,7 @@
     setSpacer(restSpace());
     log.scrollTop = 0;
     updateEmpty(); updateJump();
+    if (menu.matches(':popover-open')) menu.hidePopover();
     input.focus({ preventScroll: true });
   });
   if (isOpen()) arrive();

@@ -445,3 +445,67 @@
   .assistant-jump:hover { border-color: var(--mark); }
   .assistant-jump:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: var(--focus-offset); }
 }
+
+/* ---- More options (the ⋯ menu in the guide's header) ---- */
+@layer components {
+  .guide-menu {
+    position: fixed;
+    inset: auto;
+    width: var(--display-width);
+    margin: 0;
+    padding: var(--space-2);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-overlay);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-overlay);
+  }
+  .guide-menu p {
+    font: var(--type-overline);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: var(--space-1) var(--space-2) var(--space-1);
+  }
+  .guide-menu [role="group"] { display: grid; }
+  .guide-menu button {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2);
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .guide-menu button span {
+    font: var(--type-label-small);
+    letter-spacing: var(--type-label-small-tracking);
+  }
+  .guide-menu button small {
+    grid-column: 1;
+    font: var(--type-caption);
+    letter-spacing: var(--type-caption-tracking);
+    color: var(--text-tertiary);
+  }
+  /* the chosen one: a check in the accent, on the right */
+  .guide-menu [aria-pressed="true"]::after {
+    content: "✓";
+    grid-column: 2;
+    grid-row: 1;
+    color: var(--mark);
+    font: var(--type-label-small);
+  }
+  .guide-menu button:hover { background: var(--fill-subtle); }
+  .guide-menu button:focus-visible { outline: var(--border-accent) solid var(--mark); outline-offset: 0; }
+  .guide-menu button:disabled { cursor: default; color: var(--text-tertiary); background: none; }
+  .guide-menu hr {
+    margin: var(--space-2) 0;
+    border: none;
+    border-top: var(--border-hairline) solid var(--border-subtle);
+  }
+}

@@ -127,4 +127,15 @@
   --weight-strong: var(--weight-semibold);
 }
 
+/* The guide's text style, switchable from its More options menu while
+   the design is being assessed: <html guide-type="light|page">. Without
+   the attribute it is "coworker" (the chat style above). */
+[guide-type="light"] {
+  --type-chat: var(--weight-light) var(--font-size-14)/var(--leading-medium) var(--font-sans);
+}
+[guide-type="page"] {
+  --type-chat: var(--type-body);
+  --type-chat-tracking: var(--type-body-tracking);
+}
+
 } /* @layer tokens */
