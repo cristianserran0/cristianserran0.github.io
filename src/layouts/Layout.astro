@@ -220,6 +220,7 @@ const jsonLd = {
             </div>
             <button type="button" data-guide-measure><span>Narrow column</span><small>600px instead of 720px</small></button>
             <hr>
+            <button type="button" data-guide-keep><span>Keep this chat</span><small>for your next visit</small></button>
             <button type="button" data-assistant-clear disabled><span>Clear chat</span></button>
           </div>
           <button type="button" class="icon-button" data-assistant-close aria-label="Close guide" title="Close">
@@ -243,15 +244,6 @@ const jsonLd = {
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
         </button>
       </div>
-
-      <section class="assistant-keep" aria-label="Keep this chat" hidden>
-        <h3>Keep this chat for next time?</h3>
-        <p>Otherwise it's gone when you leave.</p>
-        <div>
-          <button type="button" data-keep="no">No thanks</button>
-          <button type="button" data-keep="yes">Keep it</button>
-        </div>
-      </section>
 
       <form class="assistant-composer">
         <textarea rows="2" aria-label="Message" placeholder="Ask about Cristian’s work, CV or this site…"></textarea>

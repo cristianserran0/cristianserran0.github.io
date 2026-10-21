@@ -154,45 +154,6 @@
   .assistant-suggestions button:hover { border-color: var(--mark); }
 
   /* ---- where you are: above the composer, rewritten per page ---- */
-  /* ---- keep-this-chat card ---- */
-  .assistant-keep {
-    margin: 0 max(var(--space-4), (100% - var(--chat-measure)) / 2) var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    border: var(--border-hairline) solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    background: var(--bg-raised);
-    box-shadow: var(--shadow-raised);
-  }
-  .assistant-keep h3 {
-    font: var(--type-chat);
-    letter-spacing: var(--type-chat-tracking);
-    font-weight: var(--weight-semibold);
-  }
-  .assistant-keep p {
-    font: var(--type-caption);
-    letter-spacing: var(--type-caption-tracking);
-    color: var(--text-secondary);
-    margin-block: var(--space-1) var(--space-3);
-  }
-  .assistant-keep div {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-2);
-  }
-  .assistant-keep button {
-    font: var(--type-chat);
-    letter-spacing: var(--type-chat-tracking);
-    font-weight: var(--weight-medium);
-    color: var(--text-primary);
-    background: none;
-    border: var(--border-hairline) solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: var(--space-1) var(--space-3);
-    cursor: pointer;
-  }
-  .assistant-keep button[data-keep="yes"] { border-color: transparent; }
-  .assistant-keep button:hover { border-color: var(--mark); }
-
   /* ---- composer ---- */
   .assistant-composer {
     margin-inline: max(var(--space-3), (100% - var(--chat-measure)) / 2);

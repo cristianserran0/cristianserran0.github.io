@@ -22,7 +22,6 @@
   var form = panel.querySelector('.assistant-composer');
   var input = form.querySelector('textarea');
   var send = form.querySelector('[type="submit"]');
-  var keep = panel.querySelector('.assistant-keep');
   var feedback = panel.querySelector('[data-feedback]');
 
   // ---- the scroll model (the Coworker brief, section 6) ----
@@ -252,7 +251,6 @@
   // Only the conversation is stored; room greetings are drawn fresh each
   // time (older versions stored them -- drop those).
   transcript = transcript.filter(function (m) { return !m.room; });
-  var offered = kept || transcript.some(function (m) { return m.from === 'user'; });
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -415,7 +413,6 @@
     var question = say({ from: 'user', text: [q] });
     pin(question);
     input.value = ''; send.disabled = true;
-    if (!offered) { offered = true; keep.hidden = false; }
     if (scripted(q) || !window.GuideAI) {
       setTimeout(function () {
         var a = answer(q); a.rateable = true; say(a);
@@ -555,13 +552,6 @@
     }));
   });
 
-  keep.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-keep]');
-    if (!b) return;
-    kept = b.getAttribute('data-keep') === 'yes';
-    store(local, 'assistant-transcript', kept ? JSON.stringify(transcript) : null);
-    keep.hidden = true;
-  });
 
   // ---- composer ----
   input.addEventListener('input', function () { if (!turn) send.disabled = !input.value.trim(); });
@@ -642,10 +632,19 @@
   var menu = document.getElementById('guide-menu');
   var typeButtons = Array.prototype.slice.call(menu.querySelectorAll('[data-guide-type]'));
   var measureButton = menu.querySelector('[data-guide-measure]');
+  // Keep this chat for the next visit: the visitor's choice, never asked
+  // for -- the guide doesn't prompt; it's here when wanted.
+  var keepButton = menu.querySelector('[data-guide-keep]');
+  keepButton.addEventListener('click', function () {
+    kept = !kept;
+    store(local, 'assistant-transcript', kept ? JSON.stringify(transcript) : null);
+    renderMenu();
+  });
   function renderMenu() {
     var t = d.getAttribute('guide-type') || 'coworker';
     typeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-guide-type') === t)); });
     measureButton.setAttribute('aria-pressed', String(d.getAttribute('guide-measure') === 'narrow'));
+    keepButton.setAttribute('aria-pressed', String(kept));
   }
   typeButtons.forEach(function (b) {
     b.addEventListener('click', function () {
@@ -682,7 +681,7 @@
     store(session, 'guide-tour', null);
     store(session, VIEW, null);
     store(local, 'assistant-transcript', null);
-    kept = false; offered = false; keep.hidden = true;
+    kept = false; renderMenu();
     userScrolled = false;
     setSpacer(restSpace());
     log.scrollTop = 0;

@@ -16,7 +16,7 @@
 
 # Unhashed static files: one week
 /js/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: no-cache
 /fonts/*
   Cache-Control: public, max-age=604800
 /favicon.png
