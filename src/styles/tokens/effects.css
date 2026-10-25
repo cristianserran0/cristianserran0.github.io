@@ -53,6 +53,7 @@
   --z-panel-shadow: 190;   /* both panels' shadows, drawn beneath both panels */
   --z-assistant: 200;      /* the panels: the page (guide open) and the guide, one plane */
   --z-resizer:   210;   /* the handle between the panels, over both edges */
+  --z-skip:      400;   /* the skip link, over everything while it has focus */
 }
 
 @media (prefers-reduced-motion: reduce) {

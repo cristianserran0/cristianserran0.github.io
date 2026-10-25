@@ -77,6 +77,29 @@
      must stay fixed to the window. */
   .page-body { container: page / inline-size; }
 
+  /* ---- skip link: off screen until it has focus, then top left ---- */
+  .skip-link {
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: var(--z-skip);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--bg-overlay);
+    box-shadow: var(--shadow-overlay);
+    color: var(--text-primary);
+    font: var(--type-label);
+    letter-spacing: var(--type-label-tracking);
+    translate: 0 calc(-100% - var(--space-4));
+  }
+  .skip-link:focus {
+    translate: none;
+    outline: var(--border-accent) solid var(--mark);
+    outline-offset: var(--focus-offset);
+  }
+  /* the content takes focus from the skip link, without a ring of its own */
+  main:focus { outline: none; }
+
   /* ---- main ---- */
   main {
     max-width: var(--content-max);

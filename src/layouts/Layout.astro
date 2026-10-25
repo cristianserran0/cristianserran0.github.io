@@ -181,7 +181,11 @@ const jsonLd = {
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script type="application/json" id="guide-data" set:html={JSON.stringify(guide)} />
     <!-- Hold the first paint until the guide is rebuilt (see the end of
-         <body>), so a page change never shows it half-built. -->
+         <body>
+    <!-- First stop for keyboard and screen-reader users: past the header,
+         straight to the page's content. Hidden until it has focus. -->
+    <a class="skip-link" href="#content">Skip to content</a>
+), so a page change never shows it half-built. -->
     <link rel="expect" href="#guide-ready" blocking="render">
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
@@ -244,7 +248,7 @@ const jsonLd = {
       </header>
 
       <div class="page-body">
-        <main class="prose" id={readingTime ? 'content' : undefined}>
+        <main class="prose" id="content" tabindex="-1">
           {piece && <PieceHeader slug={piece} readingTime={readingTime} />}
           <slot />
           {piece && <NextPiece slug={piece} />}
