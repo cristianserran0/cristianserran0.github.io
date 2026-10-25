@@ -3,6 +3,8 @@ import '../styles/index.css';
 import PieceHeader from '../components/PieceHeader.astro';
 import NextPiece from '../components/NextPiece.astro';
 import { piece as getPiece, nextPiece, featured, href } from '../data/pieces';
+import { getImage } from 'astro:assets';
+import ogDefault from '../assets/og/default.png';
 
 interface Props {
   title: string;
@@ -45,28 +47,83 @@ const guide = {
   pieces: featured.map((p) => ({ slug: p.slug, title: p.title, client: p.client, years: p.years, label: p.label, role: p.facts.role, category: p.facts.category, href: href(p) })),
 };
 
+/* ---- search and sharing ----
+   One address per page, from the site's real address (astro.config.mjs
+   site), never www. -- that redirects, and a canonical that redirects is a
+   conflicting signal. */
+const SITE = Astro.site!;
+const url = new URL(pathname, SITE).href;
+const abs = (path: string) => new URL(path, SITE).href;
+
+// The sharing image: a case study's own cover, cropped to 1200 x 630 at
+// build time; otherwise a real screenshot of the site (assets/og/default).
+const ogSource = current && typeof current.hero !== 'string' ? current.hero : ogDefault;
+const og = await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg', quality: 82 });
+const ogImage = abs(og.src);
+
+/* Structured data: one connected graph, so search engines and AI systems
+   read "a case study by Cristian Serrano, for <client>, <years>" as facts
+   rather than guessing from the text. */
+const PERSON = abs('/#person');
+const WEBSITE = abs('/#website');
+const years = current ? (current.years.match(/\d{4}/g) || []) : [];
+const temporal = current
+  ? (/present/i.test(current.years) ? `${years[0]}/..` : years.length > 1 ? `${years[0]}/${years[years.length - 1]}` : years[0])
+  : undefined;
+const crumbs = [{ name: 'Home', path: '/' }]
+  .concat(pathname.startsWith('/work/') && pathname !== '/work/' ? [{ name: 'Work', path: '/work/' }] : [])
+  .concat(pathname !== '/' ? [{
+    name: current ? current.title
+      : (nav.find((n) => n.href === pathname) || { label: title.split(' - ')[0] }).label,
+    path: pathname,
+  }] : []);
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Cristian Serrano",
-  "jobTitle": "Head of Design",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "JustRelate",
-    "url": "https://www.justrelate.com"
-  },
-  "url": "https://www.cristianserrano.ar",
-  "sameAs": ["https://www.linkedin.com/in/cristianserrano"],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Munich",
-    "addressCountry": "DE"
-  },
-  "knowsAbout": [
-    "Product Design", "Design Systems", "Design Operations",
-    "Design Leadership", "UX Design", "AI Product Design", "SaaS"
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': PERSON,
+      name: 'Cristian Serrano',
+      jobTitle: 'Head of Design',
+      worksFor: { '@type': 'Organization', name: 'JustRelate', url: 'https://www.justrelate.com' },
+      url: abs('/'),
+      sameAs: ['https://www.linkedin.com/in/cristianserrano'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Munich', addressCountry: 'DE' },
+      knowsLanguage: ['en', 'de', 'es'],
+      knowsAbout: ['Product Design', 'Design Systems', 'Design Operations', 'Design Leadership', 'UX Design', 'AI Product Design', 'SaaS'],
+      description: 'Cristian Serrano is a Senior Product Designer and Design Systems specialist with 17+ years of experience, based in Munich, Germany. Currently Head of Design at JustRelate.',
+    },
+    { '@type': 'WebSite', '@id': WEBSITE, url: abs('/'), name: 'Cristian Serrano', inLanguage: 'en', publisher: { '@id': PERSON } },
+    {
+      '@type': pathname.startsWith('/about') ? 'ProfilePage' : 'WebPage',
+      '@id': url + '#page',
+      url, name: title, description, inLanguage: 'en',
+      isPartOf: { '@id': WEBSITE },
+      primaryImageOfPage: ogImage,
+      breadcrumb: { '@id': url + '#breadcrumb' },
+      ...(pathname.startsWith('/about') ? { mainEntity: { '@id': PERSON } } : {}),
+      ...(current ? { mainEntity: { '@id': url + '#work' } } : {}),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': url + '#breadcrumb',
+      itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.path) })),
+    },
+    ...(current ? [{
+      '@type': 'CreativeWork',
+      '@id': url + '#work',
+      name: current.title,
+      abstract: current.label,
+      creator: { '@id': PERSON },
+      about: current.client.split(' + ').map((name) => ({ '@type': 'Organization', name })),
+      ...(temporal ? { temporalCoverage: temporal } : {}),
+      keywords: current.facts.category.replace(/\.$/, ''),
+      description: `${current.label} Role: ${current.facts.role}. Platforms: ${current.facts.platforms}. Time: ${current.facts.time}.`,
+      image: ogImage,
+      url,
+      inLanguage: 'en',
+    }] : []),
   ],
-  "description": "Cristian Serrano is a Senior Product Designer and Design Systems specialist with 17+ years of experience, based in Munich, Germany. Currently Head of Design at JustRelate."
 };
 ---
 
@@ -89,18 +146,23 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description}>
     {noindex && <meta name="robots" content="noindex">}
-    <link rel="canonical" href={`https://www.cristianserrano.ar${pathname}`}>
+    <link rel="canonical" href={url}>
 
     <!-- Open Graph / social sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content={`https://www.cristianserrano.ar${pathname}`}>
+    <meta property="og:type" content={current ? 'article' : 'website'}>
+    <meta property="og:url" content={url}>
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
-    <meta property="og:image" content="https://www.cristianserrano.ar/og-image.png">
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content={current ? current.alt : 'Cristian Serrano, digital product designer'}>
+    <meta property="og:site_name" content="Cristian Serrano">
+    <meta property="og:locale" content="en">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content="https://www.cristianserrano.ar/og-image.png">
+    <meta name="twitter:image" content={ogImage}>
 
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

@@ -2,6 +2,8 @@
 
 > Head of Design at JustRelate. Senior Product Designer and Design Systems specialist with 17+ years of experience, based in Munich, Germany.
 
+The full text of every page: https://cristianserrano.ar/llms-full.txt
+
 Cristian Serrano is a digital product designer who focuses on making the complex simple. He is currently Head of Design at JustRelate (Munich, Germany), where he leads product vision, design team unification, and DesignOps from scratch. He also conceptualised JR Coworker — an AI layer tying together the JustRelate Home platform, the Builders, and the full product suite.
 
 ## About

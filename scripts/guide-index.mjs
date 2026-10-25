@@ -71,6 +71,24 @@ for (const file of pages(DIST)) {
 
 fs.mkdirSync(path.join(DIST, 'guide'), { recursive: true });
 fs.writeFileSync(path.join(DIST, 'guide', 'pages.json'), JSON.stringify(index));
+// The same text for AI search engines: /llms-full.txt, every page in full,
+// next to the hand-written summary in /llms.txt. Generated, so it can
+// never go out of date.
+const SITE = 'https://cristianserrano.ar';
+const order = Object.keys(index).sort((a, b) => (a === '/' ? -1 : b === '/' ? 1 : a.localeCompare(b)));
+const full = [
+  '# Cristian Serrano — full text of cristianserrano.ar',
+  '',
+  '> Every page of the site in plain text, generated at build time. The short summary is ' + SITE + '/llms.txt.',
+  '',
+  ...order.flatMap((route) => {
+    const p = index[route];
+    return ['', '---', '', '# ' + p.title, '', 'URL: ' + SITE + route, '',
+      ...p.sections.flatMap((sec) => (sec.heading === 'intro' ? [sec.text, ''] : ['## ' + sec.heading, '', sec.text, '']))];
+  }),
+].join('\n');
+fs.writeFileSync(path.join(DIST, 'llms-full.txt'), full.replace(/\]\(\//g, '](' + SITE + '/'));
+
 const n = Object.keys(index).length;
 const s = Object.values(index).reduce((a, p) => a + p.sections.length, 0);
-console.log(`✓ guide index: ${n} pages, ${s} sections -> dist/guide/pages.json`);
+console.log(`✓ guide index: ${n} pages, ${s} sections -> dist/guide/pages.json, dist/llms-full.txt`);
