@@ -118,7 +118,7 @@
   // ---- tours: short, goal-driven walks through the pieces ----
   function byCategory(re) { return pieces.filter(function (p) { return re.test(p.category); }); }
   var TOURS = {
-    'The 2-minute tour': { intro: 'Four pieces, newest first. Half a minute on each first screen is enough; scroll down wherever you want the full story.', stops: pieces },
+    'The 2-minute tour': { intro: pieces.length + ' pieces. Half a minute on each first screen is enough; scroll down wherever you want the full story.', stops: pieces },
     'Design systems':    { intro: 'Two design systems, built from the ground up for very different companies.', stops: byCategory(/design system/i) },
     'Leadership':        { intro: 'Where Cristian led teams and set up how design works.', stops: byCategory(/leadership|operations/i) },
   };
@@ -178,7 +178,7 @@
     return {
       title: hello + ' What would you like to know?',
       options: [
-        { q: TOUR_NAMES[0], title: TOUR_NAMES[0], text: pieces.length + ' pieces, newest first', icon: 'compass' },
+        { q: TOUR_NAMES[0], title: TOUR_NAMES[0], text: pieces.length + ' pieces, half a minute each', icon: 'compass' },
         { q: TOUR_NAMES[1], title: TOUR_NAMES[1], text: clients(/design system/i), icon: 'layers' },
         { q: TOUR_NAMES[2], title: TOUR_NAMES[2], text: 'Where he led teams and design operations', icon: 'people' },
       ],

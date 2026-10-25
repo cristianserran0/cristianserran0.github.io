@@ -1,0 +1,101 @@
+---
+/* DRAFT -- written for Cristian to rewrite in his own voice. Every fact
+   and number here is from the code or measured on the running site;
+   the framing ("How it was built") is his call. */
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  piece="this-site"
+  title="This site - Cristian Serrano"
+  description="Case study: cristianserrano.ar designed as a small product -- one token system for colour, type, space and depth, semantic markup, and a guide that answers from the site itself on a free AI model."
+  readingTime={true}
+>
+
+  <section id="summary">
+    <article class="overview">
+      <p>My portfolio had grown the way most do: one stylesheet, values typed wherever they were needed, a page per project. I rebuilt it as a small product, the kind of system I'd ask a team to build, and used it to try what I'd want from an AI assistant on a site like this.</p>
+      <p>It's also the piece you're looking at: everything below is running on this page.</p>
+    </article>
+  </section>
+
+  <hr>
+
+  <section id="system">
+    <h2>One system</h2>
+
+    <article>
+      <h3>One source for every value</h3>
+      <p>Every colour, text style, space, radius, shadow and duration lives in one folder of tokens. Outside it, styles may only refer to them: a check runs on every build and fails it if a value is typed anywhere else.</p>
+    </article>
+
+    <article>
+      <h3>The markup says what things are</h3>
+      <p>Classes only name what something is, like a work tile or a list of facts, never how it looks. A paragraph stays a paragraph; a lead paragraph looks different because of where it sits, not because of a class.</p>
+    </article>
+  </section>
+
+  <section id="colour">
+    <h2>Colour</h2>
+
+    <article>
+      <h3>Three choices, combined</h3>
+      <p>Appearance is three independent choices: scheme (light, dark or the system's), temperature (warm, neutral or cold greys) and accent (eight hues). Temperature owns the surfaces; the accent owns everything you read and every mark. That makes 48 combinations, none of them written by hand. Try them in the Display menu, top right.</p>
+    </article>
+
+    <article>
+      <h3>Text that follows the accent</h3>
+      <p>Text uses an ink: the accent's hue at a reading depth. With blue it's the same navy as the previous version of this site. The accent itself stays at the hue's most vivid step, so it stands apart from the text as underlines, dividers and focus rings.</p>
+    </article>
+
+    <article>
+      <h3>Checked by a browser, not by eye</h3>
+      <p>A second check renders every combination in a real browser and measures every text colour against every surface (at least 4.5:1) and every accent mark (at least 3:1): 1,344 pairs on each build.</p>
+    </article>
+  </section>
+
+  <section id="depth">
+    <h2>Depth</h2>
+    <article>
+      <p>Four levels, back to front: the canvas behind the panels, the panels, cards inside them, and what floats above. In light mode depth reads from the shadows. In dark mode each level also steps lighter, because shadows barely show on dark.</p>
+    </article>
+  </section>
+
+  <section id="gallery">
+    <h2>A gallery, with a guide</h2>
+
+    <article>
+      <h3>Three distances</h3>
+      <p>The work is a small gallery. The wall shows every piece with its label; a piece's first screen shows the work, its label and its key facts, and the way to the next one; scrolling down is the full story. All of it reads from one data file, so a label is written once.</p>
+    </article>
+
+    <article>
+      <h3>The guide</h3>
+      <p>The panel beside the page is a guide, not a chatbot. It stays quiet until it's asked. It knows which page and section you're reading: the site builds an index of its own text, and the guide answers only from it. It also offers short tours through the work.</p>
+    </article>
+
+    <article>
+      <h3>Free, by design</h3>
+      <p>It runs on Cloudflare Workers AI's free plan. I compared four models on the same questions, including attempts to make them go off-topic, and chose the one that stayed accurate and on topic: Llama 3.3 70B. When the day's free allowance runs out, the guide says so and falls back to scripted answers. It never bills.</p>
+    </article>
+  </section>
+
+  <section id="built">
+    <h2>How it was built</h2>
+    <article>
+      <p>I directed the design and made the calls; Claude Code was my pair for the code, the checks and the tests. Every claim on this page was measured on the running site.</p>
+    </article>
+  </section>
+
+  <hr>
+
+  <section id="next">
+    <h2>What's next</h2>
+    <ul>
+      <li>Chat history for the guide.</li>
+      <li>Keeping the guide's 👍 / 👎 feedback, so I can read it.</li>
+    </ul>
+  </section>
+
+  <p class="end-mark" aria-hidden="true">◼︎</p>
+</Layout>

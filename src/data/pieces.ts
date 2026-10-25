@@ -17,6 +17,7 @@ import googleHero from '../assets/work/google-small-business-advisors/hero.jpg';
 import openbankHero from '../assets/work/openbank-design-system/openbank-cover.png';
 import insurancesHero from '../assets/work/openbank-insurances/hero.png';
 import virtstartHero from '../assets/work/focusfreak-virtstart/hero.png';
+import thisSiteHero from '../assets/work/this-site/hero.png';
 
 export interface Piece {
   slug: string;
@@ -79,6 +80,18 @@ export const pieces: Piece[] = [
     hero: openbankHero,
     alt: 'Openbank Design System',
     facts: { category: 'B2E, Design systems, Internal tools', platforms: 'Web, iOS, Android', role: 'Product Designer', time: '1 year, 7 months' },
+    featured: true,
+  },
+  {
+    slug: 'this-site',
+    title: 'This site',
+    client: 'cristianserrano.ar',
+    years: '2026',
+    label: 'Cristian designed this site as a small product: one token system behind every colour, type and space, and a guide that answers from the site itself on a free AI model.',
+    cover: thisSiteHero,
+    hero: thisSiteHero,
+    alt: 'This site, with the guide open beside a case study',
+    facts: { category: 'Design systems, Front-end, AI', platforms: 'Web', role: 'Design and front-end, with Claude Code as pair', time: '2026' },
     featured: true,
   },
   {

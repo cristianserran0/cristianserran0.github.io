@@ -19,6 +19,7 @@ Cristian Serrano is a digital product designer who focuses on making the complex
 - [Kinetic Design System — Kaia Health](/work/kaia-health-kinetic-design-system/): Cross-platform design system (Web, iOS, Android) for a digital health startup. Role: Product Designer, Design System Manager, Design Operations Lead (2021–2023).
 - [Small Business Advisors — Globant + Google](/work/google-small-business-advisors/): Product design for Google My Business's advisory service connecting small and medium business owners with Google product experts. Role: Product Designer (2020).
 - [Openbank Design System — Globant + Openbank](/work/openbank-design-system/): Led the design and development of Openbank Guidelines, a cross-platform design system for the Santander Group's fully digital bank. Role: Product Designer (2018–2019).
+- [This site](/work/this-site/): cristianserrano.ar designed as a small product — one token system for colour, type, space and depth, enforced by build checks; semantic markup; and a guide that answers from the site's own text on Cloudflare Workers AI's free plan. Role: design and front-end, with Claude Code as pair (2026).
 
 ## Contact
 
