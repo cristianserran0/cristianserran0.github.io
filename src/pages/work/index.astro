@@ -2,8 +2,7 @@
 /* Distance 1, "walking the room": every featured piece with its label.
    Tiles and labels come from src/data/pieces.ts. */
 import Layout from '../../layouts/Layout.astro';
-import PieceImage from '../../components/PieceImage.astro';
-import { featured, href } from '../../data/pieces';
+import WorkTiles from '../../components/WorkTiles.astro';
 ---
 
 <Layout
@@ -14,16 +13,5 @@ import { featured, href } from '../../data/pieces';
     <h1>Featured work</h1>
   </header>
 
-  <section class="projects">
-    {featured.map((p, i) => (
-      <article class="work-tile">
-        <a href={href(p)}>
-          <PieceImage src={p.cover} alt="" eager={i < 2} />
-          <h2>{p.title}</h2>
-        </a>
-        <p>{p.client} · {p.years}</p>
-        <p>{p.label}</p>
-      </article>
-    ))}
-  </section>
+  <WorkTiles eager />
 </Layout>

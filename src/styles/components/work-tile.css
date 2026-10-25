@@ -30,7 +30,7 @@
     box-shadow: var(--shadow-lg);
   }
 
-  .work-tile h2 {
+  .work-tile :is(h2, h3) {
     font: var(--type-heading);
     letter-spacing: var(--type-heading-tracking);
     color: var(--text-primary);
@@ -44,7 +44,7 @@
   }
 
   /* client · years */
-  .work-tile h2 + p,
+  .work-tile :is(h2, h3) + p,
   .work-tile a + p {
     font: var(--type-overline);
     letter-spacing: var(--type-overline-tracking);

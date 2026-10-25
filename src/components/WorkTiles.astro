@@ -1,0 +1,24 @@
+---
+/* The featured pieces as tiles: image, title, then the label beneath it.
+   Used by the wall (/work/) and Home, from src/data/pieces.ts. `heading`
+   is the tiles' heading level, so they sit right under the page's own
+   headings (h2 on the wall, under its h1; h3 on Home, under an h2). */
+import PieceImage from './PieceImage.astro';
+import { featured, href } from '../data/pieces';
+
+interface Props { heading?: 'h2' | 'h3'; eager?: boolean; }
+const { heading = 'h2', eager = false } = Astro.props;
+const H = heading;
+---
+<section class="projects">
+  {featured.map((p, i) => (
+    <article class="work-tile">
+      <a href={href(p)}>
+        <PieceImage src={p.cover} alt="" eager={eager && i < 2} />
+        <H>{p.title}</H>
+      </a>
+      <p>{p.client} · {p.years}</p>
+      <p>{p.label}</p>
+    </article>
+  ))}
+</section>
