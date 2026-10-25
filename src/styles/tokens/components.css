@@ -20,6 +20,8 @@
   --bleed-offset:      -40%;
   --tile-hover-scale:  1.02;
   --end-mark-rotation: 45deg;
+  --brand-mark:        0.75rem;  /* the diamond standing in for the name on phones */
+  --visually-hidden:   1px;      /* text kept for screen readers, not shown */
 
   /* the guide's conversation (from the Coworker prototype's measures) */
   --chat-measure:        45rem;    /* 720px: the conversation and the input never get wider */

@@ -16,7 +16,7 @@
      narrow   max-width: 500px     phones
      content  736px                the content column (--content-max)
      wide     1200px               full-bleed images stop bleeding
-     shell    760px                below it the assistant is a sheet and the dock appears
+     shell    760px                below it the guide floats over the page
 
    Inside the page, layout responds to the PANEL's width, not the
    window's, because opening the assistant narrows the panel while
@@ -58,8 +58,6 @@
   --panel-width:     calc(100% - var(--assistant-size) - 3 * var(--frame-gap));
   --icon-size:       1rem;
   --icon-button:     2rem;
-  --dock-height:     3.5rem;           /* the quick-actions bar on phones */
-  --sheet-top:       10svh;            /* the guide sheet stops short of the top on phones */
 
   /* ---- gallery ---- */
   --piece-max:          1120px;        /* widest a piece's image gets */

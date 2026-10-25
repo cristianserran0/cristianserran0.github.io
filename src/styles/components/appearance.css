@@ -35,10 +35,6 @@
     outline-offset: var(--focus-offset);
   }
 
-  /* On phones the guide lives in the dock, at thumb height. */
-  @media (max-width: 760px) {
-    .guide-toggle { display: none; }
-  }
 
   /* ---- the Display panel ---- */
   .display {

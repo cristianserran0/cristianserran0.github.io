@@ -272,7 +272,7 @@
 
        canvas    the app itself, behind the panels       (furthest back)
        surface   a panel: the page, the guide
-       raised    a card inside a panel: keep-this-chat, the phone dock
+       raised    a card inside a panel
        overlay   floats above a panel: modals, the Display pop-up (closest)
 
      Light: white panels on a pale canvas; depth reads from the shadows

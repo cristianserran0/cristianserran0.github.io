@@ -47,7 +47,6 @@
 
   /* ---- stacking ---- */
   --z-header:    100;
-  --z-dock:      120;   /* the quick-actions bar on phones */
   --z-lift:      1;     /* one step above a sibling inside the same component */
   --z-modal:     10;    /* a panel's modal, above that panel's content (inside the panel) */
   --z-panel-shadow: 190;   /* both panels' shadows, drawn beneath both panels */

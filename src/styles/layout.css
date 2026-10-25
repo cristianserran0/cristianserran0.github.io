@@ -68,8 +68,39 @@
       font: var(--type-label-small);
       letter-spacing: var(--type-label-small-tracking);
     }
-    .site-name span { display: none; }   /* "Cristian" alone fits a phone */
+    /* Phones: the name becomes the diamond (the favicon, and the end mark
+       of every story), in the accent. The name stays for screen readers. */
+    .site-name {
+      display: inline-grid;
+      place-items: center;
+      width: var(--icon-button);
+      height: var(--icon-button);
+    }
+    .site-name::before {
+      content: "";
+      width: var(--brand-mark);
+      height: var(--brand-mark);
+      background: var(--mark);
+      rotate: var(--end-mark-rotation);
+    }
+    .site-name span {
+      position: absolute;
+      width: var(--visually-hidden);
+      height: var(--visually-hidden);
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   }
+
+  /* the narrowest phones (320px): a little less air, never a sideways scroll */
+  @container header (max-width: 340px) {
+    .site-nav,
+    .site-nav ul { gap: var(--space-3); }
+    .site-nav { padding-inline: var(--space-3); }
+  }
+  .site-name,
+  .site-actions > * { flex: none; }
 
   /* The page's scrolling content. Layout inside it responds to this
      container's width (see tokens/space.css). The header stays outside:
@@ -86,7 +117,6 @@
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-md);
     background: var(--bg-overlay);
-    box-shadow: var(--shadow-overlay);
     color: var(--text-primary);
     font: var(--type-label);
     letter-spacing: var(--type-label-tracking);
@@ -94,6 +124,7 @@
   }
   .skip-link:focus {
     translate: none;
+    box-shadow: var(--shadow-overlay);   /* only while shown: off screen it would still cast into view */
     outline: var(--border-accent) solid var(--mark);
     outline-offset: var(--focus-offset);
   }

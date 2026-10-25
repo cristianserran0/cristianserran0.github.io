@@ -180,12 +180,8 @@ const jsonLd = {
     ))}
     <link rel="icon" type="image/png" href="/favicon.png" sizes="16x16 32x32">
     <script type="application/json" id="guide-data" set:html={JSON.stringify(guide)} />
-    <!-- Hold the first paint until the guide is rebuilt (see the end of
-         <body>
-    <!-- First stop for keyboard and screen-reader users: past the header,
-         straight to the page's content. Hidden until it has focus. -->
-    <a class="skip-link" href="#content">Skip to content</a>
-), so a page change never shows it half-built. -->
+    <!-- Hold the first paint until the guide is rebuilt (see the end of the
+         page), so a page change never shows it half-built. -->
     <link rel="expect" href="#guide-ready" blocking="render">
     <script defer is:inline src="/js/header-behaviour.js"></script>
     <script defer is:inline src="/js/seniority.js"></script>
@@ -195,13 +191,16 @@ const jsonLd = {
   </head>
 
   <body>
+    <!-- First stop for keyboard and screen-reader users: past the header,
+         straight to the page's content. Hidden until it has focus. -->
+    <a class="skip-link" href="#content">Skip to content</a>
     <!-- tabindex -1: focusable by script, not in the Tab order; see
          header-behaviour.js (keyboard scrolling of the panel). -->
     <div class="page" tabindex="-1">
 
       <header class="site-header nav-visible">
         <nav class="site-nav" aria-label="Site">
-          <a class="site-name" href="/" aria-current={pathname === '/' ? 'page' : undefined}>Cristian <span>Serrano</span></a>
+          <a class="site-name" href="/" aria-current={pathname === '/' ? 'page' : undefined}><span>Cristian Serrano</span></a>
           <ul>
             {nav.map((item) => (
               <li><a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a></li>
@@ -261,11 +260,6 @@ const jsonLd = {
       </div>
 
     </div>
-
-    <nav class="dock" aria-label="Quick actions">
-      <button type="button" data-assistant-toggle aria-controls="assistant" aria-expanded="false">Guide</button>
-      {next && <a href={href(next)} rel="next">Next piece</a>}
-    </nav>
 
     <aside class="assistant" id="assistant" aria-label="Assistant">
       <header class="assistant-header">

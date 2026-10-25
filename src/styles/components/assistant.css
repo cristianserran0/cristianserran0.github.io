@@ -35,14 +35,15 @@
     transition: transform var(--duration-panel) var(--ease-enter);
   }
   [resizing] .assistant { transition: none; }   /* follows the pointer exactly */
-  /* Phones: a sheet rising from the bottom, the page still peeking above. */
+  /* Phones: the same panel, sliding in from the right as on wide screens,
+     but floating over the whole site -- header included -- with the
+     frame gap all round. It lies over the page, so it takes the overlay's
+     shadow. Closed with its own ×. */
   @media (max-width: 760px) {
     .assistant {
-      inset: var(--sheet-top) 0 0;
+      inset: var(--frame-gap);
       width: auto;
-      border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-      box-shadow: var(--shadow-raised);
-      transform: translateY(100%);
+      box-shadow: var(--shadow-overlay);
     }
   }
 
