@@ -138,4 +138,12 @@
   --type-chat-tracking: var(--type-body-tracking);
 }
 
+/* Phones: body text at 14 px (16 elsewhere), leading kept. One rule: to
+   go back, delete it. Headings, lead and captions keep their sizes. */
+@container page (max-width: 500px) {
+  main, .site-footer {
+    --type-body: var(--weight-light) var(--font-size-14)/var(--leading-relaxed) var(--font-sans);
+  }
+}
+
 } /* @layer tokens */

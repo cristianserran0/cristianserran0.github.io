@@ -175,6 +175,14 @@
     letter-spacing: var(--type-chat-tracking);
   }
   .assistant-composer textarea::placeholder { color: var(--text-tertiary); }
+  /* iOS zooms the whole page into an input whose text is under 16 px; on
+     touch screens the guide's input is 16 px, whatever the guide's style. */
+  @media (pointer: coarse) {
+    .assistant-composer textarea {
+      font: var(--type-meta-small);
+      letter-spacing: var(--type-meta-small-tracking);
+    }
+  }
   .assistant-composer div { display: flex; justify-content: flex-end; }
   .assistant-composer [type="submit"] { background: var(--fill-subtle); }
 

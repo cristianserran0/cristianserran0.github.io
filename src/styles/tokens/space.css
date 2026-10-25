@@ -80,4 +80,11 @@
   --focus-offset:   3px;
 }
 
+/* Phones: the page gutter halves (32 -> 16 px), so a 390 px screen keeps
+   358 px for text instead of 326. Scoped to the page panel's width (a
+   container query), like the rest of the layout. */
+@container page (max-width: 500px) {
+  main, .site-footer { --gutter: var(--space-4); }
+}
+
 } /* @layer tokens */
